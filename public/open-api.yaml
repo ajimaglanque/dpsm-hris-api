@@ -108,12 +108,6 @@ paths:
 definitions:
   userAddSource:
     properties:
-        userType:
-          type: string
-          example: "internal/external"
-        organization:
-          type: string
-          example: "Prosperna //only required if userType=external"
         username:
           type: string
           example: "username"
