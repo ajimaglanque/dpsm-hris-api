@@ -1,0 +1,11 @@
+{
+  "app": {
+    "node_env": "",
+    "host": "",
+    "port": ""
+  },
+  "token": {
+    "secret":"",
+    "expriry": 0
+  }
+}

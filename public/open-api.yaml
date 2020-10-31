@@ -1,0 +1,148 @@
+openapi: '3.0.0'
+info:
+  title: 'UPM DPSM HRIS'
+  version: '1.0.0'
+  description: >-
+    Human Resource Information System for the University of the Philippines Manila Department of Physical Sciences and Mathematics.
+
+paths:
+  "/api/health":
+    get:
+      tags:
+      - Monitor Health
+
+      operationId: monitorHealth
+      summary: Get health status of app
+      description: Get health status of app
+      responses:
+        default:
+          description: Health check response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Server is up!"
+
+  "/api/user/add":
+    post:
+      summary: Create new user
+      tags:
+      - User Enrollment
+      description: Register user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/userAddSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: string
+                      example: "User enrolled successfully"
+                    
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+
+  "/api/token":
+    post:
+      summary: Create access token 
+      tags:
+      - Access Token
+      description: Get access token
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/accessTokenSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: string
+                      example: "xxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+  
+definitions:
+  userAddSource:
+    properties:
+        userType:
+          type: string
+          example: "internal/external"
+        organization:
+          type: string
+          example: "Prosperna //only required if userType=external"
+        username:
+          type: string
+          example: "username"
+        password:
+          type: string
+          example: "password"
+
+  accessTokenSource:
+    properties:
+        username:
+          type: string
+          example: "username"
+        password:
+          type: string
+          example: "password"
+
+  ErrorResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+        example: false
+      message:
+        type: string
+        example: "Error message"
+              
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
