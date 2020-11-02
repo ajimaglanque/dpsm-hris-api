@@ -33,7 +33,7 @@ authHandler.authenticateUser = (req, res, next) => {
         util.sendResponse(res, jsonRes);
     } else {
         token = token.split(" ")[1];
-        jwt.verify(token, config.tokenSecret, function (err, decoded) {
+        jwt.verify(token, config.token.secret, function (err, decoded) {
             if (err) {
                 jsonRes = {
                     errors: [{

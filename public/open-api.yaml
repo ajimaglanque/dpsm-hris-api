@@ -105,6 +105,201 @@ paths:
               schema:
                 $ref: "#/definitions/ErrorResponse"
   
+  "/api/faculty/add/personal":
+    post:
+      summary: Add faculty personal info
+      tags:
+      - Faculty
+      description: Add faculty personal info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyPersonalInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/employment":
+    post:
+      summary: Add faculty employment info
+      tags:
+      - Faculty
+      description: Add faculty employment info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyEmploymentInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty employment information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/education":
+    post:
+      summary: Add faculty education info
+      tags:
+      - Faculty
+      description: Add faculty education info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyEducationInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty education information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/work-exp":
+    post:
+      summary: Add faculty work experience info
+      tags:
+      - Faculty
+      description: Add faculty work experience info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyWorkExpInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty work experience information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/publication":
+    post:
+      summary: Add faculty publication info
+      tags:
+      - Faculty
+      description: Add faculty publication info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyPublicationInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publication information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
 definitions:
   userAddSource:
     properties:
@@ -123,6 +318,120 @@ definitions:
         password:
           type: string
           example: "password"
+
+  addFacultyPersonalInfoSource:
+    properties:
+        lastName:
+          type: string
+          example: "Cristobal"
+        firstName:
+          type: string
+          example: "Jodie"
+        middleName:
+          type: string
+          example: "Pacay"
+        dateOfBirth:
+          type: string
+          example: "1994-01-06"
+        placeOfBirth:
+          type: string
+          example: "Manila"
+        gender:
+          type: string
+          example: female
+        permanentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        presentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        contactNumber:
+          type: string
+          example: "09123456789"
+        email:
+          type: string
+          example: "jodie@email.com"
+        civilStatus:
+          type: string
+          example: "single"
+        religion:
+          type: string
+          example: "Catholic"
+        emergencyContactPerson:
+          type: string
+          example: "Hilda Cristobal"
+        emergencyContactNumber:
+          type: string
+          example: 09123456789
+
+  addFacultyEmploymentInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        unitId:
+          type: string
+          example: "1"
+        position:
+          type: string
+          example: "Prof 1"
+        startDate:
+          type: string
+          example: "1994-01-06"
+        endDate:
+          type: string
+          example: "1994-01-06"
+
+  addFacultyEducationInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        institutionSchool:
+          type: string
+          example: "UPM"
+        degreeCert:
+          type: string
+          example: "BS CS"
+        majorSpecialization:
+          type: string
+          example: "HI"
+        startDate:
+          type: string
+          example: "1994-01-06"
+        endDate:
+          type: string
+          example: "1994-01-06"
+
+  addFacultyWorkExpInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        employerName:
+          type: string
+          example: "UPM"
+        position:
+          type: string
+          example: "Instructor 1"
+        startDate:
+          type: string
+          example: "1994-01-06"
+        endDate:
+          type: string
+          example: "1995-01-06"
+
+  addFacultyPublicationInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        publication:
+          type: string
+          example: "Publication"
+        publicationDate:
+          type: string
+          example: "1994-01-06"
 
   ErrorResponse:
     type: object

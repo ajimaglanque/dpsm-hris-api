@@ -10,6 +10,7 @@ const app = express();
 const health = require('./health');
 const userEnrollment = require('./user-enrollment');
 const accessToken = require('./access-token');
+const faculty = require('./faculty');
 
 const router = express.Router();
 
@@ -33,5 +34,6 @@ router.use('/health', health);
 router.use('/user',userEnrollment);
 router.use('/token',accessToken);
 router.use(authHandler.authenticateUser);
+router.use('/faculty',faculty);
 
 module.exports = router;
