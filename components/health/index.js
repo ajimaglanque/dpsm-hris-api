@@ -1,6 +1,6 @@
 const express = require('express');
-const log4js = require('log4js');
-const config = require('config');
+// const log4js = require('log4js');
+// const config = require('config');
 
 const healthCtrl = require('./healthController');
 
