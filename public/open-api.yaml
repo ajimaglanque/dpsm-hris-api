@@ -300,6 +300,123 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/student/add/personal":
+    post:
+      summary: Add student personal info
+      tags:
+      - Student
+      description: Add student personal info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addStudentPersonalInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Student added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/alumni/add/personal":
+    post:
+      summary: Add alumni personal info
+      tags:
+      - Alumni
+      description: Add alumni personal info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addAlumniPersonalInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Alumni added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/alumni/add/work-exp":
+    post:
+      summary: Add alumni work experience info
+      tags:
+      - Alumni
+      description: Add alumni work experience info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addAlumniWorkExpInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Alumni work experience information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
 definitions:
   userAddSource:
     properties:
@@ -432,6 +549,81 @@ definitions:
         publicationDate:
           type: string
           example: "1994-01-06"
+
+  addStudentPersonalInfoSource:
+    properties:
+        lastName:
+          type: string
+          example: "Cristobal"
+        firstName:
+          type: string
+          example: "Jodie"
+        middleName:
+          type: string
+          example: "Pacay"
+        dateOfBirth:
+          type: string
+          example: "1994-01-06"
+        placeOfBirth:
+          type: string
+          example: "Manila"
+        gender:
+          type: string
+          example: female
+        permanentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        presentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        contactNumber:
+          type: string
+          example: "09123456789"
+        email:
+          type: string
+          example: "jodie@email.com"
+        civilStatus:
+          type: string
+          example: "single"
+        religion:
+          type: string
+          example: "Catholic"
+        emergencyContactPerson:
+          type: string
+          example: "Hilda Cristobal"
+        emergencyContactNumber:
+          type: string
+          example: 09123456789
+  
+  addAlumniPersonalInfoSource:
+    properties:
+        lastName:
+          type: string
+          example: "Cristobal"
+        firstName:
+          type: string
+          example: "Jodie"
+        middleName:
+          type: string
+          example: "Pacay"
+        contactNumber:
+          type: string
+          example: "09123456789"
+        email:
+          type: string
+          example: "jodie@email.com"
+  
+  addAlumniWorkExpInfoSource:
+    properties:
+        alumniId:
+          type: string
+          example: "1"
+        employerName:
+          type: string
+          example: "UPM"
+        position:
+          type: string
+          example: "Instructor 1"
 
   ErrorResponse:
     type: object

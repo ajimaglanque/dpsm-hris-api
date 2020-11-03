@@ -11,6 +11,8 @@ const health = require('./health');
 const userEnrollment = require('./user-enrollment');
 const accessToken = require('./access-token');
 const faculty = require('./faculty');
+const student = require('./student');
+const alumni = require('./alumni');
 
 const router = express.Router();
 
@@ -35,5 +37,7 @@ router.use('/user',userEnrollment);
 router.use('/token',accessToken);
 router.use(authHandler.authenticateUser);
 router.use('/faculty',faculty);
+router.use('/student',student);
+router.use('/alumni',alumni);
 
 module.exports = router;

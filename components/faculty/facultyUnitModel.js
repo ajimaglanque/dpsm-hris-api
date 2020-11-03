@@ -1,7 +1,7 @@
 const sequelize = require('../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
-const Unit = sequelize.define('unit', {
+const Unit = sequelize.define('faculty_unit', {
     // Model attributes are defined here
     unitId: {
         type: DataTypes.INTEGER,
