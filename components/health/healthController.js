@@ -1,7 +1,7 @@
 // const log4js = require('log4js');
 // const config = require('config');
 
-// const util = require('../../helpers/util');
+const util = require('../../helpers/util');
 // const logger = log4js.getLogger('controllers - health');
 // logger.level = config.logLevel;     
 

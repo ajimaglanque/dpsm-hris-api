@@ -1,5 +1,5 @@
 // const log4js = require('log4js');
-const config = require('config');
+// const config = require('config');
 const util = require('../../helpers/util');
 
 const PersonalInfo = require('./alumniPersonalInfoModel')
