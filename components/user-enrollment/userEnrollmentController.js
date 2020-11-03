@@ -1,11 +1,11 @@
-const log4js = require('log4js');
-const config = require('config');
+// const log4js = require('log4js');
+// const config = require('config');
 const util = require('../../helpers/util');
 
 const User = require('./userEnrollmentModel')
 
-const logger = log4js.getLogger('controllers - userEnrollment');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('controllers - userEnrollment');
+// logger.level = config.logLevel;
 // console.log('controllers - userEnrollment');
 
 /**
@@ -14,9 +14,7 @@ logger.level = config.logLevel;
 const userEnrollment = {};
 
 userEnrollment.userEnroll = async (req, res) => {
-    logger.info('inside userEnroll()...');
-    logger.debug('request body to enroll user -');
-    logger.debug(req.body);
+    // logger.info('inside userEnroll()...');
     // console.log('inside userEnroll()...');
 
     let jsonRes;

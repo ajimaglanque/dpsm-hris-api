@@ -1,11 +1,11 @@
-const log4js = require('log4js');
-const config = require('config');
+// const log4js = require('log4js');
+// const config = require('config');
 const util = require('../../helpers/util');
 
 const PersonalInfo = require('./studentPersonalInfoModel')
 
-const logger = log4js.getLogger('controllers - student');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('controllers - student');
+// logger.level = config.logLevel;
 // console.log('controllers - student');
 
 /**
@@ -14,8 +14,7 @@ logger.level = config.logLevel;
 const student = {};
 
 student.addPersonalInfo = async (req, res) => {
-    logger.info('inside addPersonalInfo()...');
-    logger.debug('request body to add personal info -');
+    // logger.info('inside addPersonalInfo()...');
 
     let jsonRes;
     
@@ -50,8 +49,7 @@ student.addPersonalInfo = async (req, res) => {
 };
 
 student.getAllStudent = async (req, res) => {
-    logger.info('inside getAllStudent()...');
-    logger.debug('request body to get all student -');
+    // logger.info('inside getAllStudent()...');
 
     let jsonRes;
     
@@ -102,8 +100,7 @@ student.getAllStudent = async (req, res) => {
 };
 
 student.getStudentPersonalInfo = async (req, res) => {
-    logger.info('inside getStudentPersonalInfo()...');
-    logger.debug('request body to get student personal info -');
+    // logger.info('inside getStudentPersonalInfo()...');
 
     let jsonRes;
     

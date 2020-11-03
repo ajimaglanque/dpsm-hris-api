@@ -6,8 +6,8 @@ const express = require('express');
 const fs = require('fs');
 const helmet = require('helmet');
 const yaml = require('js-yaml');
-const log4js = require('log4js');
-const moment = require('moment');
+// const log4js = require('log4js');
+// const moment = require('moment');
 const nocache = require('nocache')
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
@@ -24,7 +24,7 @@ app.use(cors());
 
 /**
  * Setup logger
- */
+ 
 try {
     let date = new moment().format('YYYY-MM-DD')
     
@@ -43,6 +43,7 @@ try {
 
 const logger = log4js.getLogger('server');
 logger.level = config.logLevel;
+*/
 
 /**
  * Update Swagger Document
@@ -110,11 +111,11 @@ app.use(errorHandler.handleError);
  */
 sequelize.authenticate()
 	.then(() => {
-		logger.info('Connection has been established successfully');
-		// console.log('Connection has been established successfully')
+		// logger.info('Connection has been established successfully');
+		console.log('Connection has been established successfully')
 	}).catch((error) => {
-		logger.error('Unable to connect to the database:', error)
-		// console.error('Unable to connect to the database:', error)
+		// logger.error('Unable to connect to the database:', error)
+		console.error('Unable to connect to the database:', error)
 	})
 
 /**
@@ -124,8 +125,8 @@ const host = config.app.host;
 const port = config.app.port;
 
 app.listen(port, () => {
-	logger.info(`App listening on http://${host}:${port}`);
-	logger.info(`Swagger UI is available at http://${host}:${port}/api-docs`);
-	// console.log(`App listening on http://${host}:${port}`);
-	// console.log(`Swagger UI is available at http://${host}:${port}/api-docs`);
+	// logger.info(`App listening on http://${host}:${port}`);
+	// logger.info(`Swagger UI is available at http://${host}:${port}/api-docs`);
+	console.log(`App listening on http://${host}:${port}`);
+	console.log(`Swagger UI is available at http://${host}:${port}/api-docs`);
 });

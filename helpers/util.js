@@ -1,5 +1,5 @@
-const log4js = require('log4js');
-const config = require('config');
+// const log4js = require('log4js');
+// const config = require('config');
 const crypto = require('crypto');
 const _ = require('lodash');
 /**
@@ -11,8 +11,8 @@ const util = {};
 /**
  * Set up logging
  */
-const logger = log4js.getLogger('helpers - util');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('helpers - util');
+// logger.level = config.logLevel;
 
 /**
  * Send http response helper

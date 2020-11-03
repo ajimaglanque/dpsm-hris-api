@@ -1,5 +1,5 @@
 const express = require('express');
-const log4js = require('log4js');
+// const log4js = require('log4js');
 const config = require('config');
 
 const errorHandler = require('../middlewares/error-handler');
@@ -18,9 +18,10 @@ const router = express.Router();
 
 /**
  * Set up logging
- */
+ 
 const logger = log4js.getLogger('routes - index');
 logger.level = config.logLevel;
+*/
 
 /**
  * Error handler

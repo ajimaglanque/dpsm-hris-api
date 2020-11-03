@@ -1,4 +1,4 @@
-const log4js = require('log4js');
+// const log4js = require('log4js');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 
@@ -6,8 +6,8 @@ const util = require('../../helpers/util');
 
 const User = require('../user-enrollment/userEnrollmentModel')
 
-const logger = log4js.getLogger('controllers - accessToken');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('controllers - accessToken');
+// logger.level = config.logLevel;
 
 /**
  * Controller object
@@ -15,7 +15,7 @@ logger.level = config.logLevel;
 const accessToken = {};
 
 accessToken.generateAccessToken = async (req, res) => {
-    logger.debug('inside generateAccessToken()...');
+    // logger.debug('inside generateAccessToken()...');
     let jsonRes;
 
     try {
@@ -41,7 +41,7 @@ accessToken.generateAccessToken = async (req, res) => {
                 let userDetails = {
                     username: getUser.username
                 };
-                logger.debug('generateAccessToken user authenticated');
+                // logger.debug('generateAccessToken user authenticated');
                 let token = jwt.sign(userDetails, config.token.secret, {
                     expiresIn: config.token.expiry
                 }); 

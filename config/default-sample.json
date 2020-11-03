@@ -7,5 +7,12 @@
   "token": {
     "secret":"",
     "expriry": 0
+  },
+  "database": {
+    "username": "",
+    "password": "",
+    "name": "",
+    "host": "",
+    "port": ""
   }
 }

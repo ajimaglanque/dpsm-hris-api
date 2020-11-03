@@ -1,4 +1,4 @@
-const log4js = require('log4js');
+// const log4js = require('log4js');
 const config = require('config');
 const util = require('../../helpers/util');
 
@@ -7,10 +7,10 @@ const EducationInfo = require('./facultyEducationInfoModel')
 const EmploymentInfo = require('./facultyEmploymentInfoModel')
 const WorkExpInfo = require('./facultyWorkExpInfoModel')
 const Publication = require('./facultyPublicationModel')
-const Unit = require('./unitModel')
+const Unit = require('./facultyUnitModel')
 
-const logger = log4js.getLogger('controllers - faculty');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('controllers - faculty');
+// logger.level = config.logLevel;
 // console.log('controllers - userEnrollment');
 
 /**
@@ -19,8 +19,7 @@ logger.level = config.logLevel;
 const faculty = {};
 
 faculty.addPersonalInfo = async (req, res) => {
-    logger.info('inside addPersonalInfo()...');
-    logger.debug('request body to add personal info -');
+    // logger.info('inside addPersonalInfo()...');
 
     let jsonRes;
     
@@ -55,8 +54,7 @@ faculty.addPersonalInfo = async (req, res) => {
 };
 
 faculty.addEducationInfo = async (req, res) => {
-    logger.info('inside addEducationInfo()...');
-    logger.debug('request body to add education info -');
+    // logger.info('inside addEducationInfo()...');
 
     let jsonRes;
     
@@ -92,8 +90,7 @@ faculty.addEducationInfo = async (req, res) => {
 };
 
 faculty.addEmploymentInfo = async (req, res) => {
-    logger.info('inside addEmploymentInfo()...');
-    logger.debug('request body to add employment info -');
+    // logger.info('inside addEmploymentInfo()...');
 
     let jsonRes;
     
@@ -129,8 +126,7 @@ faculty.addEmploymentInfo = async (req, res) => {
 };
 
 faculty.addWorkExpInfo = async (req, res) => {
-    logger.info('inside addWorkExpInfo()...');
-    logger.debug('request body to add work exp info -');
+    // logger.info('inside addWorkExpInfo()...');
 
     let jsonRes;
     
@@ -166,8 +162,7 @@ faculty.addWorkExpInfo = async (req, res) => {
 };
 
 faculty.addPublication = async (req, res) => {
-    logger.info('inside addPublication()...');
-    logger.debug('request body to add publication info -');
+    // logger.info('inside addPublication()...');
 
     let jsonRes;
     
@@ -189,6 +184,127 @@ faculty.addPublication = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty publication information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getAllFaculty = async (req, res) => {
+    // logger.info('inside getFaculty()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await EmploymentInfo.findAll({
+            attributes: ['position', 'startDate', 'endDate', 'salary'],
+            include: [
+                {
+                    model: PersonalInfo,
+                    attributes: ['facultyId', 'lastName', 'firstName', 'middleName']
+                },
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                }
+            ],
+            order: [
+                [{model: Unit}, 'unit'],
+                [{model: PersonalInfo}, 'lastName'],
+                [{model: PersonalInfo}, 'firstName'],
+                [{model: PersonalInfo}, 'middleName']
+            ]
+          });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getFacultyPersonalInfo = async (req, res) => {
+    // logger.info('inside getFacultyPersonalInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await PersonalInfo.findByPk(req.params.facultyId);
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty not found'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getWorkExpInfo = async (req, res) => {
+    // logger.info('inside getWorkExpInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await WorkExpInfo.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: ['employerName', 'startDate', 'endDate', 'position', 'salary', 'contactNumber', 'supervisor', 'reasonsForLeaving'],
+            order: [['endDate', 'DESC']]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty work experience info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
             }; 
         }
     } catch(error) {

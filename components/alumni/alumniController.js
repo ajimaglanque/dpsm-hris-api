@@ -1,12 +1,12 @@
-const log4js = require('log4js');
+// const log4js = require('log4js');
 const config = require('config');
 const util = require('../../helpers/util');
 
 const PersonalInfo = require('./alumniPersonalInfoModel')
 const WorkExpInfo = require('./alumniWorkExpInfoModel')
 
-const logger = log4js.getLogger('controllers - alumni');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('controllers - alumni');
+// logger.level = config.logLevel;
 // console.log('controllers - alumni');
 
 /**
@@ -15,8 +15,7 @@ logger.level = config.logLevel;
 const alumni = {};
 
 alumni.addPersonalInfo = async (req, res) => {
-    logger.info('inside addPersonalInfo()...');
-    logger.debug('request body to add personal info -');
+    // logger.info('inside addPersonalInfo()...');
 
     let jsonRes;
     
@@ -51,8 +50,7 @@ alumni.addPersonalInfo = async (req, res) => {
 };
 
 alumni.addWorkExpInfo = async (req, res) => {
-    logger.info('inside addWorkExpInfo()...');
-    logger.debug('request body to add work exp info -');
+    // logger.info('inside addWorkExpInfo()...');
 
     let jsonRes;
     
@@ -88,8 +86,7 @@ alumni.addWorkExpInfo = async (req, res) => {
 };
 
 alumni.getAllStudent = async (req, res) => {
-    logger.info('inside getAllStudent()...');
-    logger.debug('request body to get all student -');
+    // logger.info('inside getAllStudent()...');
 
     let jsonRes;
     
@@ -140,8 +137,7 @@ alumni.getAllStudent = async (req, res) => {
 };
 
 alumni.getStudentPersonalInfo = async (req, res) => {
-    logger.info('inside getStudentPersonalInfo()...');
-    logger.debug('request body to get student personal info -');
+    // logger.info('inside getStudentPersonalInfo()...');
 
     let jsonRes;
     

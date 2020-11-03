@@ -23,7 +23,6 @@
     "helmet": "^4.1.1",
     "js-yaml": "^3.14.0",
     "jsonwebtoken": "^8.5.1",
-    "log4js": "^6.3.0",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
     "nocache": "^2.1.0",

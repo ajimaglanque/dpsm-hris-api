@@ -1,6 +1,6 @@
 const express = require('express');
-const log4js = require('log4js');
-const config = require('config')
+// const log4js = require('log4js');
+// const config = require('config')
 
 const alumniController = require('./alumniController');
 
@@ -10,9 +10,9 @@ const router = express.Router();
  * Set up logging
  */
 
-const logger = log4js.getLogger('routes - alumni');
-logger.level = config.logLevel;
-logger.debug('setting up /alumni route');
+// const logger = log4js.getLogger('routes - alumni');
+// logger.level = config.logLevel;
+// logger.debug('setting up /alumni route');
 // console.log('routes - alumni');
 
 

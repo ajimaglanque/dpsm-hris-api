@@ -1,14 +1,14 @@
-const config = require('config');
+// const config = require('config');
 const createError = require('http-errors');
-const log4js = require('log4js');
+// const log4js = require('log4js');
 
 const util = require('../helpers/util');
 
 /**
  * Set up logging
  */
-const logger = log4js.getLogger('error-handler');
-logger.level = config.logLevel;
+// const logger = log4js.getLogger('error-handler');
+// logger.level = config.logLevel;
 
 /**
  * Error Handler object
