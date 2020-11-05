@@ -204,7 +204,7 @@ faculty.getAllFaculty = async (req, res) => {
     
     try {
         let facultyList = await EmploymentInfo.findAll({
-            attributes: ['position', 'startDate', 'endDate', 'salary'],
+            attributes: ['position', 'startDate', 'endDate'],
             include: [
                 {
                     model: PersonalInfo,
@@ -289,7 +289,7 @@ faculty.getWorkExpInfo = async (req, res) => {
     try {
         let facultyList = await WorkExpInfo.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: ['employerName', 'startDate', 'endDate', 'position', 'salary', 'contactNumber', 'supervisor', 'reasonsForLeaving'],
+            attributes: ['employerName', 'startDate', 'endDate', 'position'],
             order: [['endDate', 'DESC']]
         });
 
