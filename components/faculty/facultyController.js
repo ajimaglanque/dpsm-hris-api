@@ -91,6 +91,42 @@ faculty.addEmploymentInfo = async (req, res) => {
     }
 };
 
+faculty.addUnit = async (req, res) => {
+    // logger.info('inside addEmploymentInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let [, created] = await FacultyUnit.findOrCreate({
+            where: { facultyId: req.body.facultyId },
+            defaults: req.body
+        }) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty is already assigned to a faculty unit'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty unit information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 faculty.addEducationInfo = async (req, res) => {
     // logger.info('inside addEducationInfo()...');
 
@@ -332,19 +368,19 @@ faculty.getAllFacultyInfo = async (req, res) => {
             },
             include: [
                 {
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    include: {
+                        model: Unit,
+                        attributes: ['unit']
+                    }
+                },
+                {
                     model: EmploymentInfo,
                     attributes: {
-                        exclude: ['employmentInfoId', 'facultyId', 'unitId', 'createdAt', 'updatedAt']
+                        exclude: ['employmentInfoId', 'facultyId', 'createdAt', 'updatedAt']
                     },
-                    include: [
-                        {
-                            model: Unit,
-                            attributes: ['unit']
-                        }
-                    ],
-                    order: [
-                        [{model: Unit}, 'unit']
-                    ]
+                    
                 },
                 {
                     model: EducationInfo,
@@ -365,7 +401,15 @@ faculty.getAllFacultyInfo = async (req, res) => {
                     }
                 }
             ],
-            order: ['lastName','firstName','middleName']
+            order: [
+                ['lastName', 'ASC'],
+                ['firstName','ASC'],
+                ['middleName', 'ASC'],
+                [EmploymentInfo, 'startDate', 'DESC'],
+                [EducationInfo, 'startDate', 'DESC'],
+                [Publication, 'publicationDate', 'DESC'],
+                [WorkExpInfo, 'endDate', 'DESC'],
+            ]
           });
 
         if(facultyList.length === 0) {

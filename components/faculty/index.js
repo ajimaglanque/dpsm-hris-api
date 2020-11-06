@@ -20,6 +20,7 @@ const router = express.Router();
  * Add routes
  */
 router.post('/add/personal', facultyController.addPersonalInfo);
+router.post('/add/unit', facultyController.addUnit);
 router.post('/add/employment', facultyController.addEmploymentInfo);
 router.post('/add/education', facultyController.addEducationInfo);
 router.post('/add/work-exp', facultyController.addWorkExpInfo);

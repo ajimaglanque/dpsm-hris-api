@@ -397,6 +397,45 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/add/unit":
+    post:
+      summary: Add faculty unit
+      tags:
+      - Faculty
+      description: Assign newly created faculty to a unit
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyUnitSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty unit information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/add/employment":
     post:
       summary: Add faculty employment info
@@ -795,9 +834,6 @@ definitions:
         facultyId:
           type: string
           example: "1"
-        unitId:
-          type: string
-          example: "1"
         position:
           type: string
           example: "Prof 1"
@@ -807,6 +843,15 @@ definitions:
         endDate:
           type: string
           example: "1994-01-06"
+
+  addFacultyUnitSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        unitId:
+          type: string
+          example: "1"
 
   addFacultyEducationInfoSource:
     properties:
