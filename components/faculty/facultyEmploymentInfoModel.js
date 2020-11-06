@@ -2,7 +2,6 @@ const sequelize = require('../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
-const Unit = require('./facultyUnitModel')
 
 const EmploymentInfo = sequelize.define('faculty_employment_info', {
     // Model attributes are defined here
@@ -11,10 +10,6 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
-    },
-    unitId: {
-        type: DataTypes.INTEGER(1),
-        allowNull: false
     },
     position: {
         type: DataTypes.STRING(50),
@@ -37,6 +32,5 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
 
   PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
   EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
-  EmploymentInfo.belongsTo(Unit, {foreignKey: 'unitId'});
   
   module.exports = EmploymentInfo

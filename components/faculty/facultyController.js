@@ -3,11 +3,13 @@
 const util = require('../../helpers/util');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
+const FacultyUnit = require('./facultyUnitModel');
 const EducationInfo = require('./facultyEducationInfoModel')
 const EmploymentInfo = require('./facultyEmploymentInfoModel')
 const WorkExpInfo = require('./facultyWorkExpInfoModel')
 const Publication = require('./facultyPublicationModel')
-const Unit = require('./facultyUnitModel')
+const Unit = require('./unitModel');
+const { Sequelize } = require('sequelize');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -203,24 +205,24 @@ faculty.getAllFaculty = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await PersonalInfo.findAll({
-            attributes: ['facultyId', 'lastName', 'firstName', 'middleName'],
-            include: [
+        let facultyList = await Unit.findAll({
+            attributes: ['unitId', 'unit'],
+            include: 
                 {
-                    model: EmploymentInfo,
-                    attributes: ['position', 'startDate', 'endDate'],
-                    include: [
+                    model: FacultyUnit,
+                    attributes: ['facultyId'],
+                    include: 
                         {
-                            model: Unit,
-                            attributes: ['unit']
+                            model: PersonalInfo,
+                            attributes: ['lastName','firstName','middleName']
                         }
-                    ],
-                    order: [
-                        [{model: Unit}, 'unit']
-                    ]
-                }
-            ],
-            order: ['lastName','firstName','middleName']
+                },
+            order: [
+                ['unit'],
+                [FacultyUnit, PersonalInfo, 'lastName'],
+                [FacultyUnit, PersonalInfo, 'firstName'],
+                [FacultyUnit, PersonalInfo, 'middleName']
+            ]
           });
 
         if(facultyList.length === 0) {
