@@ -131,34 +131,137 @@ paths:
                       example: 
                         [
                           {
-                            "position": "Prof 1",
-                            "startDate": "2005-01-06",
-                            "endDate": null,
-                            "faculty_personal_info": {
-                                "facultyId": 1,
-                                "lastName": "Cristobal",
-                                "firstName": "Jodie",
-                                "middleName": "Pacay"
-                            },
-                            "faculty_unit": {
-                                "unit": "Chemistry"
-                            }
-                          },
-                          {
-                              "position": "Prof 2",
-                              "startDate": "2004-01-06",
-                              "endDate": "2019-11-06",
-                              "faculty_personal_info": {
-                                  "facultyId": 5,
-                                  "lastName": "Cristobal",
-                                  "firstName": "Lee",
-                                  "middleName": "Pacay"
-                              },
-                              "faculty_unit": {
-                                  "unit": "Chemistry"
-                              }
+                            "facultyId": 1,
+                            "lastName": "Cristobal",
+                            "firstName": "Jodie",
+                            "middleName": "Pacay",
+                            "faculty_employment_infos": [
+                                {
+                                    "position": "Prof 1",
+                                    "startDate": "2004-01-06",
+                                    "endDate": null,
+                                    "faculty_unit": {
+                                        "unit": "Chemistry"
+                                    }
+                                },
+                                {
+                                    "position": "Prof 2",
+                                    "startDate": "1994-01-06",
+                                    "endDate": "1995-01-06",
+                                    "faculty_unit": {
+                                        "unit": "Chemistry"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "facultyId": 4,
+                            "lastName": "Cristobal",
+                            "firstName": "Jodie",
+                            "middleName": "Pacay",
+                            "faculty_employment_infos": [
+                                {
+                                    "position": "Prof 2",
+                                    "startDate": "2004-01-06",
+                                    "endDate": "2019-11-06",
+                                    "faculty_unit": {
+                                        "unit": "Mathematical and Computing Sciences"
+                                    }
+                                }
+                            ]
                           }
                         ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/all":
+    get:
+      summary: Get complete information of all faculty
+      tags:
+      - Faculty
+      description: Get all faculty information
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 4,
+                            "lastName": "Cristobal",
+                            "firstName": "Jodie",
+                            "middleName": "Pacay",
+                            "dateOfBirth": "1994-01-06",
+                            "placeOfBirth": "Manila",
+                            "gender": "female",
+                            "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+                            "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+                            "contactNumber": "09123456789",
+                            "email": "jodie@email4.com",
+                            "civilStatus": "single",
+                            "religion": "Catholic",
+                            "emergencyContactPerson": "Hilda Cristobal",
+                            "emergencyContactNumber": "09123456789",
+                            "faculty_employment_infos": [
+                                {
+                                    "position": "Prof 2",
+                                    "startDate": "2004-01-06",
+                                    "endDate": "2019-11-06",
+                                    "faculty_unit": {
+                                        "unit": "Mathematical and Computing Sciences"
+                                    }
+                                }
+                            ],
+                            "faculty_education_infos": [],
+                            "faculty_publications": [
+                                {
+                                    "publication": "publication",
+                                    "publicationDate": "2019-11-06"
+                                }
+                            ],
+                            "faculty_work_exp_infos": []
+                        },
+                        {
+                            "facultyId": 8,
+                            "lastName": "Cristobal",
+                            "firstName": "Lee",
+                            "middleName": "Pacay",
+                            "dateOfBirth": "1994-01-06",
+                            "placeOfBirth": "Manila",
+                            "gender": "female",
+                            "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+                            "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+                            "contactNumber": "09123456789",
+                            "email": "jodie@email7.com",
+                            "civilStatus": "single",
+                            "religion": "Catholic",
+                            "emergencyContactPerson": "Hilda Cristobal",
+                            "emergencyContactNumber": "09123456789",
+                            "faculty_employment_infos": [],
+                            "faculty_education_infos": [],
+                            "faculty_publications": [],
+                            "faculty_work_exp_infos": []
+                        }
+                      ]
         "500":
           description: Error
           content:
