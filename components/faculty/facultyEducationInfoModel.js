@@ -38,6 +38,7 @@ const EducationInfo = sequelize.define('faculty_education_info', {
     }
   });
 
+  PersonalInfo.hasMany(EducationInfo, {foreignKey: 'facultyId'})
   EducationInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   
   module.exports = EducationInfo

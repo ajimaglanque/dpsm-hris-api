@@ -53,42 +53,6 @@ faculty.addPersonalInfo = async (req, res) => {
     }
 };
 
-faculty.addEducationInfo = async (req, res) => {
-    // logger.info('inside addEducationInfo()...');
-
-    let jsonRes;
-    
-    try {
-        let [, created] = await EducationInfo.findOrCreate({
-            where: { facultyId: req.body.facultyId, degreeCert: req.body.degreeCert, majorSpecialization: req.body.majorSpecialization },
-            defaults: req.body
-        }) 
-
-        if(!created) {
-            jsonRes = {
-                statusCode: 400,
-                success: false,
-                message: 'Faculty already has existing education information'
-            };
-        } else {
-            
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                message: 'Faculty education information added successfully'
-            }; 
-        }
-    } catch(error) {
-        jsonRes = {
-            statusCode: 500,
-            success: false,
-            error: error,
-        };
-    } finally {
-        util.sendResponse(res, jsonRes);    
-    }
-};
-
 faculty.addEmploymentInfo = async (req, res) => {
     // logger.info('inside addEmploymentInfo()...');
 
@@ -112,6 +76,42 @@ faculty.addEmploymentInfo = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty employment information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.addEducationInfo = async (req, res) => {
+    // logger.info('inside addEducationInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let [, created] = await EducationInfo.findOrCreate({
+            where: { facultyId: req.body.facultyId, degreeCert: req.body.degreeCert, majorSpecialization: req.body.majorSpecialization },
+            defaults: req.body
+        }) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty already has existing education information'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty education information added successfully'
             }; 
         }
     } catch(error) {
@@ -203,24 +203,24 @@ faculty.getAllFaculty = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await EmploymentInfo.findAll({
-            attributes: ['position', 'startDate', 'endDate'],
+        let facultyList = await PersonalInfo.findAll({
+            attributes: ['facultyId', 'lastName', 'firstName', 'middleName'],
             include: [
                 {
-                    model: PersonalInfo,
-                    attributes: ['facultyId', 'lastName', 'firstName', 'middleName']
-                },
-                {
-                    model: Unit,
-                    attributes: ['unit']
+                    model: EmploymentInfo,
+                    attributes: ['position', 'startDate', 'endDate'],
+                    include: [
+                        {
+                            model: Unit,
+                            attributes: ['unit']
+                        }
+                    ],
+                    order: [
+                        [{model: Unit}, 'unit']
+                    ]
                 }
             ],
-            order: [
-                [{model: Unit}, 'unit'],
-                [{model: PersonalInfo}, 'lastName'],
-                [{model: PersonalInfo}, 'firstName'],
-                [{model: PersonalInfo}, 'middleName']
-            ]
+            order: ['lastName','firstName','middleName']
           });
 
         if(facultyList.length === 0) {
@@ -299,6 +299,79 @@ faculty.getWorkExpInfo = async (req, res) => {
                 success: true,
                 result: null,
                 message: 'Faculty work experience info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getAllFacultyInfo = async (req, res) => {
+    // logger.info('inside getFaculty()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await PersonalInfo.findAll({
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
+            include: [
+                {
+                    model: EmploymentInfo,
+                    attributes: {
+                        exclude: ['employmentInfoId', 'facultyId', 'unitId', 'createdAt', 'updatedAt']
+                    },
+                    include: [
+                        {
+                            model: Unit,
+                            attributes: ['unit']
+                        }
+                    ],
+                    order: [
+                        [{model: Unit}, 'unit']
+                    ]
+                },
+                {
+                    model: EducationInfo,
+                    attributes: {
+                        exclude: ['educInfoId', 'facultyId', 'createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: Publication,
+                    attributes: {
+                        exclude: ['publicationId', 'facultyId', 'createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: WorkExpInfo,
+                    attributes: {
+                        exclude: ['workExpId', 'facultyId', 'createdAt', 'updatedAt']
+                    }
+                }
+            ],
+            order: ['lastName','firstName','middleName']
+          });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
             };
         } else {
             jsonRes = {

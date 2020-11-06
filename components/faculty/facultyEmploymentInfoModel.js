@@ -35,6 +35,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
     }
   });
 
+  PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
   EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   EmploymentInfo.belongsTo(Unit, {foreignKey: 'unitId'});
   
