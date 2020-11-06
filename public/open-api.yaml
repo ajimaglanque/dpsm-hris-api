@@ -131,46 +131,72 @@ paths:
                       example: 
                         [
                           {
-                            "facultyId": 1,
-                            "lastName": "Cristobal",
-                            "firstName": "Jodie",
-                            "middleName": "Pacay",
-                            "faculty_employment_infos": [
-                                {
-                                    "position": "Prof 1",
-                                    "startDate": "2004-01-06",
-                                    "endDate": null,
-                                    "faculty_unit": {
-                                        "unit": "Chemistry"
-                                    }
-                                },
-                                {
-                                    "position": "Prof 2",
-                                    "startDate": "1994-01-06",
-                                    "endDate": "1995-01-06",
-                                    "faculty_unit": {
-                                        "unit": "Chemistry"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "facultyId": 4,
-                            "lastName": "Cristobal",
-                            "firstName": "Jodie",
-                            "middleName": "Pacay",
-                            "faculty_employment_infos": [
-                                {
-                                    "position": "Prof 2",
-                                    "startDate": "2004-01-06",
-                                    "endDate": "2019-11-06",
-                                    "faculty_unit": {
-                                        "unit": "Mathematical and Computing Sciences"
-                                    }
-                                }
-                            ]
+                              "unitId": 1,
+                              "unit": "Chemistry",
+                              "faculty_units": [
+                                  {
+                                      "facultyId": 1,
+                                      "faculty_personal_info": {
+                                          "lastName": "Cristobal",
+                                          "firstName": "Jodie",
+                                          "middleName": "Pacay"
+                                      }
+                                  },
+                                  {
+                                      "facultyId": 2,
+                                      "faculty_personal_info": {
+                                          "lastName": "Palomar",
+                                          "firstName": "Matthew",
+                                          "middleName": "Pacay"
+                                      }
+                                  }
+                              ]
+                          },
+                          {
+                              "unitId": 2,
+                              "unit": "Mathematical and Computing Sciences",
+                              "faculty_units": [
+                                  {
+                                      "facultyId": 4,
+                                      "faculty_personal_info": {
+                                          "lastName": "Cristobal",
+                                          "firstName": "Diane",
+                                          "middleName": "Pacay"
+                                      }
+                                  },
+                                  {
+                                      "facultyId": 5,
+                                      "faculty_personal_info": {
+                                          "lastName": "Cristobal",
+                                          "firstName": "Kenneth",
+                                          "middleName": "Pacay"
+                                      }
+                                  }
+                              ]
+                          },
+                          {
+                              "unitId": 3,
+                              "unit": "Physics and Geology",
+                              "faculty_units": [
+                                  {
+                                      "facultyId": 6,
+                                      "faculty_personal_info": {
+                                          "lastName": "Cristobal",
+                                          "firstName": "Lee",
+                                          "middleName": "Pacay"
+                                      }
+                                  },
+                                  {
+                                      "facultyId": 8,
+                                      "faculty_personal_info": {
+                                          "lastName": "Palomar",
+                                          "firstName": "Diane",
+                                          "middleName": "Pacay"
+                                      }
+                                  }
+                              ]
                           }
-                        ]
+                      ]
         "500":
           description: Error
           content:
