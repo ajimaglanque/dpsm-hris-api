@@ -388,6 +388,12 @@ paths:
                     message:
                       type: string
                       example: "Faculty added successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          facultyId: "18"
+                        }
         "500":
           description: Error
           content:
