@@ -26,7 +26,7 @@ faculty.addPersonalInfo = async (req, res) => {
     let jsonRes;
     
     try {
-        let [, created] = await PersonalInfo.findOrCreate({
+        let [fclty, created] = await PersonalInfo.findOrCreate({
             where: { email: req.body.email },
             defaults: req.body
         })
@@ -41,7 +41,9 @@ faculty.addPersonalInfo = async (req, res) => {
             jsonRes = {
                 statusCode: 200,
                 success: true,
-                message: 'Faculty added successfully'
+                result: {
+                    facultyId: fclty.facultyId
+                }
             }; 
         }
     } catch(error) {
@@ -436,5 +438,6 @@ faculty.getAllFacultyInfo = async (req, res) => {
         util.sendResponse(res, jsonRes);    
     }
 };
+
 
 module.exports = faculty;
