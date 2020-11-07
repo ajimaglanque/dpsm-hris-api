@@ -41,6 +41,7 @@ faculty.addPersonalInfo = async (req, res) => {
             jsonRes = {
                 statusCode: 200,
                 success: true,
+                message: "Faculty added successfully",
                 result: {
                     facultyId: fclty.facultyId
                 }
