@@ -440,5 +440,53 @@ faculty.getAllFacultyInfo = async (req, res) => {
     }
 };
 
+faculty.editPersonalInfo = async (req, res) => {
+    // logger.info('inside editPersonalInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let updated = await PersonalInfo.update(
+            { 
+                middleName: req.body.middleName,
+                lastName: req.body.lastName,
+                permanentAddress: req.body.permanentAddress,
+                presentAddress: req.body.presentAddress,
+                civilStatus: req.body.civilStatus,
+                religion: req.body.religion,
+                landline: req.body.landline,
+                mobile: req.body.mobile,
+                email: req.body.email,
+                emergencyContactPerson: req.body.emergencyContactPerson,
+                emergencyContactNumber: req.body.emergencyContactNumber
+            }, {
+                where: { facultyId: req.params.facultyId }
+            }
+        ) 
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty personal information cannot be updated'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: "Faculty personal information updated successfully"
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 
 module.exports = faculty;

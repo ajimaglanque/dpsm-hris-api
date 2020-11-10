@@ -241,7 +241,8 @@ paths:
                             "gender": "female",
                             "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
                             "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
-                            "contactNumber": "09123456789",
+                            "mobile": "09123456789",
+                            "landline": "88161461",
                             "email": "jodie@email4.com",
                             "civilStatus": "single",
                             "religion": "Catholic",
@@ -276,7 +277,8 @@ paths:
                             "gender": "female",
                             "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
                             "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
-                            "contactNumber": "09123456789",
+                            "mobile": "09123456789",
+                            "landline": "88161461",
                             "email": "jodie@email7.com",
                             "civilStatus": "single",
                             "religion": "Catholic",
@@ -340,7 +342,8 @@ paths:
                           "gender": "female",
                           "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
                           "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
-                          "contactNumber": "09123456789",
+                          "mobile": "09123456789",
+                          "landline": "88161461",
                           "email": "jodie@email2.com",
                           "civilStatus": "single",
                           "religion": "Catholic",
@@ -771,6 +774,60 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/edit/{facultyId}/personal":
+    put:
+      summary: Edit faculty personal info
+      tags:
+      - Faculty
+      description: Edit faculty personal info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/editFacultyPersonalInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty personal information updated successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          facultyId: "18"
+                        }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
 definitions:
   userAddSource:
     properties:
@@ -816,9 +873,12 @@ definitions:
         presentAddress:
           type: string
           example: "037 R. Higgins St., Brgy. 185, Pasay City"
-        contactNumber:
+        mobile:
           type: string
           example: "09123456789"
+        landline:
+          type: string
+          example: "88161467"
         email:
           type: string
           example: "jodie@email.com"
@@ -897,6 +957,43 @@ definitions:
         endDate:
           type: string
           example: "1995-01-06"
+
+  editFacultyPersonalInfoSource:
+    properties:
+        lastName:
+          type: string
+          example: "Cristobal"
+        middleName:
+          type: string
+          example: "Pacay"
+        permanentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        presentAddress:
+          type: string
+          example: "037 R. Higgins St., Brgy. 185, Pasay City"
+        mobile:
+          type: string
+          example: "09123456789"
+        landline:
+          type: string
+          example: "88161467"
+        email:
+          type: string
+          example: "jodie@email.com"
+        civilStatus:
+          type: string
+          example: "single"
+        religion:
+          type: string
+          example: "Catholic"
+        emergencyContactPerson:
+          type: string
+          example: "Hilda Cristobal"
+        emergencyContactNumber:
+          type: string
+          example: 09123456789
+
 
   addFacultyPublicationInfoSource:
     properties:
