@@ -29,6 +29,7 @@ router.get('/all', facultyController.getAllFacultyInfo);
 router.get('/', facultyController.getAllFaculty);
 router.get('/:facultyId', facultyController.getFacultyPersonalInfo);
 router.get('/:facultyId/work-exp', facultyController.getWorkExpInfo);
+router.get('/:facultyId/employment', facultyController.getEmploymentInfo);
 router.put('/edit/:facultyId/personal', facultyController.editPersonalInfo);
 router.put('/assignment', facultyController.editAssignment);
 

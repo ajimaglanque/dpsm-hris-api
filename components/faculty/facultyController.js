@@ -322,6 +322,43 @@ faculty.getFacultyPersonalInfo = async (req, res) => {
     }
 };
 
+faculty.getEmploymentInfo = async (req, res) => {
+    // logger.info('inside getEmploymentInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await EmploymentInfo.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: ['position', 'startDate', 'endDate'],
+            order: [['startDate', 'DESC']]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty employment info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 faculty.getWorkExpInfo = async (req, res) => {
     // logger.info('inside getWorkExpInfo()...');
 

@@ -109,7 +109,7 @@ paths:
     get:
       summary: Get list of faculty
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Summary of faculty employee information
       consumes:
         - application/json
@@ -210,7 +210,7 @@ paths:
     get:
       summary: Get complete information of all faculty
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Get all faculty information
       consumes:
         - application/json
@@ -299,11 +299,56 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/add/personal":
+    post:
+      summary: Add faculty personal info
+      tags:
+      - Faculty - Basic Information
+      description: Add faculty personal info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyPersonalInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty added successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          facultyId: "18"
+                        }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/{facultyId}":
     get:
       summary: Get faculty personal info
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Get faculty personal info
       consumes:
         - application/json
@@ -361,22 +406,31 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/personal":
-    post:
-      summary: Add faculty personal info
+  "/api/faculty/edit/{facultyId}/personal":
+    put:
+      summary: Edit faculty personal info
       tags:
-      - Faculty
-      description: Add faculty personal info
+      - Faculty - Basic Information
+      description: Edit faculty personal info
       consumes:
         - application/json
       produces:
         - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/definitions/addFacultyPersonalInfoSource"
+              $ref: "#/definitions/editFacultyPersonalInfoSource"
       responses:
         "200":
           description: Success
@@ -390,7 +444,7 @@ paths:
                       example: true
                     message:
                       type: string
-                      example: "Faculty added successfully"
+                      example: "Faculty personal information updated successfully"
                     result:
                       type: object
                       example: 
@@ -410,7 +464,7 @@ paths:
     post:
       summary: Add faculty unit
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Assign newly created faculty to a unit
       consumes:
         - application/json
@@ -449,7 +503,7 @@ paths:
     post:
       summary: Add faculty employment info
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Add faculty employment info
       consumes:
         - application/json
@@ -484,11 +538,65 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/{facultyId}/employment":
+    get:
+      summary: Get faculty employment info
+      tags:
+      - Faculty - Basic Information
+      description: Get faculty employment info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "position": "Prof 1",
+                            "startDate": "2004-01-06",
+                            "endDate": null
+                          },
+                          {
+                            "position": "Prof 2",
+                            "startDate": "1994-01-06",
+                            "endDate": "1995-01-06"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/add/education":
     post:
       summary: Add faculty education info
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Add faculty education info
       consumes:
         - application/json
@@ -527,7 +635,7 @@ paths:
     post:
       summary: Add faculty work experience info
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Add faculty work experience info
       consumes:
         - application/json
@@ -561,12 +669,12 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
+ 
   "/api/faculty/{facultyId}/work-exp":
     get:
       summary: Get faculty work experience info
       tags:
-      - Faculty
+      - Faculty - Basic Information
       description: Get faculty work experience info
       consumes:
         - application/json
@@ -618,11 +726,13 @@ paths:
       security:
       - bearerAuth: []
   
+  
+  
   "/api/faculty/add/publication":
     post:
       summary: Add faculty publication info
       tags:
-      - Faculty
+      - Faculty - Accomplishments
       description: Add faculty publication info
       consumes:
         - application/json
@@ -774,59 +884,6 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/edit/{facultyId}/personal":
-    put:
-      summary: Edit faculty personal info
-      tags:
-      - Faculty
-      description: Edit faculty personal info
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/editFacultyPersonalInfoSource"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty personal information updated successfully"
-                    result:
-                      type: object
-                      example: 
-                        {
-                          facultyId: "18"
-                        }
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
   
 definitions:
   userAddSource:
