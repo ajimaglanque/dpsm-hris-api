@@ -605,7 +605,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/definitions/addFacultyEducationInfoSource"
       responses:
@@ -622,6 +622,54 @@ paths:
                     message:
                       type: string
                       example: "Faculty education information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/edit/{facultyId}/education":
+    put:
+      summary: Edit faculty education info
+      tags:
+      - Faculty - Basic Information
+      description: Edit faculty education info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyEducationInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty education information updated successfully"
         "500":
           description: Error
           content:
@@ -996,6 +1044,13 @@ definitions:
         endDate:
           type: string
           example: "1994-01-06"
+        proof:
+          type: string
+          format: binary
+          example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
+        status:
+          type: string
+          example: "for verification"
 
   addFacultyWorkExpInfoSource:
     properties:
@@ -1051,6 +1106,21 @@ definitions:
           type: string
           example: 09123456789
 
+  editFacultyEducationInfoSource:
+    properties:
+        educInfoId:
+          type: string
+          example: "1"
+        endDate:
+          type: string
+          example: "1994-01-06"
+        proof:
+          type: string
+          format: binary
+          example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
+        status:
+          type: string
+          example: "for verification"
 
   addFacultyPublicationInfoSource:
     properties:

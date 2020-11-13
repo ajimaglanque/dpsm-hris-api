@@ -562,5 +562,66 @@ faculty.editPersonalInfo = async (req, res) => {
     }
 };
 
+faculty.editEducationInfo = async (req, res) => {
+    // logger.info('inside editEducationInfo()...');
+
+    let jsonRes;
+    let created
+
+    try { 
+        if(req.files && req.files.proof && req.body.endDate) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            let filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+            let updated = await EducationInfo.update(
+                { 
+                    endDate: req.body.endDate,
+                    proof: filename,
+                    status: 'for verification'
+                }, {
+                    where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
+                }
+            ) 
+            
+            if(updated == 0) {
+                jsonRes = {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Faculty education information cannot be updated'
+                };
+            } else {
+                
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    message: 'Faculty education information updated successfully'
+                }; 
+            }
+            
+        } else {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty education information cannot be updated'
+            };
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 
 module.exports = faculty;

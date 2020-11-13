@@ -31,5 +31,6 @@ router.get('/:facultyId', facultyController.getFacultyPersonalInfo);
 router.get('/:facultyId/employment', facultyController.getEmploymentInfo);
 router.get('/:facultyId/work-exp', facultyController.getWorkExpInfo);
 router.put('/edit/:facultyId/personal', facultyController.editPersonalInfo);
+router.put('/edit/:facultyId/education', facultyController.editEducationInfo);
 
 module.exports = router;
