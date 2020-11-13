@@ -396,6 +396,43 @@ faculty.getEmploymentInfo = async (req, res) => {
     }
 };
 
+faculty.getEducationInfo = async (req, res) => {
+    // logger.info('inside getEductionInfo()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await EducationInfo.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: { exclude: ['facultyId'] },
+            order: [['startDate', 'DESC']]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty employment info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 faculty.getWorkExpInfo = async (req, res) => {
     // logger.info('inside getWorkExpInfo()...');
 
@@ -622,6 +659,5 @@ faculty.editEducationInfo = async (req, res) => {
         util.sendResponse(res, jsonRes);    
     }
 };
-
 
 module.exports = faculty;

@@ -631,6 +631,74 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/{facultyId}/education":
+    get:
+      summary: Get faculty education info
+      tags:
+      - Faculty - Basic Information
+      description: Get faculty education info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "educInfoId": 4,
+                            "institutionSchool": "UPM",
+                            "degreeCert": "BS CS",
+                            "majorSpecialization": "HI",
+                            "startDate": "1994-01-06",
+                            "endDate": "1994-01-06",
+                            "proof": null,
+                            "status": "ongoing",
+                            "createdAt": "2020-11-02T19:48:15.000Z",
+                            "updatedAt": "2020-11-02T19:48:15.000Z"
+                          },
+                          {
+                            "educInfoId": 9,
+                            "institutionSchool": "UPM",
+                            "degreeCert": "BS AP",
+                            "majorSpecialization": null,
+                            "startDate": "1994-01-06",
+                            "endDate": "1995-01-06",
+                            "proof": "EOPOG2BJ01PZZITKDI9RTC1830APH6MNK9D.jpeg",
+                            "status": "for verification",
+                            "createdAt": "2020-11-13T07:30:20.000Z",
+                            "updatedAt": "2020-11-13T20:30:13.000Z"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/edit/{facultyId}/education":
     put:
       summary: Edit faculty education info
@@ -1026,6 +1094,9 @@ definitions:
 
   addFacultyEducationInfoSource:
     properties:
+        facultyId:
+          type: string
+          example: "1"
         institutionSchool:
           type: string
           example: "UPM"
