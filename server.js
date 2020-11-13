@@ -3,6 +3,7 @@ const config = require('config')
 const cookieParser = require('cookie-parser');;
 const cors = require('cors');
 const express = require('express');
+const fileUpload = require('express-fileupload')
 const fs = require('fs');
 const helmet = require('helmet');
 const yaml = require('js-yaml');
@@ -82,6 +83,8 @@ app.use(cookieParser());
 app.use(nocache());
 app.enable('trust proxy');
 
+
+app.use(fileUpload());
 /**
  * GET home page
  */

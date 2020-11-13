@@ -20,8 +20,7 @@ const EducationInfo = sequelize.define('faculty_education_info', {
         allowNull: false
     },
     majorSpecialization: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+        type: DataTypes.STRING(50)
     },
     startDate: {
         type: DataTypes.DATE,
@@ -35,6 +34,14 @@ const EducationInfo = sequelize.define('faculty_education_info', {
         validate: {
             isDate: true
         }
+    },
+    proof: {
+        type: DataTypes.STRING
+    },
+    status: {
+        type: DataTypes.STRING(20),
+        isIn: [['ongoing', 'for verification', 'verified']],
+        allowNull: false
     }
   });
 
