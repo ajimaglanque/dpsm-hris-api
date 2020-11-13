@@ -13,6 +13,7 @@ const accessToken = require('./access-token');
 const faculty = require('./faculty');
 const student = require('./student');
 const alumni = require('./alumni');
+const download = require('./fileDownload');
 
 const router = express.Router();
 
@@ -40,5 +41,6 @@ router.use(authHandler.authenticateUser);
 router.use('/faculty',faculty);
 router.use('/student',student);
 router.use('/alumni',alumni);
+router.use('/download',download);
 
 module.exports = router;

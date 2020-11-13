@@ -1000,6 +1000,30 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/download/{filename}":
+    get:
+      summary: Download file
+      tags:
+      - Download
+      description: Download file
+      parameters:
+          - name: filename
+            in: path
+            description: File Name
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
   
 definitions:
   userAddSource:
