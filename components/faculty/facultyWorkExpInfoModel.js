@@ -31,6 +31,9 @@ const WorkExpInfo = sequelize.define('faculty_work_exp_info', {
     position: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    description: {
+        type: DataTypes.TEXT
     }
   });
 

@@ -441,7 +441,7 @@ faculty.getWorkExpInfo = async (req, res) => {
     try {
         let facultyList = await WorkExpInfo.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: ['employerName', 'startDate', 'endDate', 'position'],
+            attributes: ['employerName', 'startDate', 'endDate', 'position', 'description'],
             order: [['endDate', 'DESC']]
         });
 
@@ -659,5 +659,6 @@ faculty.editEducationInfo = async (req, res) => {
         util.sendResponse(res, jsonRes);    
     }
 };
+
 
 module.exports = faculty;
