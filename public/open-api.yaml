@@ -1026,9 +1026,6 @@ definitions:
 
   addFacultyEducationInfoSource:
     properties:
-        facultyId:
-          type: string
-          example: "1"
         institutionSchool:
           type: string
           example: "UPM"
