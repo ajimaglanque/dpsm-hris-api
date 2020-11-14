@@ -874,6 +874,12 @@ paths:
                     message:
                       type: string
                       example: "Faculty publication information added successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          publicationId: "4"
+                        }
         "500":
           description: Error
           content:
