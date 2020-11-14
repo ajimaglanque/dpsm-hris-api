@@ -25,6 +25,7 @@ router.post('/add/employment', facultyController.addEmploymentInfo);
 router.post('/add/education', facultyController.addEducationInfo);
 router.post('/add/work-exp', facultyController.addWorkExpInfo);
 router.post('/add/publication', facultyController.addPublication);
+router.post('/add/publisher', facultyController.addPublisher);
 router.get('/all', facultyController.getAllFacultyInfo);
 router.get('/', facultyController.getAllFaculty);
 router.get('/:facultyId', facultyController.getFacultyPersonalInfo);

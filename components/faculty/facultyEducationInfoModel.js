@@ -40,7 +40,7 @@ const EducationInfo = sequelize.define('faculty_education_info', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['ongoing', 'for verification', 'verified']],
+        isIn: [['pending', 'for verification', 'verified']],
         allowNull: false
     }
   });

@@ -10,6 +10,7 @@ const EducationInfo = require('./facultyEducationInfoModel')
 const EmploymentInfo = require('./facultyEmploymentInfoModel')
 const WorkExpInfo = require('./facultyWorkExpInfoModel')
 const Publication = require('./facultyPublicationModel')
+const Publisher = require('./facultyPublisherModel')
 const Unit = require('./unitModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
@@ -245,8 +246,8 @@ faculty.addPublication = async (req, res) => {
     let jsonRes;
     
     try {
-        let [, created] = await Publication.findOrCreate({
-            where: { facultyId: req.body.facultyId, publication: req.body.publication },
+        let [pblctn, created] = await Publication.findOrCreate({
+            where: { title: req.body.title },
             defaults: req.body
         }) 
 
@@ -261,7 +262,43 @@ faculty.addPublication = async (req, res) => {
             jsonRes = {
                 statusCode: 200,
                 success: true,
-                message: 'Faculty publication information added successfully'
+                message: 'Faculty publication information added successfully',
+                result: {
+                    publicationId: pblctn.publicationId
+                }
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.addPublisher = async (req, res) => {
+    // logger.info('inside addPublication()...');
+
+    let jsonRes;
+    
+    try {
+        let created = await Publisher.bulkCreate(req.body) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Could not bulk create faculty publisher information'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty publisher information added successfully'
             }; 
         }
     } catch(error) {

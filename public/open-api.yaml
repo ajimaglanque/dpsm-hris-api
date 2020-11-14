@@ -844,8 +844,6 @@ paths:
       security:
       - bearerAuth: []
   
-  
-  
   "/api/faculty/add/publication":
     post:
       summary: Add faculty publication info
@@ -876,6 +874,63 @@ paths:
                     message:
                       type: string
                       example: "Faculty publication information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/publisher":
+    post:
+      summary: Add faculty publisher info
+      tags:
+      - Faculty - Accomplishments
+      description: Bulk add faculty publisher info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                [
+                  {
+                    "facultyId": "9",
+                    "publicationId": "4",
+                    "status": "pending"
+                  },
+                  {
+                    "facultyId": "10",
+                    "publicationId": "4",
+                    "status": "pending"
+                  },
+                  {
+                    "facultyId": "11",
+                    "publicationId": "4",
+                    "status": "pending"
+                  }
+                ]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publisher information added successfully"
         "500":
           description: Error
           content:
@@ -1221,15 +1276,21 @@ definitions:
 
   addFacultyPublicationInfoSource:
     properties:
-        facultyId:
-          type: string
-          example: "1"
-        publication:
+        title:
           type: string
           example: "Publication"
+        journal:
+          type: string
+          example: "Publication"
+        url:
+          type: string
+          example: "https://google.com"
         publicationDate:
           type: string
           example: "1994-01-06"
+        nonFacultyAuthors:
+          type: string
+          example: "Author 1, Author 2, Author 3"
 
   addStudentPersonalInfoSource:
     properties:
