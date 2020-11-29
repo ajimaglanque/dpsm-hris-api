@@ -16,7 +16,7 @@ const PublisherInfo = sequelize.define('faculty_publisher', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['pending', 'for verification', 'verified']],
+        isIn: [['Pending', 'For Verification', 'Verified']],
         allowNull: false
     }
   });

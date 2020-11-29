@@ -573,14 +573,20 @@ paths:
                       example: 
                         [
                           {
-                            "position": "Prof 1",
                             "startDate": "2004-01-06",
-                            "endDate": null
+                            "endDate": null,
+                            "faculty_employment_position": {
+                                "employmentType": "ftt",
+                                "position": "Instructor 1"
+                            }
                           },
                           {
-                            "position": "Prof 2",
                             "startDate": "1994-01-06",
-                            "endDate": "1995-01-06"
+                            "endDate": "1995-01-06",
+                            "faculty_employment_position": {
+                                "employmentType": "ftp",
+                                "position": "Associate Professor 3"
+                            }
                           }
                         ]
         "500":
@@ -946,6 +952,157 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/edit/{facultyId}/publisher":
+    put:
+      summary: Edit publisher info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit publisher info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyPublisherInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publisher information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/add/training-seminar":
+    post:
+      summary: Add faculty training/seminar info
+      tags:
+      - Faculty - Accomplishments
+      description: Add faculty training/seminar info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyTSInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty training/seminar information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/{facultyId}/training-seminar":
+    get:
+      summary: Get faculty training/seminar info
+      tags:
+      - Faculty - Accomplishments
+      description: Get faculty training/seminar info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "tsId": 19,
+                            "role": "Attendee",
+                            "title": "MySQL Training",
+                            "dateFrom": "2019-06-29",
+                            "dateTo": "2019-06-27",
+                            "venue": "UP ITDC",
+                            "proof": "65KG9KD3A4OXQEQM0TEJJH1QGHP78D16FBW.jpeg",
+                            "status": "For Verification"
+                          },
+                          {
+                            "tsId": 18,
+                            "role": "Speaker",
+                            "title": "MySQL Training",
+                            "dateFrom": "2019-06-28",
+                            "dateTo": "2019-06-27",
+                            "venue": "UP ITDC",
+                            "proof": "TDWCCIZLOK0UAFX713LYM866P7G8AWQSWEL.jpeg",
+                            "status": "For Verification"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/student/add/personal":
     post:
       summary: Add student personal info
@@ -1162,7 +1319,7 @@ definitions:
           example: "1"
         position:
           type: string
-          example: "Prof 1"
+          example: "20"
         startDate:
           type: string
           example: "1994-01-06"
@@ -1297,6 +1454,43 @@ definitions:
         nonFacultyAuthors:
           type: string
           example: "Author 1, Author 2, Author 3"
+
+  editFacultyPublisherInfoSource:
+    properties:
+        publicationId:
+          type: string
+          example: "1"
+        proof:
+          type: string
+          format: binary
+          example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
+        status:
+          type: string
+          example: "for verification"
+
+  addFacultyTSInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "2"
+        title:
+          type: string
+          example: "MySQL Training"
+        role:
+          type: string
+          example: "Speaker"
+        dateFrom:
+          type: string
+          example: "2004-01-06"
+        dateTo:
+          type: string
+          example: "2004-01-07"
+        venue:
+          type: string
+          example: "UP Diliman"
+        proof:
+          type: string
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
 
   addStudentPersonalInfoSource:
     properties:

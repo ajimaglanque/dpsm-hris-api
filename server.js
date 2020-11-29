@@ -83,8 +83,11 @@ app.use(cookieParser());
 app.use(nocache());
 app.enable('trust proxy');
 
-
+/**
+ * Allow file upload
+ */
 app.use(fileUpload());
+
 /**
  * GET home page
  */

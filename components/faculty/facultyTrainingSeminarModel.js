@@ -3,40 +3,42 @@ const { DataTypes } = require('sequelize');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
 
-const EducationInfo = sequelize.define('faculty_education_info', {
+const TrainingSeminar = sequelize.define('faculty_training_seminar', {
     // Model attributes are defined here
-    educInfoId: {
+    tsId: {
         type: DataTypes.INTEGER(8),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    institutionSchool: {
+    role: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    degreeCert: {
-        type: DataTypes.STRING(50),
+    title: {
+        type: DataTypes.STRING(100),
         allowNull: false
     },
-    majorSpecialization: {
-        type: DataTypes.STRING(50)
+    dateFrom: {
+        type: DataTypes.STRING,
+        validate: {
+            isDate: true
+        },
+        allowNull: false
     },
-    startDate: {
-        type: DataTypes.DATE,
+    dateTo: {
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             isDate: true
         }
     },
-    endDate: {
-        type: DataTypes.DATE,
-        validate: {
-            isDate: true
-        }
+    venue: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
     },
     proof: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(100)
     },
     status: {
         type: DataTypes.STRING(20),
@@ -45,7 +47,7 @@ const EducationInfo = sequelize.define('faculty_education_info', {
     }
   });
 
-  PersonalInfo.hasMany(EducationInfo, {foreignKey: 'facultyId'})
-  EducationInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
+  PersonalInfo.hasMany(TrainingSeminar, {foreignKey: 'facultyId'})
+  TrainingSeminar.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   
-  module.exports = EducationInfo
+  module.exports = TrainingSeminar

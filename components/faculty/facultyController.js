@@ -11,7 +11,9 @@ const EmploymentInfo = require('./facultyEmploymentInfoModel')
 const WorkExpInfo = require('./facultyWorkExpInfoModel')
 const Publication = require('./facultyPublicationModel')
 const Publisher = require('./facultyPublisherModel')
+const TrainingSeminar = require('./facultyTrainingSeminarModel')
 const Unit = require('./unitModel');
+const EmploymentPosition = require('./facultyEmploymentPositionModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -160,7 +162,7 @@ faculty.addEducationInfo = async (req, res) => {
                     startDate: req.body.startDate,
                     endDate: req.body.endDate,
                     proof: filename,
-                    status: 'for verification'
+                    status: 'For Verification'
                 }
             }) 
             
@@ -174,7 +176,7 @@ faculty.addEducationInfo = async (req, res) => {
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
-                    status: 'ongoing'
+                    status: 'Ongoing'
                 }
             }) 
         }
@@ -312,6 +314,75 @@ faculty.addPublisher = async (req, res) => {
     }
 };
 
+faculty.addTrainingSeminar = async (req, res) => {
+    // logger.info('inside addTrainingSeminar()...');
+
+    let jsonRes;
+    
+    try {
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            let filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+            [, created] = await TrainingSeminar.findOrCreate({
+                where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
+                defaults: {
+                    facultyId: req.body.facultyId,
+                    role: req.body.role,
+                    title: req.body.title,
+                    dateFrom: req.body.dateFrom,
+                    dateTo: req.body.dateTo,
+                    venue: req.body.venue,
+                    proof: filename,
+                    status: 'For Verification'
+                }
+            }) 
+        } else { 
+            [, created] = await TrainingSeminar.findOrCreate({
+                where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
+                defaults: {
+                    facultyId: req.body.facultyId,
+                    role: req.body.role,
+                    title: req.body.title,
+                    dateFrom: req.body.dateFrom,
+                    dateTo: req.body.dateTo,
+                    venue: req.body.venue,
+                    status: 'Pending'
+                }
+            }) 
+        }
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty already has existing training/seminar information'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty training/seminar information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 faculty.getAllFaculty = async (req, res) => {
     // logger.info('inside getFaculty()...');
 
@@ -336,7 +407,7 @@ faculty.getAllFaculty = async (req, res) => {
                 [FacultyUnit, PersonalInfo, 'firstName'],
                 [FacultyUnit, PersonalInfo, 'middleName']
             ]
-          });
+        });   
 
         if(facultyList.length === 0) {
             jsonRes = {
@@ -404,9 +475,15 @@ faculty.getEmploymentInfo = async (req, res) => {
     try {
         let facultyList = await EmploymentInfo.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: ['position', 'startDate', 'endDate'],
+            attributes: ['startDate', 'endDate'],
+            include: 
+                {
+                    model: EmploymentPosition,
+                    attributes: ['employmentType', 'position'],
+                },
             order: [['startDate', 'DESC']]
         });
+        
 
         if(facultyList.length === 0) {
             jsonRes = {
@@ -488,6 +565,121 @@ faculty.getWorkExpInfo = async (req, res) => {
                 success: true,
                 result: null,
                 message: 'Faculty work experience info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getPublication = async (req, res) => {
+    // logger.info('inside addPublication()...');
+
+    let jsonRes;
+    let facultyList
+    
+    try {
+        facultyList = await Publisher.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: ['publicationId']
+        });   
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
+            };
+        } else {
+            let publication = []
+            await facultyList.forEach((list) => {
+                publication.push(list.publicationId)
+            })
+
+            console.log(publication);
+
+            let publications = await Publication.findAll({
+                where: { publicationId: publication },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                },
+                include: 
+                {
+                    model: Publisher,
+                    attributes: ['facultyId', 'proof', 'status'],
+                    // include: 
+                    //     {
+                    //         model: PersonalInfo,
+                    //         attributes: ['lastName','firstName','middleName']
+                    //     }
+                },
+                order: [
+                    ['publicationDate'],
+                    // [Publisher, PersonalInfo, 'lastName'],
+                    // [Publisher, PersonalInfo, 'firstName'],
+                    // [Publisher, PersonalInfo, 'middleName']
+                ]
+            })
+            console.log(publications);
+
+            if(publications.length !== 0) { 
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    result: publications
+                }; 
+            } 
+
+            // jsonRes = {
+            //     statusCode: 200,
+            //     success: true,
+            //     result: facultyList
+            // }; 
+
+            
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getTrainingSeminar = async (req, res) => {
+    // logger.info('inside getTrainingSeminar()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await TrainingSeminar.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            order: [['dateFrom', 'DESC']]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty not found'
             };
         } else {
             jsonRes = {
@@ -658,7 +850,7 @@ faculty.editEducationInfo = async (req, res) => {
                 { 
                     endDate: req.body.endDate,
                     proof: filename,
-                    status: 'for verification'
+                    status: 'For Verification'
                 }, {
                     where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
                 }
@@ -697,5 +889,63 @@ faculty.editEducationInfo = async (req, res) => {
     }
 };
 
+faculty.editPublisherInfo = async (req, res) => {
+    // logger.info('inside editPublisherInfo()...');
+
+    let jsonRes;
+
+    try { 
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            let filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+            let updated = await Publisher.update(
+                { 
+                    proof: filename,
+                    status: "for verification"
+                }, {
+                    where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
+                }
+            ) 
+            
+            if(updated == 0) {
+                jsonRes = {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Faculty publisher information cannot be updated'
+                };
+            } else {
+                
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    message: 'Faculty publisher information updated successfully'
+                }; 
+            }
+            
+        } else {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty publisher information cannot be updated'
+            };
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
 
 module.exports = faculty;

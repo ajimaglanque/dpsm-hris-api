@@ -3,6 +3,7 @@ const { DataTypes } = require('sequelize');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
 
+
 const EmploymentInfo = sequelize.define('faculty_employment_info', {
     // Model attributes are defined here
     employmentInfoId: {
@@ -12,7 +13,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
         primaryKey: true
     },
     position: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.INTEGER(2),
         allowNull: false
     },
     startDate: {
@@ -29,7 +30,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
         }
     }
   });
-
+  
   PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
   EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   

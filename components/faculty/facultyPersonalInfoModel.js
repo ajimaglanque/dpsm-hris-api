@@ -36,7 +36,7 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
         type: DataTypes.STRING(6),
         validate: {
             isLowercase: true,
-            isIn: [['male', 'female']]
+            isIn: [['Male', 'Female']]
         },
         allowNull: false
     },

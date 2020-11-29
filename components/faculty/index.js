@@ -26,13 +26,17 @@ router.post('/add/education', facultyController.addEducationInfo);
 router.post('/add/work-exp', facultyController.addWorkExpInfo);
 router.post('/add/publication', facultyController.addPublication);
 router.post('/add/publisher', facultyController.addPublisher);
+router.post('/add/training-seminar', facultyController.addTrainingSeminar);
 router.get('/all', facultyController.getAllFacultyInfo);
 router.get('/', facultyController.getAllFaculty);
 router.get('/:facultyId', facultyController.getFacultyPersonalInfo);
 router.get('/:facultyId/employment', facultyController.getEmploymentInfo);
 router.get('/:facultyId/education', facultyController.getEducationInfo);
 router.get('/:facultyId/work-exp', facultyController.getWorkExpInfo);
+router.get('/:facultyId/publication', facultyController.getPublication);
+router.get('/:facultyId/training-seminar', facultyController.getTrainingSeminar);
 router.put('/edit/:facultyId/personal', facultyController.editPersonalInfo);
 router.put('/edit/:facultyId/education', facultyController.editEducationInfo);
+router.put('/edit/:facultyId/publisher', facultyController.editPublisherInfo);
 
 module.exports = router;
