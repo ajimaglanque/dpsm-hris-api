@@ -1227,6 +1227,107 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/add/licensure-exam":
+    post:
+      summary: Add faculty licensure exam info
+      tags:
+      - Faculty - Accomplishments
+      description: Add faculty licensure exam info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyLicensureExamInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty licensure exam information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/accomplishment/{facultyId}/licensure-exam":
+    get:
+      summary: Get faculty licensure exam info
+      tags:
+      - Faculty - Accomplishments
+      description: Get faculty licensure exam info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "licenseId": 1,
+                            "examName": "PLE",
+                            "examDate": "2019-06-29",
+                            "licenseNumber": "UP ITDC",
+                            "rank": null,
+                            "proof": "",
+                            "status": "Pending"
+                          },
+                          {
+                            "licenseId": 2,
+                            "examName": "Chem boards",
+                            "examDate": "2019-06-29",
+                            "licenseNumber": "UP ITDC",
+                            "rank": null,
+                            "proof": "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf",
+                            "status": "For Verification"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/student/add/personal":
     post:
       summary: Add student personal info
@@ -1612,6 +1713,27 @@ definitions:
         venue:
           type: string
           example: "UP Diliman"
+        proof:
+          type: string
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+
+  addFacultyLicensureExamInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "2"
+        examName:
+          type: string
+          example: "Chem Boards"
+        examDate:
+          type: string
+          example: "2004-01-06"
+        licenseNumber:
+          type: string
+          example: "2004-11774"
+        rank:
+          type: string
+          example: "3"
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"

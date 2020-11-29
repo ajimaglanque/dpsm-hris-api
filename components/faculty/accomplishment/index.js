@@ -24,6 +24,7 @@ router.post('/add/training-seminar', accomplishmentController.addTrainingSeminar
 router.post('/add/licensure-exam', accomplishmentController.addLicensureExam);
 router.get('/:facultyId/publication', accomplishmentController.getPublication);
 router.get('/:facultyId/training-seminar', accomplishmentController.getTrainingSeminar);
+router.get('/:facultyId/licensure-exam', accomplishmentController.getLicensureExam);
 router.put('/edit/:facultyId/publisher', accomplishmentController.editPublisherInfo);
 
 module.exports = router;

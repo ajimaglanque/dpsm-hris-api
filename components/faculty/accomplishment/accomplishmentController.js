@@ -7,6 +7,7 @@ const util = require('../../../helpers/util');
 const Publication = require('./facultyPublicationModel')
 const Publisher = require('./facultyPublisherModel')
 const TrainingSeminar = require('./facultyTrainingSeminarModel')
+const LicensureExam = require('./facultyLicensureExamModel')
 const PersonalInfo = require('../basic-info/facultyPersonalInfoModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
@@ -165,23 +166,52 @@ faculty.addLicensureExam = async (req, res) => {
     let jsonRes;
     
     try {
-        let [, created] = await WorkExpInfo.findOrCreate({
-            where: { facultyId: req.body.facultyId, employerName: req.body.employerName },
-            defaults: req.body
-        }) 
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            let filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+            [, created] = await LicensureExam.findOrCreate({
+                where: { facultyId: req.body.facultyId, examName: req.body.examName },
+                defaults: {
+                    facultyId: req.body.facultyId,
+                    examName: req.body.examName,
+                    examDate: req.body.examDate,
+                    licenseNumber: req.body.licenseNumber,
+                    proof: filename,
+                    status: 'For Verification'
+                }
+            }) 
+        } else { 
+            [, created] = await LicensureExam.findOrCreate({
+                where: { facultyId: req.body.facultyId, examName: req.body.examName },
+                defaults: {
+                    facultyId: req.body.facultyId,
+                    examName: req.body.examName,
+                    examDate: req.body.examDate,
+                    licenseNumber: req.body.licenseNumber,
+                    status: 'Pending'
+                }
+            }) 
+        }
 
         if(!created) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Faculty already has existing work experience information'
+                message: 'Faculty already has existing licensure exam information'
             };
         } else {
-            
             jsonRes = {
                 statusCode: 200,
                 success: true,
-                message: 'Faculty work experience information added successfully'
+                message: 'Faculty licensure exam information added successfully'
             }; 
         }
     } catch(error) {
@@ -270,6 +300,43 @@ faculty.getTrainingSeminar = async (req, res) => {
             where: { facultyId: req.params.facultyId },
             attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
             order: [['dateFrom', 'DESC']]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty not found'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getLicensureExam = async (req, res) => {
+    // logger.info('inside getLicensureExam()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList = await LicensureExam.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            order: [['examDate', 'DESC']]
         });
 
         if(facultyList.length === 0) {
