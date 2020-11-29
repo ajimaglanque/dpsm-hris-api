@@ -105,7 +105,7 @@ paths:
               schema:
                 $ref: "#/definitions/ErrorResponse"
   
-  "/api/faculty":
+  "/api/faculty/basic-info":
     get:
       summary: Get list of faculty
       tags:
@@ -206,7 +206,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/all":
+  "/api/faculty/basic-info/all":
     get:
       summary: Get complete information of all faculty
       tags:
@@ -299,7 +299,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/personal":
+  "/api/faculty/basic-info/add/personal":
     post:
       summary: Add faculty personal info
       tags:
@@ -344,7 +344,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/{facultyId}":
+  "/api/faculty/basic-info/{facultyId}":
     get:
       summary: Get faculty personal info
       tags:
@@ -406,7 +406,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/edit/{facultyId}/personal":
+  "/api/faculty/basic-info/edit/{facultyId}/personal":
     put:
       summary: Edit faculty personal info
       tags:
@@ -460,7 +460,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/unit":
+  "/api/faculty/basic-info/add/unit":
     post:
       summary: Add faculty unit
       tags:
@@ -499,7 +499,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/employment":
+  "/api/faculty/basic-info/add/employment":
     post:
       summary: Add faculty employment info
       tags:
@@ -538,7 +538,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/{facultyId}/employment":
+  "/api/faculty/basic-info/{facultyId}/employment":
     get:
       summary: Get faculty employment info
       tags:
@@ -598,7 +598,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/education":
+  "/api/faculty/basic-info/add/education":
     post:
       summary: Add faculty education info
       tags:
@@ -637,7 +637,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/{facultyId}/education":
+  "/api/faculty/basic-info/{facultyId}/education":
     get:
       summary: Get faculty education info
       tags:
@@ -705,7 +705,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/edit/{facultyId}/education":
+  "/api/faculty/basic-info/edit/{facultyId}/education":
     put:
       summary: Edit faculty education info
       tags:
@@ -753,7 +753,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/work-exp":
+  "/api/faculty/basic-info/add/work-exp":
     post:
       summary: Add faculty work experience info
       tags:
@@ -792,7 +792,7 @@ paths:
       security:
       - bearerAuth: []
  
-  "/api/faculty/{facultyId}/work-exp":
+  "/api/faculty/basic-info/{facultyId}/work-exp":
     get:
       summary: Get faculty work experience info
       tags:
@@ -850,7 +850,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/publication":
+  "/api/faculty/accomplishment/add/publication":
     post:
       summary: Add faculty publication info
       tags:
@@ -895,7 +895,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/publisher":
+  "/api/faculty/accomplishment/add/publisher":
     post:
       summary: Add faculty publisher info
       tags:
@@ -952,7 +952,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/{facultyId}/publication":
+  "/api/faculty/accomplishment/{facultyId}/publication":
     get:
       summary: Get faculty publication info
       tags:
@@ -1076,7 +1076,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/edit/{facultyId}/publisher":
+  "/api/faculty/accomplishment/edit/{facultyId}/publisher":
     put:
       summary: Edit publisher info
       tags:
@@ -1124,7 +1124,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/add/training-seminar":
+  "/api/faculty/accomplishment/add/training-seminar":
     post:
       summary: Add faculty training/seminar info
       tags:
@@ -1163,7 +1163,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/{facultyId}/training-seminar":
+  "/api/faculty/accomplishment/{facultyId}/training-seminar":
     get:
       summary: Get faculty training/seminar info
       tags:

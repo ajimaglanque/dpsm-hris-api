@@ -1,18 +1,19 @@
-const sequelize = require('../../helpers/mysql-db-helper');
+const sequelize = require('../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
 
-const WorkExpInfo = sequelize.define('faculty_work_exp_info', {
+
+const EmploymentInfo = sequelize.define('faculty_employment_info', {
     // Model attributes are defined here
-    workExpId: {
+    employmentInfoId: {
         type: DataTypes.INTEGER(8),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    employerName: {
-        type: DataTypes.STRING(50),
+    position: {
+        type: DataTypes.INTEGER(2),
         allowNull: false
     },
     startDate: {
@@ -27,17 +28,10 @@ const WorkExpInfo = sequelize.define('faculty_work_exp_info', {
         validate: {
             isDate: true
         }
-    },
-    position: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.TEXT
     }
   });
-
-  PersonalInfo.hasMany(WorkExpInfo, {foreignKey: 'facultyId'})
-  WorkExpInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   
-  module.exports = WorkExpInfo
+  PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
+  EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
+  
+  module.exports = EmploymentInfo
