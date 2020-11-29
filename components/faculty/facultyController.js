@@ -585,7 +585,7 @@ faculty.getWorkExpInfo = async (req, res) => {
 };
 
 faculty.getPublication = async (req, res) => {
-    // logger.info('inside addPublication()...');
+    // logger.info('inside getPublication()...');
 
     let jsonRes;
     let facultyList
@@ -601,15 +601,13 @@ faculty.getPublication = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 result: null,
-                message: 'Faculty list empty'
+                message: 'Faculty publication list empty'
             };
         } else {
             let publication = []
             await facultyList.forEach((list) => {
                 publication.push(list.publicationId)
             })
-
-            console.log(publication);
 
             let publications = await Publication.findAll({
                 where: { publicationId: publication },
@@ -620,36 +618,25 @@ faculty.getPublication = async (req, res) => {
                 {
                     model: Publisher,
                     attributes: ['facultyId', 'proof', 'status'],
-                    // include: 
-                    //     {
-                    //         model: PersonalInfo,
-                    //         attributes: ['lastName','firstName','middleName']
-                    //     }
+                    include: 
+                        {
+                            model: PersonalInfo,
+                            attributes: ['lastName','firstName','middleName']
+                        }
                 },
                 order: [
-                    ['publicationDate'],
-                    // [Publisher, PersonalInfo, 'lastName'],
-                    // [Publisher, PersonalInfo, 'firstName'],
-                    // [Publisher, PersonalInfo, 'middleName']
+                    ['publicationDate', 'DESC'],
+                    [Publisher, PersonalInfo, 'lastName'],
+                    [Publisher, PersonalInfo, 'firstName'],
+                    [Publisher, PersonalInfo, 'middleName']
                 ]
             })
-            console.log(publications);
 
-            if(publications.length !== 0) { 
-                jsonRes = {
-                    statusCode: 200,
-                    success: true,
-                    result: publications
-                }; 
-            } 
-
-            // jsonRes = {
-            //     statusCode: 200,
-            //     success: true,
-            //     result: facultyList
-            // }; 
-
-            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: publications
+            }; 
         }
     } catch(error) {
         jsonRes = {
@@ -909,7 +896,7 @@ faculty.editPublisherInfo = async (req, res) => {
             let updated = await Publisher.update(
                 { 
                     proof: filename,
-                    status: "for verification"
+                    status: "For Verification"
                 }, {
                     where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
                 }

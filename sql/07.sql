@@ -1,12 +1,12 @@
 ALTER TABLE `faculty_education_infos` 
 CHANGE `status` `status` VARCHAR(20) 
 CHARACTER SET utf8 COLLATE utf8_general_ci 
-NOT NULL DEFAULT 'pending';
+NOT NULL DEFAULT 'Pending';
 
 ALTER TABLE `faculty_publishers` 
 CHANGE `status` `status` VARCHAR(25) 
 CHARACTER SET utf8 COLLATE utf8_general_ci 
-NOT NULL DEFAULT 'pending';
+NOT NULL DEFAULT 'Pending';
 
 ALTER TABLE `faculty_publishers` 
 DROP FOREIGN KEY faculty_publishers_ibfk_1;

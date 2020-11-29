@@ -1,6 +1,9 @@
 const sequelize = require('../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
+const Publisher = require('./facultyPublisherModel')
+const PersonalInfo = require('./facultyPersonalInfoModel')
+
 const PublicationInfo = sequelize.define('faculty_publication', {
     // Model attributes are defined here
     publicationId: {
@@ -34,5 +37,8 @@ const PublicationInfo = sequelize.define('faculty_publication', {
         type: DataTypes.STRING(150)
     }
   });
+
+  Publisher.belongsTo(PublicationInfo, {foreignKey: 'publicationId'})
+  PublicationInfo.hasMany(Publisher, {foreignKey: 'publicationId'});
   
   module.exports = PublicationInfo

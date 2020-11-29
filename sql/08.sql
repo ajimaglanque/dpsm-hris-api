@@ -1,4 +1,4 @@
-CREATE TABLE `dpsm-hris-dev`.`faculty_training_seminars` ( 
+CREATE TABLE `faculty_training_seminars` ( 
     `tsId` INT NOT NULL AUTO_INCREMENT , 
     `facultyId` INT NOT NULL ,
     `role` VARCHAR(50) NOT NULL ,

@@ -679,7 +679,7 @@ paths:
                             "startDate": "1994-01-06",
                             "endDate": "1994-01-06",
                             "proof": null,
-                            "status": "ongoing",
+                            "status": "Ongoing",
                             "createdAt": "2020-11-02T19:48:15.000Z",
                             "updatedAt": "2020-11-02T19:48:15.000Z"
                           },
@@ -691,7 +691,7 @@ paths:
                             "startDate": "1994-01-06",
                             "endDate": "1995-01-06",
                             "proof": "EOPOG2BJ01PZZITKDI9RTC1830APH6MNK9D.jpeg",
-                            "status": "for verification",
+                            "status": "For Verification",
                             "createdAt": "2020-11-13T07:30:20.000Z",
                             "updatedAt": "2020-11-13T20:30:13.000Z"
                           }
@@ -916,17 +916,17 @@ paths:
                   {
                     "facultyId": "9",
                     "publicationId": "4",
-                    "status": "pending"
+                    "status": "Pending"
                   },
                   {
                     "facultyId": "10",
                     "publicationId": "4",
-                    "status": "pending"
+                    "status": "Pending"
                   },
                   {
                     "facultyId": "11",
                     "publicationId": "4",
-                    "status": "pending"
+                    "status": "Pending"
                   }
                 ]
       responses:
@@ -943,6 +943,130 @@ paths:
                     message:
                       type: string
                       example: "Faculty publisher information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/{facultyId}/publication":
+    get:
+      summary: Get faculty publication info
+      tags:
+      - Faculty - Accomplishments
+      description: Get faculty publication info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "publicationId": 5,
+                            "title": "new publication title",
+                            "journal": "journal of publication",
+                            "url": null,
+                            "publicationDate": "2019-11-06",
+                            "nonFacultyAuthors": "Author 1, Author 2, Author 3",
+                            "faculty_publishers": [
+                              {
+                                "facultyId": 9,
+                                "proof": null,
+                                "status": "pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Aji",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 10,
+                                "proof": null,
+                                "status": "pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Sarah",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 8,
+                                "proof": null,
+                                "status": "pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Palomar",
+                                    "firstName": "Diane",
+                                    "middleName": "Pacay"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "publicationId": 4,
+                            "title": "publication title",
+                            "journal": "journal of publication",
+                            "url": null,
+                            "publicationDate": "2011-11-06",
+                            "nonFacultyAuthors": "Author 1, Author 2, Author 3",
+                            "faculty_publishers": [
+                              {
+                                "facultyId": 9,
+                                "proof": null,
+                                "status": "Pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Aji",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 10,
+                                "proof": null,
+                                "status": "Pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Sarah",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 8,
+                                "proof": null,
+                                "status": "Pending",
+                                "faculty_personal_info": {
+                                    "lastName": "Palomar",
+                                    "firstName": "Diane",
+                                    "middleName": "Pacay"
+                                }
+                              }
+                            ]
+                          }
+                        ]
         "500":
           description: Error
           content:
@@ -1362,7 +1486,7 @@ definitions:
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
-          example: "for verification"
+          example: "For Verification"
 
   addFacultyWorkExpInfoSource:
     properties:
@@ -1435,7 +1559,7 @@ definitions:
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
-          example: "for verification"
+          example: "For Verification"
 
   addFacultyPublicationInfoSource:
     properties:
@@ -1466,7 +1590,7 @@ definitions:
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
-          example: "for verification"
+          example: "For Verification"
 
   addFacultyTSInfoSource:
     properties:

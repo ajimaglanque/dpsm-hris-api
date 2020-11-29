@@ -5,11 +5,15 @@ const PersonalInfo = require('./facultyPersonalInfoModel')
 
 const PublisherInfo = sequelize.define('faculty_publisher', {
     // Model attributes are defined here
-    publicationId: {
+    publisherId: {
         type: DataTypes.INTEGER(8),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
+    },
+    publicationId: {
+        type: DataTypes.INTEGER(8),
+        allowNull: false
     },
     proof: {
         type: DataTypes.STRING
