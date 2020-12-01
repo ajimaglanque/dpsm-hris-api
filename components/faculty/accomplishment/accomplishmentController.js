@@ -8,6 +8,8 @@ const Publication = require('./facultyPublicationModel')
 const Publisher = require('./facultyPublisherModel')
 const TrainingSeminar = require('./facultyTrainingSeminarModel')
 const LicensureExam = require('./facultyLicensureExamModel')
+const ResearchGrant = require('./facultyResearchGrantModel')
+const Researcher = require('./facultyResearcherModel')
 const PersonalInfo = require('../basic-info/facultyPersonalInfoModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
@@ -225,6 +227,78 @@ faculty.addLicensureExam = async (req, res) => {
     }
 };
 
+faculty.addResearchGrant = async (req, res) => {
+    // logger.info('inside addResearchGrant()...');
+
+    let jsonRes;
+    
+    try {
+        let [rsrchgrnt, created] = await ResearchGrant.findOrCreate({
+            where: { researchName: req.body.researchName },
+            defaults: req.body
+        }) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty already has existing research grant information'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty research grant information added successfully',
+                result: {
+                    researchGrantId: rsrchgrnt.researchGrantId
+                }
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.addResearcher = async (req, res) => {
+    // logger.info('inside addResearcher()...');
+
+    let jsonRes;
+    
+    try {
+        let created = await Researcher.bulkCreate(req.body) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Could not bulk create faculty researcher information'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty researcher information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 faculty.getPublication = async (req, res) => {
     // logger.info('inside getPublication()...');
 
@@ -351,6 +425,71 @@ faculty.getLicensureExam = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getResearchGrant = async (req, res) => {
+    // logger.info('inside getResearchGrant()...');
+
+    let jsonRes;
+    let facultyList
+    
+    try {
+        facultyList = await Researcher.findAll({
+            where: { facultyId: req.params.facultyId },
+            attributes: ['researchId']
+        });   
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty research list empty'
+            };
+        } else {
+            let research = []
+            await facultyList.forEach((list) => {
+                research.push(list.researchId)
+            })
+
+            let researches = await ResearchGrant.findAll({
+                where: { researchGrantId: research },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                },
+                include: 
+                {
+                    model: Researcher,
+                    attributes: ['facultyId', 'proof', 'status'],
+                    include: 
+                        {
+                            model: PersonalInfo,
+                            attributes: ['lastName','firstName','middleName']
+                        }
+                },
+                order: [
+                    ['projectedStart', 'DESC'],
+                    [Researcher, PersonalInfo, 'lastName'],
+                    [Researcher, PersonalInfo, 'firstName'],
+                    [Researcher, PersonalInfo, 'middleName']
+                ]
+            })
+
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: researches
             }; 
         }
     } catch(error) {

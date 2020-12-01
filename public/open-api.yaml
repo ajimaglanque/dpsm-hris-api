@@ -1328,6 +1328,196 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/add/research-grant":
+    post:
+      summary: Add faculty research grant info
+      tags:
+      - Faculty - Accomplishments
+      description: Add faculty research grant info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyResearchGrantInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty researchGrant information added successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          researchGrantId: "4"
+                        }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/accomplishment/add/researcher":
+    post:
+      summary: Add faculty researcher info
+      tags:
+      - Faculty - Accomplishments
+      description: Bulk add faculty researcher info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                [
+                  {
+                    "facultyId": "9",
+                    "researchId": "1",
+                    "status": "Ongoing"
+                  },
+                  {
+                    "facultyId": "10",
+                    "researchId": "1",
+                    "status": "Ongoing"
+                  },
+                  {
+                    "facultyId": "8",
+                    "researchId": "1",
+                    "status": "Ongoing"
+                  }
+                ]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty researcher information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/accomplishment/{facultyId}/research-grant":
+    get:
+      summary: Get faculty research grant info
+      tags:
+      - Faculty - Accomplishments
+      description: Get faculty research grant info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "researchGrantId": 1,
+                            "researchName": "new publication title",
+                            "granter": "journal of publication",
+                            "amount": 1000000,
+                            "projectedStart": "2019-11-06",
+                            "projectedEnd": "2019-11-06",
+                            "actualStart": "2019-11-06",
+                            "actualEnd": "2019-11-06",
+                            "researchProgress": "Ongoing",
+                            "nonFacultyResearchers": "Author 1, Author 2, Author 3",
+                            "faculty_researchers": [
+                              {
+                                "facultyId": 9,
+                                "proof": null,
+                                "status": "Ongoing",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Aji",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 10,
+                                "proof": null,
+                                "status": "Ongoing",
+                                "faculty_personal_info": {
+                                    "lastName": "Cristobal",
+                                    "firstName": "Sarah",
+                                    "middleName": "Pacay"
+                                }
+                              },
+                              {
+                                "facultyId": 8,
+                                "proof": null,
+                                "status": "Ongoing",
+                                "faculty_personal_info": {
+                                    "lastName": "Palomar",
+                                    "firstName": "Diane",
+                                    "middleName": "Pacay"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/student/add/personal":
     post:
       summary: Add student personal info
@@ -1737,6 +1927,36 @@ definitions:
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+
+  addFacultyResearchGrantInfoSource:
+    properties:
+        researchName:
+          type: string
+          example: "Research on Publications"
+        granter:
+          type: string
+          example: "WHO"
+        amount:
+          type: string
+          example: "1500000"
+        projectedStart:
+          type: string
+          example: "1994-01-06"
+        projectedEnd:
+          type: string
+          example: "1996-01-06"
+        actualStart:
+          type: string
+          example: "1994-05-30"
+        actualEnd:
+          type: string
+          example: "1997-12-15"
+        researchProgress:
+          type: string
+          example: "Ongoing"
+        nonFacultyResearchers:
+          type: string
+          example: "Author 1, Author 2, Author 3"
 
   addStudentPersonalInfoSource:
     properties:
