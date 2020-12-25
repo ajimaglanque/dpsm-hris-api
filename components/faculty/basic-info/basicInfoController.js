@@ -573,7 +573,7 @@ faculty.editEducationInfo = async (req, res) => {
     // logger.info('inside editEducationInfo()...');
 
     let jsonRes;
-    let created
+    let updated
 
     try { 
         if(req.files && req.files.proof && req.body.endDate) {
@@ -587,8 +587,12 @@ faculty.editEducationInfo = async (req, res) => {
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            let updated = await EducationInfo.update(
+            updated = await EducationInfo.update(
                 { 
+                    institutionSchool: req.body.institutionSchool,
+                    degreeCert: req.body.degreeCert,
+                    majorSpecialization: req.body.majorSpecialization,
+                    startDate: req.body.startDate,
                     endDate: req.body.endDate,
                     proof: filename,
                     status: 'For Verification'
@@ -597,27 +601,157 @@ faculty.editEducationInfo = async (req, res) => {
                 }
             ) 
             
-            if(updated == 0) {
-                jsonRes = {
-                    statusCode: 400,
-                    success: false,
-                    message: 'Faculty education information cannot be updated'
-                };
-            } else {
-                
-                jsonRes = {
-                    statusCode: 200,
-                    success: true,
-                    message: 'Faculty education information updated successfully'
-                }; 
-            }
             
         } else {
+            updated = await EducationInfo.update(
+                { 
+                    institutionSchool: req.body.institutionSchool,
+                    degreeCert: req.body.degreeCert,
+                    majorSpecialization: req.body.majorSpecialization,
+                    startDate: req.body.startDate,
+                    endDate: req.body.endDate
+                }, {
+                    where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
+                }
+            ) 
+        }
+
+        if(updated == 0) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
                 message: 'Faculty education information cannot be updated'
             };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty education information updated successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editWorkExpInfo = async (req, res) => {
+    // logger.info('inside editWorkExpInfo()...');
+
+    let jsonRes;
+    let updated
+
+    try { 
+        
+        updated = await WorkExpInfo.update(
+            { 
+                employerName: req.body.employerName,
+                position: req.body.position,
+                description: req.body.description,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate
+            }, {
+                where: { facultyId: req.params.facultyId, workExpId: req.body.workExpId }
+            }
+        ) 
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty work experience information cannot be updated'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty work experience information updated successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteEducationInfo = async (req, res) => {
+    // logger.info('inside deleteEducationInfo()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await EducationInfo.destroy(
+           {
+                where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty education information cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty education information deleted successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteWorkExpInfo = async (req, res) => {
+    // logger.info('inside deleteWorkExpInfo()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await WorkExpInfo.destroy(
+           {
+                where: { facultyId: req.params.facultyId, workExpId: req.body.workExpId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty work experience information cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty work experience information deleted successfully'
+            }; 
         }
     } catch(error) {
         jsonRes = {

@@ -406,7 +406,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/basic-info/edit/{facultyId}/personal":
+  "/api/faculty/basic-info/{facultyId}/personal":
     put:
       summary: Edit faculty personal info
       tags:
@@ -704,8 +704,6 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
-  "/api/faculty/basic-info/edit/{facultyId}/education":
     put:
       summary: Edit faculty education info
       tags:
@@ -849,7 +847,53 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
+    put:
+      summary: Edit faculty work experience info
+      tags:
+      - Faculty - Basic Information
+      description: Edit faculty work experience info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyWorkExpInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty work experience information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+      
   "/api/faculty/accomplishment/add/publication":
     post:
       summary: Add faculty publication info
@@ -1841,16 +1885,46 @@ definitions:
         educInfoId:
           type: string
           example: "1"
+        institutionSchool: 
+          type: string
+          example: "University of the Philippines Manila"
+        degreeCert: 
+          type: string
+          example: "BS Computer Science"
+        majorSpecialization: 
+          type: string
+          example: "Health Informatics"
+        startDate: 
+          type: string
+          example: "2011-06-01"
         endDate:
           type: string
-          example: "1994-01-06"
+          example: "2016-01-06"
         proof:
           type: string
           format: binary
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
-        status:
+
+  editFacultyWorkExpInfoSource:
+    properties:
+        workExpId:
           type: string
-          example: "For Verification"
+          example: "1"
+        employerName:
+          type: string
+          example: "UPM"
+        position:
+          type: string
+          example: "Instructor 1"
+        startDate:
+          type: string
+          example: "1994-01-06"
+        endDate:
+          type: string
+          example: "1995-01-06"
+        description:
+          type: string
+          example: "Taught elementary calculus for 3 years"
 
   addFacultyPublicationInfoSource:
     properties:

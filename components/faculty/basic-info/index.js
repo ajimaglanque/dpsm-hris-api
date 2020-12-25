@@ -30,7 +30,10 @@ router.get('/:facultyId', basicInfoController.getFacultyPersonalInfo);
 router.get('/:facultyId/employment', basicInfoController.getEmploymentInfo);
 router.get('/:facultyId/education', basicInfoController.getEducationInfo);
 router.get('/:facultyId/work-exp', basicInfoController.getWorkExpInfo);
-router.put('/edit/:facultyId/personal', basicInfoController.editPersonalInfo);
-router.put('/edit/:facultyId/education', basicInfoController.editEducationInfo);
+router.put('/:facultyId/personal', basicInfoController.editPersonalInfo);
+router.put('/:facultyId/education', basicInfoController.editEducationInfo);
+router.put('/:facultyId/work-exp', basicInfoController.editWorkExpInfo);
+router.delete('/:facultyId/education', basicInfoController.deleteEducationInfo);
+router.delete('/:facultyId/work-exp', basicInfoController.deleteWorkExpInfo);
 
 module.exports = router;
