@@ -16,16 +16,12 @@ CREATE TABLE `faculty_research_grants` (
     PRIMARY KEY (`researchGrantId`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `faculty_researchers` 
-SELECT * FROM `faculty_publishers` 
-LIMIT 0;
+ALTER TABLE `faculty_researchers` 
+ADD PRIMARY KEY( `publisherId`); 
 
 ALTER TABLE `faculty_researchers` 
 CHANGE `publisherId` `researcherId` INT(8) NOT NULL AUTO_INCREMENT, 
 CHANGE `publicationId` `researchId` INT(8) NOT NULL;
-
-ALTER TABLE `faculty_researchers` 
-ADD PRIMARY KEY(`researcherId`);
 
 ALTER TABLE `faculty_researchers` 
 ADD FOREIGN KEY (`facultyId`) 

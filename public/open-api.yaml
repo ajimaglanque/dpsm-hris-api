@@ -993,7 +993,214 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-    
+  
+  "/api/faculty/accomplishment/add/public-service":
+    post:
+      summary: Add faculty public service info
+      tags:
+      - Faculty - Accomplishments
+      description: Add faculty public service info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyPublicServiceInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty public service information added successfully"
+                    result:
+                      type: object
+                      example: 
+                        {
+                          publicationId: "4"
+                        }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+ 
+  "/api/faculty/accomplishment/{facultyId}/public-service":
+    get:
+      summary: Get faculty public service info
+      tags:
+      - Faculty - Accomplishments
+      description: Get faculty public service info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "publicServiceId": 2,
+                            "type": "Within UPM",
+                            "position": "Organizer",
+                            "organization": "Socomsci",
+                            "description": "No desc",
+                            "startDate": "2010-06-01",
+                            "endDate": "2012-03-30",
+                            "proof": "P3018.png",
+                            "status": "For Verification"
+                          },
+                          {
+                            "publicServiceId": 3,
+                            "type": "Within UPM",
+                            "position": "Organizers",
+                            "organization": "Socomsci",
+                            "description": "No desc",
+                            "startDate": "2010-06-01",
+                            "endDate": "2012-03-30",
+                            "proof": "WHBJP.png",
+                            "status": "For Verification"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      summary: Edit faculty public service info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty public service info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyPublicServiceInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty public service information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete faculty public service info
+      tags:
+      - Faculty - Accomplishments
+      description: Delete faculty public service info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publicServiceId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty public service information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/accomplishment/add/publication":
     post:
       summary: Add faculty publication info
@@ -1220,7 +1427,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/accomplishment/edit/{facultyId}/publisher":
+  "/api/faculty/accomplishment/{facultyId}/publisher":
     put:
       summary: Edit publisher info
       tags:
@@ -2025,6 +2232,60 @@ definitions:
         description:
           type: string
           example: "Taught elementary calculus for 3 years"
+
+  addFacultyPublicServiceInfoSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        type:
+          type: string
+          example: "Within UPM/Profession/Nation/World"
+        position:
+          type: string
+          example: "Organizer"
+        organization:
+          type: string
+          example: "Socomsci"
+        description:
+          type: string
+          example: "Organized SOCOMSCI"
+        startDate:
+          type: string
+          example: "2020-06-01"
+        endDate:
+          type: string
+          example: "2020-07-01"
+        proof:
+          type: string
+          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
+
+  editFacultyPublicServiceInfoSource:
+    properties:
+        publicServiceId:
+          type: string
+          example: "1"
+        type:
+          type: string
+          example: "Within UPM/Profession/Nation/World"
+        position:
+          type: string
+          example: "Organizer"
+        organization:
+          type: string
+          example: "Socomsci"
+        description:
+          type: string
+          example: "Organized SOCOMSCI"
+        startDate:
+          type: string
+          example: "2020-06-01"
+        endDate:
+          type: string
+          example: "2020-07-01"
+        proof:
+          type: string
+          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
 
   addFacultyPublicationInfoSource:
     properties:

@@ -18,16 +18,20 @@ const router = express.Router();
 /**
  * Add routes
  */
+router.post('/add/public-service', accomplishmentController.addPublicService);
 router.post('/add/publication', accomplishmentController.addPublication);
 router.post('/add/publisher', accomplishmentController.addPublisher);
 router.post('/add/training-seminar', accomplishmentController.addTrainingSeminar);
 router.post('/add/licensure-exam', accomplishmentController.addLicensureExam);
 router.post('/add/research-grant', accomplishmentController.addResearchGrant);
 router.post('/add/researcher', accomplishmentController.addResearcher);
+router.get('/:facultyId/public-service', accomplishmentController.getPublicService);
 router.get('/:facultyId/publication', accomplishmentController.getPublication);
 router.get('/:facultyId/training-seminar', accomplishmentController.getTrainingSeminar);
 router.get('/:facultyId/licensure-exam', accomplishmentController.getLicensureExam);
 router.get('/:facultyId/research-grant', accomplishmentController.getResearchGrant);
-router.put('/edit/:facultyId/publisher', accomplishmentController.editPublisherInfo);
+router.put('/:facultyId/public-service', accomplishmentController.editPublicServiceInfo);
+router.put('/:facultyId/publisher', accomplishmentController.editPublisherInfo);
+router.delete('/:facultyId/public-service', accomplishmentController.deletePublicService);
 
 module.exports = router;
