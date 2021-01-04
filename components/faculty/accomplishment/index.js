@@ -31,7 +31,8 @@ router.get('/:facultyId/training-seminar', accomplishmentController.getTrainingS
 router.get('/:facultyId/licensure-exam', accomplishmentController.getLicensureExam);
 router.get('/:facultyId/research-grant', accomplishmentController.getResearchGrant);
 router.put('/:facultyId/public-service', accomplishmentController.editPublicServiceInfo);
-router.put('/:facultyId/publisher', accomplishmentController.editPublisherInfo);
+router.put('/:facultyId/publication', accomplishmentController.editPublicationInfo);
 router.delete('/:facultyId/public-service', accomplishmentController.deletePublicService);
+router.delete('/:facultyId/publisher', accomplishmentController.deletePublisher);
 
 module.exports = router;

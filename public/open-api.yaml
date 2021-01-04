@@ -968,7 +968,7 @@ paths:
             schema:
               type: object
               properties:
-                educInfoId:
+                workExpId:
                   type: string
                   example: "12"
       responses:
@@ -1245,7 +1245,7 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
+   
   "/api/faculty/accomplishment/add/publisher":
     post:
       summary: Add faculty publisher info
@@ -1426,7 +1426,53 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
+    put:
+      summary: Edit faculty publication info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty publication info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyPublicationInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publication information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/{facultyId}/publisher":
     put:
       summary: Edit publisher info
@@ -1466,6 +1512,56 @@ paths:
                     message:
                       type: string
                       example: "Faculty publisher information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete faculty publisher info
+      tags:
+      - Faculty - Accomplishments
+      description: Delete faculty publisher info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publicationId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publisher information deleted successfully"
         "500":
           description: Error
           content:
@@ -2304,6 +2400,30 @@ definitions:
         nonFacultyAuthors:
           type: string
           example: "Author 1, Author 2, Author 3"
+
+  editFacultyPublicationInfoSource:
+    properties:
+        publicationId:
+          type: string
+          example: "1"
+        title:
+          type: string
+          example: "Publication Title"
+        journal:
+          type: string
+          example: "Journal published"
+        url:
+          type: string
+          example: "https://www.journalsample.org"
+        publicationDate:
+          type: string
+          example: "2020-06-01"
+        nonFacultyAuthors:
+          type: string
+          example: "Author 1, Author 2, Author 3"
+        proof:
+          type: string
+          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
 
   editFacultyPublisherInfoSource:
     properties:

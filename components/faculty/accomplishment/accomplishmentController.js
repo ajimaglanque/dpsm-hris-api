@@ -770,12 +770,13 @@ faculty.editPublicServiceInfo = async (req, res) => {
     }
 };
 
-faculty.editPublisherInfo = async (req, res) => {
-    // logger.info('inside editPublisherInfo()...');
+faculty.editPublicationInfo = async (req, res) => {
+    // logger.info('inside editPublicationInfo()...');
 
     let jsonRes;
 
     try { 
+        let updatedPublisher = true
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
@@ -802,21 +803,36 @@ faculty.editPublisherInfo = async (req, res) => {
                     success: false,
                     message: 'Faculty publisher information cannot be updated'
                 };
+                updatedPublisher = false
+            } 
+        } 
+        
+        if(updatedPublisher) {
+            let updated = await Publication.update(
+                { 
+                    title: req.body.title,
+                    journal: req.body.journal,
+                    url: req.body.url,
+                    publicationDate: req.body.publicationDate,
+                    nonFacultyAuthors: req.body.nonFacultyAuthors
+                }, {
+                    where: { publicationId: req.body.publicationId }
+                }
+            ) 
+    
+            if(updated == 0) {
+                jsonRes = {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Faculty publication information cannot be updated'
+                };
             } else {
-                
                 jsonRes = {
                     statusCode: 200,
                     success: true,
-                    message: 'Faculty publisher information updated successfully'
+                    message: 'Faculty publication information updated successfully'
                 }; 
             }
-            
-        } else {
-            jsonRes = {
-                statusCode: 400,
-                success: false,
-                message: 'Faculty publisher information cannot be updated'
-            };
         }
     } catch(error) {
         jsonRes = {
@@ -838,7 +854,7 @@ faculty.deletePublicService = async (req, res) => {
     try { 
         
         deleted = await PublicService.destroy(
-           {
+            {
                 where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
             }
         ) 
@@ -856,6 +872,70 @@ faculty.deletePublicService = async (req, res) => {
                 success: true,
                 message: 'Faculty public service information deleted successfully'
             }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deletePublisher = async (req, res) => {
+    // logger.info('inside deletePublisher()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        let deletedPublication = true
+
+        deleted = await Publisher.destroy(
+            {
+                where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty publisher information cannot be deleted'
+            };
+        } else {
+            await Publisher.count({ 
+                where: { publicationId: req.body.publicationId } 
+            }).then(async (count) => {
+                if(count == 0) {
+                    let deleted = await Publication.destroy(
+                        {
+                            where: { publicationId: req.body.publicationId }
+                        }
+                    )
+
+                    if(deleted == 0) {
+                        jsonRes = {
+                            statusCode: 400,
+                            success: false,
+                            message: 'Faculty publication information cannot be deleted'
+                        };
+
+                        deletedPublication = false
+                    } 
+                }
+
+                if(deletedPublication) {
+                    jsonRes = {
+                        statusCode: 200,
+                        success: true,
+                        message: 'Faculty publication information deleted successfully'
+                    }; 
+                }
+            })
+            
         }
     } catch(error) {
         jsonRes = {
