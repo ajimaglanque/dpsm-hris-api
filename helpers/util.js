@@ -24,6 +24,25 @@ util.sendResponse = (res, msg) => {
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = response.statusCode;
   delete response.statusCode;
+
+  if(response.error) {
+    let error = response.error
+    if(error.name && error.errors) {
+      let errorMessages = []
+      let validatorArgs
+      error.errors.forEach(e => {
+        if(Array.isArray(e.validatorArgs) && e.validatorArgs.length) { 
+          validatorArgs = e.validatorArgs[0]
+        }
+        errorMessages.push({
+          message: e.message,
+          acceptedValues: validatorArgs
+        })
+      })
+      response.error = errorMessages
+    }
+  }
+
   res.json(response);
 };
 
