@@ -173,6 +173,7 @@ faculty.addEducationInfo = async (req, res) => {
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
+                    endDate: req.body.endDate,
                     status: 'Ongoing'
                 }
             }) 
