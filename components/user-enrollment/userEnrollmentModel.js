@@ -9,10 +9,17 @@ const User = sequelize.define('user', {
         autoIncrement: true,
         primaryKey: true
     },
-    username: {
+    role: {
+        type: DataTypes.INTEGER(2),
+        allowNull: false
+    },
+    upemail: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: DataTypes.STRING(100),

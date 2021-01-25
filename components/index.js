@@ -9,7 +9,7 @@ const app = express();
 
 const health = require('./health');
 const userEnrollment = require('./user-enrollment');
-const accessToken = require('./access-token');
+const login = require('./login');
 const faculty = require('./faculty');
 const student = require('./student');
 const alumni = require('./alumni');
@@ -36,7 +36,7 @@ app.use(errorHandler.handleError);
  */
 router.use('/health', health);
 router.use('/user',userEnrollment);
-router.use('/token',accessToken);
+router.use('/login',login);
 router.use(authHandler.authenticateUser);
 router.use('/faculty',faculty);
 router.use('/student',student);

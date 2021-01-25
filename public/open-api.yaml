@@ -67,7 +67,7 @@ paths:
               schema:
                 $ref: "#/definitions/ErrorResponse"
 
-  "/api/token":
+  "/api/login":
     post:
       summary: Create access token 
       tags:
@@ -233,6 +233,7 @@ paths:
                         [
                           {
                             "facultyId": 4,
+                            "userId": 2,
                             "lastName": "Cristobal",
                             "firstName": "Jodie",
                             "middleName": "Pacay",
@@ -259,12 +260,6 @@ paths:
                                 }
                             ],
                             "faculty_education_infos": [],
-                            "faculty_publications": [
-                                {
-                                    "publication": "publication",
-                                    "publicationDate": "2019-11-06"
-                                }
-                            ],
                             "faculty_work_exp_infos": []
                         },
                         {
@@ -286,7 +281,6 @@ paths:
                             "emergencyContactNumber": "09123456789",
                             "faculty_employment_infos": [],
                             "faculty_education_infos": [],
-                            "faculty_publications": [],
                             "faculty_work_exp_infos": []
                         }
                       ]
@@ -2110,16 +2104,38 @@ paths:
 definitions:
   userAddSource:
     properties:
-        username:
+        role:
           type: string
-          example: "username"
+          example: "1"
+        upemail:
+          type: string
+          example: "jpcristobal1@upm.edu.ph"
         password:
           type: string
           example: "password"
+        personalInfo:
+          type: object
+          example: {
+            "lastName": "Cristobal",
+            "firstName": "Jodie",
+            "middleName": "Pacay",
+            "dateOfBirth": "1994-01-06",
+            "placeOfBirth": "Manila",
+            "gender": "Female",
+            "permanentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+            "presentAddress": "037 R. Higgins St., Brgy. 185, Pasay City",
+            "mobile": "09123456789",
+            "landline": "88161467",
+            "email": "jodielee@email.com",
+            "civilStatus": "single",
+            "religion": "Catholic",
+            "emergencyContactPerson": "Hilda Cristobal",
+            "emergencyContactNumber": "09123456789"
+          }
 
   accessTokenSource:
     properties:
-        username:
+        upemail:
           type: string
           example: "username"
         password:
@@ -2128,6 +2144,9 @@ definitions:
 
   addFacultyPersonalInfoSource:
     properties:
+        userId:
+          type: string
+          example: "2"
         lastName:
           type: string
           example: "Cristobal"

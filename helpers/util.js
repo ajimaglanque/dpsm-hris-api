@@ -27,7 +27,7 @@ util.sendResponse = (res, msg) => {
 
   if(response.error) {
     let error = response.error
-    if(error.name && error.errors) {
+    if(error.name == 'SequelizeValidationError') {
       let errorMessages = []
       let validatorArgs
       error.errors.forEach(e => {
@@ -35,11 +35,17 @@ util.sendResponse = (res, msg) => {
           validatorArgs = e.validatorArgs[0]
         }
         errorMessages.push({
+          name: error.name,
           message: e.message,
           acceptedValues: validatorArgs
         })
       })
       response.error = errorMessages
+    } else if(error.name == 'SequelizeDatabaseError' || error.name == 'SequelizeUniqueConstraintError') {
+      response.error = {
+        name: error.name,
+        message: error.parent.sqlMessage
+      }
     }
   }
 

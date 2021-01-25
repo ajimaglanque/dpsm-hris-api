@@ -28,7 +28,7 @@ faculty.addPersonalInfo = async (req, res) => {
     
     try {
         let [fclty, created] = await PersonalInfo.findOrCreate({
-            where: { email: req.body.email },
+            where: { userId: req.body.userId },
             defaults: req.body
         })
 
@@ -474,12 +474,6 @@ faculty.getAllFacultyInfo = async (req, res) => {
                     }
                 },
                 {
-                    model: Publication,
-                    attributes: {
-                        exclude: ['publicationId', 'facultyId', 'createdAt', 'updatedAt']
-                    }
-                },
-                {
                     model: WorkExpInfo,
                     attributes: {
                         exclude: ['workExpId', 'facultyId', 'createdAt', 'updatedAt']
@@ -492,7 +486,6 @@ faculty.getAllFacultyInfo = async (req, res) => {
                 ['middleName', 'ASC'],
                 [EmploymentInfo, 'startDate', 'DESC'],
                 [EducationInfo, 'startDate', 'DESC'],
-                [Publication, 'publicationDate', 'DESC'],
                 [WorkExpInfo, 'endDate', 'DESC'],
             ]
           });

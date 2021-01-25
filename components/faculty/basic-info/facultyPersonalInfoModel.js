@@ -9,6 +9,10 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
         autoIncrement: true,
         primaryKey: true
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     lastName: {
         type: DataTypes.STRING(50),
         allowNull: false

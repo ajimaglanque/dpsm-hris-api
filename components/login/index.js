@@ -2,7 +2,7 @@ const express = require('express');
 // const log4js = require('log4js');
 // const config = require('config');
 
-const accessTokenCtrl = require('./accessTokenController');
+const loginCtrl = require('./loginController');
 
 const router = express.Router();
 
@@ -18,6 +18,6 @@ logger.debug('setting up /accessToken route');
 /**
  * Add routes
  */
-router.post('/', accessTokenCtrl.generateAccessToken);
+router.post('/', loginCtrl.login);
 
 module.exports = router;

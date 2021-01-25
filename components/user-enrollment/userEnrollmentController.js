@@ -3,6 +3,7 @@
 const util = require('../../helpers/util');
 
 const User = require('./userEnrollmentModel')
+const PersonalInfo = require('../faculty/basic-info/facultyPersonalInfoModel')
 
 // const logger = log4js.getLogger('controllers - userEnrollment');
 // logger.level = config.logLevel;
@@ -23,10 +24,11 @@ userEnrollment.userEnroll = async (req, res) => {
     const passwordHash = util.hashPassword(req.body.password, salt);
     
     try {
-        let [, created] = await User.findOrCreate({
-            where: { username: req.body.username },
+        let [usr, created] = await User.findOrCreate({
+            where: { upemail: req.body.upemail },
             defaults: {
-                username: req.body.username,
+                role: req.body.role,
+                upemail: req.body.upemail,
                 password: passwordHash,
                 salt: salt
             }
@@ -36,14 +38,63 @@ userEnrollment.userEnroll = async (req, res) => {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Username already exists'
+                message: 'UP Email already exists'
             };
         } else {
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                message: 'User enrolled successfully'
-            }; 
+            // check if role id is (1,2,3) -> Create faculty personal information
+            if(['1','2','3'].indexOf(req.body.role) != -1 && req.body.personalInfo) {
+                try {
+                    let [fclty, created] = await PersonalInfo.findOrCreate({
+                        where: { userId: usr.userId },
+                        defaults: {
+                            userId: usr.userId,
+                            lastName: req.body.personalInfo.lastName,
+                            firstName: req.body.personalInfo.firstName,
+                            middleName: req.body.personalInfo.middleName,
+                            dateOfBirth: req.body.personalInfo.dateOfBirth,
+                            placeOfBirth: req.body.personalInfo.placeOfBirth,
+                            gender: req.body.personalInfo.gender,
+                            permanentAddress: req.body.personalInfo.permanentAddress,
+                            presentAddress: req.body.personalInfo.presentAddress,
+                            mobile: req.body.personalInfo.mobile,
+                            landline: req.body.personalInfo.landline,
+                            email: req.body.personalInfo.email,
+                            civilStatus: req.body.personalInfo.civilStatus,
+                            religion: req.body.personalInfo.religion,
+                            emergencyContactPerson: req.body.personalInfo.emergencyContactPerson,
+                            emergencyContactNumber: req.body.personalInfo.emergencyContactNumber
+                        }
+                    })
+                    if(!created) {
+                        jsonRes = {
+                            statusCode: 400,
+                            success: false,
+                            message: 'Faculty already exists'
+                        };
+                    } else {
+                        jsonRes = {
+                            statusCode: 200,
+                            success: true,
+                            message: "Faculty added successfully",
+                            result: {
+                                facultyId: fclty.facultyId
+                            }
+                        }; 
+                    }
+                } catch(error) {
+                    jsonRes = {
+                        statusCode: 500,
+                        success: false,
+                        error: error,
+                    };
+                }
+            } else {
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    message: 'User enrolled successfully'
+                }; 
+            }
         }
     } catch(error) {
         jsonRes = {

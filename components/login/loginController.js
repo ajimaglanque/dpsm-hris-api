@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const util = require('../../helpers/util');
 
 const User = require('../user-enrollment/userEnrollmentModel')
+const Faculty = require('../faculty/basic-info/facultyPersonalInfoModel');
+const PersonalInfo = require('../faculty/basic-info/facultyPersonalInfoModel');
 
 // const logger = log4js.getLogger('controllers - accessToken');
 // logger.level = config.logLevel;
@@ -12,16 +14,16 @@ const User = require('../user-enrollment/userEnrollmentModel')
 /**
  * Controller object
  */
-const accessToken = {};
+const login = {};
 
-accessToken.generateAccessToken = async (req, res) => {
-    // logger.debug('inside generateAccessToken()...');
+login.login = async (req, res) => {
+    // logger.debug('inside login()...');
     let jsonRes;
 
     try {
-        const username = req.body.username;
+        const upemail = req.body.upemail;
         const getUser = await User.findOne({
-            where: { username: username }
+            where: { upemail: upemail }
         })
 
         if(getUser === null) {
@@ -39,17 +41,34 @@ accessToken.generateAccessToken = async (req, res) => {
 
             if(passwordHash === getUser.password) {
                 let userDetails = {
-                    username: getUser.username
+                    upemail: getUser.upemail
                 };
-                // logger.debug('generateAccessToken user authenticated');
+                
+                // generate token
                 let token = jwt.sign(userDetails, config.token.secret, {
                     expiresIn: config.token.expiry
                 }); 
+
                 jsonRes = {
                     statusCode: 200,
                     success: true,
-                    result: token
+                    result: {
+                        role: getUser.role,
+                        userId: getUser.userId,
+                        token
+                    }
                 };
+
+                if(getUser.role == 1 || getUser.role == 2 || getUser.role == 3) { 
+                    let faculty = await PersonalInfo.findOne({
+                        where: { userId: getUser.userId },
+                        attributes: ['facultyId']
+                    })
+                    
+                    if(faculty != null) {
+                        jsonRes.result.facultyId = faculty.facultyId
+                    }
+                }
             } else {
                 jsonRes = {
                     errors: [{
@@ -71,4 +90,4 @@ accessToken.generateAccessToken = async (req, res) => {
     }
 };
 
-module.exports = accessToken;
+module.exports = login;
