@@ -24,7 +24,4 @@ const EmploymentPosition = sequelize.define('faculty_employment_position', {
     }
   });
   
-  EmploymentPosition.hasMany(EmploymentInfo, {foreignKey: 'employmentPositionId'})
-  EmploymentInfo.belongsTo(EmploymentPosition, {foreignKey: 'position'});
-
   module.exports = EmploymentPosition

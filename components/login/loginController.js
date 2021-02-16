@@ -41,9 +41,22 @@ login.login = async (req, res) => {
 
             if(passwordHash === getUser.password) {
                 let userDetails = {
-                    upemail: getUser.upemail
+                    upemail: getUser.upemail,
+                    role: getUser.role,
+                    userId: getUser.userId
                 };
                 
+                if(getUser.role == 1 || getUser.role == 2 || getUser.role == 3) { 
+                    let faculty = await PersonalInfo.findOne({
+                        where: { userId: getUser.userId },
+                        attributes: ['facultyId']
+                    })
+                    
+                    if(faculty != null) {
+                        userDetails.facultyId = faculty.facultyId
+                    }
+                }
+
                 // generate token
                 let token = jwt.sign(userDetails, config.token.secret, {
                     expiresIn: config.token.expiry
@@ -53,22 +66,10 @@ login.login = async (req, res) => {
                     statusCode: 200,
                     success: true,
                     result: {
-                        role: getUser.role,
-                        userId: getUser.userId,
                         token
                     }
                 };
 
-                if(getUser.role == 1 || getUser.role == 2 || getUser.role == 3) { 
-                    let faculty = await PersonalInfo.findOne({
-                        where: { userId: getUser.userId },
-                        attributes: ['facultyId']
-                    })
-                    
-                    if(faculty != null) {
-                        jsonRes.result.facultyId = faculty.facultyId
-                    }
-                }
             } else {
                 jsonRes = {
                     errors: [{

@@ -1,8 +1,8 @@
 const sequelize = require('../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
-const PersonalInfo = require('./facultyPersonalInfoModel')
-
+const PersonalInfo = require('./facultyPersonalInfoModel');
+const EmploymentPosition = require('./facultyEmploymentPositionModel');
 
 const EmploymentInfo = sequelize.define('faculty_employment_info', {
     // Model attributes are defined here
@@ -33,5 +33,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
   
   PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
   EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
-  
+  EmploymentInfo.hasOne(EmploymentPosition, {foreignKey: 'employmentPositionId'});
+  EmploymentPosition.hasMany(EmploymentInfo, {foreignKey: 'position'})
+
   module.exports = EmploymentInfo
