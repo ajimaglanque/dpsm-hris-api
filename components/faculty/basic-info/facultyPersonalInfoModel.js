@@ -89,6 +89,9 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
             isNumeric: true
         },
         allowNull: false
+    },
+    dependents: {
+        type: DataTypes.STRING
     }
   });
 

@@ -16,6 +16,16 @@ CREATE TABLE `faculty_research_grants` (
     PRIMARY KEY (`researchGrantId`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `faculty_researchers` (
+  `publisherId` int(8) NOT NULL,
+  `researchId` int(8) NOT NULL,
+  `facultyId` int(8) NOT NULL,
+  `proof` varchar(100) DEFAULT NULL,
+  `status` varchar(25) NOT NULL DEFAULT 'pending',
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 ALTER TABLE `faculty_researchers` 
 ADD PRIMARY KEY( `publisherId`); 
 

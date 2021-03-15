@@ -7,7 +7,7 @@ ALTER TABLE `users` ADD `role` INT(2) NOT NULL AFTER `userId`;
 
 CREATE TABLE `roles` ( 
     `roleId` INT(3) NOT NULL , 
-    `roleId` INT(3) NOT NULL AUTO_INCREMENT, 
+    `role` INT(3) NOT NULL AUTO_INCREMENT, 
     PRIMARY KEY (`roleId`)
 ) ENGINE = InnoDB;
 

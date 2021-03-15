@@ -15,6 +15,12 @@ const EducationInfo = sequelize.define('faculty_education_info', {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    degreeType: {
+        type: DataTypes.STRING(10),
+        validate: {
+            isIn: ['AA', 'AS', 'BA', 'BS', 'MA', 'MS', 'MD', 'PhD']
+        }
+    },
     degreeCert: {
         type: DataTypes.STRING(50),
         allowNull: false
