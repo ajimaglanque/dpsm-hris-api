@@ -995,20 +995,20 @@ paths:
       - Faculty - Accomplishments
       description: Add faculty public service info
       consumes:
-        - application/json
+        - multipart/form-data
       produces:
         - application/json
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/definitions/addFacultyPublicServiceInfoSource"
       responses:
         "200":
           description: Success
           content:
-            application/json:
+              application/json:
                 schema:
                   type: object
                   properties:
@@ -1106,7 +1106,7 @@ paths:
       consumes:
         - multipart/form-data
       produces:
-        - application/json
+        - multipart/form-data
       parameters:
           - name: facultyId
             in: path
@@ -1572,13 +1572,13 @@ paths:
       - Faculty - Accomplishments
       description: Add faculty training/seminar info
       consumes:
-        - application/json
+        - multipart/form-data
       produces:
         - application/json
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/definitions/addFacultyTSInfoSource"
       responses:
@@ -1675,13 +1675,13 @@ paths:
       - Faculty - Accomplishments
       description: Add faculty licensure exam info
       consumes:
-        - application/json
+        - multipart/form-data
       produces:
         - application/json
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/definitions/addFacultyLicensureExamInfoSource"
       responses:
@@ -1950,6 +1950,84 @@ paths:
                             ]
                           }
                         ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/load":
+    post:
+      summary: Add faculty load
+      tags:
+      - Faculty - Load
+      description: Add faculty load information
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/addFacultyLoadSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty class record added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/evaluation":
+    post:
+      summary: Add faculty peer evaluation
+      tags:
+      - Faculty - Peer Evaluation
+      description: Add faculty peer evaluation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyEvaluationSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty peer evaluation added successfully"
         "500":
           description: Error
           content:
@@ -2531,6 +2609,39 @@ definitions:
         nonFacultyResearchers:
           type: string
           example: "Author 1, Author 2, Author 3"
+
+  addFacultyLoadSource:
+    properties:
+        facultyId:
+          type: string
+          example: "2"
+        academicYear:
+          type: string
+          example: "1st Semester, AY 2020-2021"
+        subject:
+          type: string
+          example: "CMSC 123"
+        section:
+          type: string
+          example: "MHI"
+        classRecord:
+          type: string
+          example: "BUTHRWIAKTL.csv"
+
+  addFacultyEvaluationSource:
+    properties:
+        facultyId:
+          type: string
+          example: "2"
+        academicYear:
+          type: string
+          example: "AY 2020-2021"
+        evaluatee:
+          type: string
+          example: "14"
+        evaluation:
+          type: string
+          example: "2.0"
 
   addStudentPersonalInfoSource:
     properties:

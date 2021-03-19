@@ -2,10 +2,7 @@ const express = require('express');
 // const log4js = require('log4js');
 // const config = require('config')
 
-const basicInfo = require('./basic-info');
-const accomplishments = require('./accomplishment');
-const facultyLoad = require('./faculty-load');
-const evaluations = require('./evaluation');
+const evaluationController = require('./evaluationController');
 
 const router = express.Router();
 
@@ -21,9 +18,8 @@ const router = express.Router();
 /**
  * Add routes
  */
-router.use('/basic-info', basicInfo);
-router.use('/accomplishment', accomplishments);
-router.use('/load', facultyLoad);
-router.use('/evaluation', evaluations);
+
+router.post('/', evaluationController.addPeerEvaluation);
+// router.get('/:facultyId', evaluationController.getFacultyEvaluations);
 
 module.exports = router;
