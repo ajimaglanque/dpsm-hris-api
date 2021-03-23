@@ -16,7 +16,7 @@ const PublicationInfo = sequelize.define('faculty_publication', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    journal: {
+    citation: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
