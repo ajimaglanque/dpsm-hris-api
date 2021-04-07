@@ -525,6 +525,7 @@ faculty.editPersonalInfo = async (req, res) => {
             { 
                 middleName: req.body.middleName,
                 lastName: req.body.lastName,
+                suffix: req.body.suffix,
                 permanentAddress: req.body.permanentAddress,
                 presentAddress: req.body.presentAddress,
                 civilStatus: req.body.civilStatus,
