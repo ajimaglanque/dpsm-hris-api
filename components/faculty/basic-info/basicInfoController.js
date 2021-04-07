@@ -332,7 +332,7 @@ faculty.getEmploymentInfo = async (req, res) => {
     try {
         let facultyList = await EmploymentInfo.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: ['startDate', 'endDate'],
+            attributes: ['employmentInfoId', 'startDate', 'endDate'],
             include: 
                 {
                     model: EmploymentPosition,
@@ -412,7 +412,7 @@ faculty.getWorkExpInfo = async (req, res) => {
     try {
         let facultyList = await WorkExpInfo.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: ['employerName', 'startDate', 'endDate', 'position', 'description'],
+            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
             order: [['endDate', 'DESC']]
         });
 
