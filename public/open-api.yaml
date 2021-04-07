@@ -567,6 +567,7 @@ paths:
                       example: 
                         [
                           {
+                            "employmentInfoId": 1,
                             "startDate": "2004-01-06",
                             "endDate": null,
                             "faculty_employment_position": {
@@ -575,11 +576,12 @@ paths:
                             }
                           },
                           {
+                            "employmentInfoId": 8,
                             "startDate": "1994-01-06",
                             "endDate": "1995-01-06",
                             "faculty_employment_position": {
-                                "employmentType": "ftp",
-                                "position": "Associate Professor 3"
+                                "employmentType": "ftt",
+                                "position": "Assistant Professor 1"
                             }
                           }
                         ]
@@ -869,6 +871,7 @@ paths:
                       example: 
                         [
                           {
+                            "workExpId": "1",
                             "employerName": "University of the Philippines Diliman",
                             "startDate": "2014-01-06",
                             "endDate": "2019-11-06",
@@ -876,6 +879,7 @@ paths:
                             "description": "Description"
                           },
                           {
+                            "workExpId": "2",
                             "employerName": "University of the Philippines Manila",
                             "startDate": "2004-01-06",
                             "endDate": "2013-11-06",
