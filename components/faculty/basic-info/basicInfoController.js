@@ -154,6 +154,7 @@ faculty.addEducationInfo = async (req, res) => {
                 defaults: {
                     facultyId: req.body.facultyId,
                     institutionSchool: req.body.institutionSchool,
+                    degreeType: req.body.degreeType,
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
@@ -170,6 +171,7 @@ faculty.addEducationInfo = async (req, res) => {
                 defaults: {
                     facultyId: req.body.facultyId,
                     institutionSchool: req.body.institutionSchool,
+                    degreeType: req.body.degreeType,
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
@@ -585,6 +587,7 @@ faculty.editEducationInfo = async (req, res) => {
             updated = await EducationInfo.update(
                 { 
                     institutionSchool: req.body.institutionSchool,
+                    degreeType: req.body.degreeType,
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
@@ -601,6 +604,7 @@ faculty.editEducationInfo = async (req, res) => {
             updated = await EducationInfo.update(
                 { 
                     institutionSchool: req.body.institutionSchool,
+                    degreeType: req.body.degreeType,
                     degreeCert: req.body.degreeCert,
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
