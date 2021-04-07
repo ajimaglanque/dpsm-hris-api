@@ -2238,6 +2238,9 @@ definitions:
         middleName:
           type: string
           example: "Pacay"
+        suffix:
+          type: string
+          example: "III"
         dateOfBirth:
           type: string
           example: "1994-01-06"
@@ -2307,9 +2310,12 @@ definitions:
         institutionSchool:
           type: string
           example: "UPM"
+        degreeType:
+          type: string
+          example: "AA/AS/BA/BS/MA/MS/MD/PhD"
         degreeCert:
           type: string
-          example: "BS CS"
+          example: "Computer Science"
         majorSpecialization:
           type: string
           example: "HI"
@@ -2356,6 +2362,9 @@ definitions:
         middleName:
           type: string
           example: "Pacay"
+        suffix:
+          type: string
+          example: "Jr."
         permanentAddress:
           type: string
           example: "037 R. Higgins St., Brgy. 185, Pasay City"
@@ -2392,9 +2401,12 @@ definitions:
         institutionSchool: 
           type: string
           example: "University of the Philippines Manila"
+        degreeType:
+          type: string
+          example: "AA/AS/BA/BS/MA/MS/MD/PhD"
         degreeCert: 
           type: string
-          example: "BS Computer Science"
+          example: "Computer Science"
         majorSpecialization: 
           type: string
           example: "Health Informatics"

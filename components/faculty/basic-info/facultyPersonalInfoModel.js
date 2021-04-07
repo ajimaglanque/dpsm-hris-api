@@ -22,8 +22,10 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
         allowNull: false
     },
     middleName: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(50)
+    },
+    suffix: {
+        type: DataTypes.STRING(3)
     },
     dateOfBirth: {
         type: DataTypes.DATE,
