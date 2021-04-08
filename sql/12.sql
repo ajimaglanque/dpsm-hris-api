@@ -21,7 +21,7 @@ CREATE TABLE faculty_researchers (
   publicationId int(8) NOT NULL,
   facultyId int(8) NOT NULL,
   proof varchar(100) DEFAULT NULL,
-  status varchar(25) NOT NULL DEFAULT 'pending',
+  status varchar(25) NOT NULL DEFAULT 'Pending',
   createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

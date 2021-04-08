@@ -150,7 +150,7 @@ faculty.addEducationInfo = async (req, res) => {
             proof.mv(path);
 
             [, created] = await EducationInfo.findOrCreate({
-                where: { facultyId: req.body.facultyId, degreeCert: req.body.degreeCert },
+                where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
                 defaults: {
                     facultyId: req.body.facultyId,
                     institutionSchool: req.body.institutionSchool,
@@ -167,7 +167,7 @@ faculty.addEducationInfo = async (req, res) => {
             
         } else { 
             [, created] = await EducationInfo.findOrCreate({
-                where: { facultyId: req.body.facultyId, degreeCert: req.body.degreeCert },
+                where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
                 defaults: {
                     facultyId: req.body.facultyId,
                     institutionSchool: req.body.institutionSchool,
@@ -176,7 +176,7 @@ faculty.addEducationInfo = async (req, res) => {
                     majorSpecialization: req.body.majorSpecialization,
                     startDate: req.body.startDate,
                     endDate: req.body.endDate,
-                    status: 'Ongoing'
+                    status: 'Pending'
                 }
             }) 
         }

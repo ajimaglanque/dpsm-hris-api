@@ -6,7 +6,7 @@ CREATE TABLE `faculty_class_records` (
     `section` VARCHAR(5) NOT NULL ,
     `classRecord` VARCHAR(150) NOT NULL ,
     `createdAt` TIMESTAMP NOT NULL , 
-    `updatedAt` TIMESTAMP NOT NULL ,
+    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
 ) ENGINE = InnoDB;
 
 ALTER TABLE `faculty_class_records` 
@@ -21,7 +21,7 @@ CREATE TABLE `faculty_evaluations` (
     `academicYear` VARCHAR(50) NOT NULL , 
     `evaluation` FLOAT(4) NOT NULL , 
     `createdAt` TIMESTAMP NOT NULL , 
-    `updatedAt` TIMESTAMP NOT NULL ,
+    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (`evaluationId`)
 ) ENGINE = InnoDB;
 
