@@ -5,6 +5,7 @@ const { Sequelize } = require('sequelize');
 const util = require('../../../helpers/util');
 
 const PersonalInfo = require('./facultyPersonalInfoModel')
+const Dependent = require('./facultyDependentModel')
 const FacultyUnit = require('./facultyUnitModel');
 const EducationInfo = require('./facultyEducationInfoModel')
 const EmploymentInfo = require('./facultyEmploymentInfoModel')
@@ -46,6 +47,44 @@ faculty.addPersonalInfo = async (req, res) => {
                 result: {
                     facultyId: fclty.facultyId
                 }
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.updateDependent = async (req, res) => {
+    // logger.info('inside addDependent()...');
+
+    let jsonRes;
+    
+    try {
+        let created = await Dependent.bulkCreate(req.body, 
+            { 
+                validate: true,
+                updateOnDuplicate: ['name', 'birthDate', 'relationship']
+            }
+        ) 
+
+        if(!created) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Could not bulk update faculty dependent information'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty dependent information updated successfully'
             }; 
         }
     } catch(error) {
@@ -299,7 +338,14 @@ faculty.getFacultyPersonalInfo = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await PersonalInfo.findByPk(req.params.facultyId);
+        let facultyList = await PersonalInfo.findByPk(req.params.facultyId, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: 
+                {
+                    model: Dependent,
+                    attributes: ['dependentId', 'name', 'birthDate', 'relationship']
+                }
+        });
 
         if(facultyList.length === 0) {
             jsonRes = {
@@ -672,6 +718,45 @@ faculty.editWorkExpInfo = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty work experience information updated successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteDependent = async (req, res) => {
+    // logger.info('inside deleteDependent()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await Dependent.destroy(
+           {
+                where: { facultyId: req.params.facultyId, dependentId: req.body.dependentId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty dependent cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty dependent deleted successfully'
             }; 
         }
     } catch(error) {

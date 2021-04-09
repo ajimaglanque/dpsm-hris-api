@@ -376,6 +376,7 @@ paths:
                           "lastName": "Cristobal",
                           "firstName": "Bod",
                           "middleName": "Pacay",
+                          "suffix": "III",
                           "dateOfBirth": "1994-01-06",
                           "placeOfBirth": "Manila",
                           "gender": "female",
@@ -388,8 +389,20 @@ paths:
                           "religion": "Catholic",
                           "emergencyContactPerson": "Hilda Cristobal",
                           "emergencyContactNumber": "09123456789",
-                          "createdAt": "2020-10-30T16:00:00.000Z",
-                          "updatedAt": "2020-10-30T16:00:00.000Z"
+                          "faculty_dependents": [
+                            {
+                              "dependentId": 6,
+                              "name": "Edwin Cristobal",
+                              "birthDate": "1959-12-06",
+                              "relationship": "Father"
+                            },
+                            {
+                              "dependentId": 7,
+                              "name": "Jared Kevin Cristobal",
+                              "birthDate": "1995-01-26",
+                              "relationship": "Brother"
+                            }
+                          ]
                         }
         "500":
           description: Error
@@ -493,6 +506,112 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/basic-info/dependent":
+    put:
+      summary: Add/Edit faculty dependent
+      tags:
+      - Faculty - Basic Information
+      description: Add faculty dependent if no dependentId passed; Edit otherwise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                [
+                  {
+                    "facultyId": "3 // only required if adding a new dependent", 
+                    "name": "Edwin Cristobal",
+                    "birthDate": "1959-12-06",
+                    "relationship": "Father"
+                  },
+                  {
+                    "dependentId": "10 //only required if editing an existing dependent", 
+                    "name": "Jared Kevin Cristobal",
+                    "birthDate": "1995-01-26",
+                    "relationship": "Brother"
+                  }
+                ]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty dependent information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/basic-info/{facultyId}/dependent":
+    delete:
+      summary: Delete faculty dependent info
+      tags:
+      - Faculty - Basic Information
+      description: Delete faculty dependent info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dependentId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty dependent information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    
   "/api/faculty/basic-info/add/employment":
     post:
       summary: Add faculty employment info
@@ -2277,6 +2396,14 @@ definitions:
         emergencyContactNumber:
           type: string
           example: 09123456789
+  addFacultyUnitSource:
+    properties:
+        facultyId:
+          type: string
+          example: "1"
+        unitId:
+          type: string
+          example: "1"
 
   addFacultyEmploymentInfoSource:
     properties:
@@ -2292,15 +2419,6 @@ definitions:
         endDate:
           type: string
           example: "1994-01-06"
-
-  addFacultyUnitSource:
-    properties:
-        facultyId:
-          type: string
-          example: "1"
-        unitId:
-          type: string
-          example: "1"
 
   addFacultyEducationInfoSource:
     properties:

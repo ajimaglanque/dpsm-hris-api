@@ -1,6 +1,8 @@
 const express = require('express');
 // const log4js = require('log4js');
 // const config = require('config')
+const multer = require('multer')
+var upload = multer({ dest: './../../../uploads/' })
 
 const basicInfoController = require('./basicInfoController');
 
@@ -31,8 +33,10 @@ router.get('/:facultyId/employment', basicInfoController.getEmploymentInfo);
 router.get('/:facultyId/education', basicInfoController.getEducationInfo);
 router.get('/:facultyId/work-exp', basicInfoController.getWorkExpInfo);
 router.put('/:facultyId/personal', basicInfoController.editPersonalInfo);
+router.put('/dependent', basicInfoController.updateDependent);
 router.put('/:facultyId/education', basicInfoController.editEducationInfo);
 router.put('/:facultyId/work-exp', basicInfoController.editWorkExpInfo);
+router.delete('/:facultyId/dependent', basicInfoController.deleteDependent);
 router.delete('/:facultyId/education', basicInfoController.deleteEducationInfo);
 router.delete('/:facultyId/work-exp', basicInfoController.deleteWorkExpInfo);
 
