@@ -1,8 +1,6 @@
 const express = require('express');
 // const log4js = require('log4js');
 // const config = require('config')
-const multer = require('multer')
-var upload = multer({ dest: './../../../uploads/' })
 
 const basicInfoController = require('./basicInfoController');
 

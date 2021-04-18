@@ -84,6 +84,11 @@ app.use(nocache());
 app.enable('trust proxy');
 
 /**
+ * Allow external access to uploads folder
+ */
+app.use(express.static('uploads'))
+
+/**
  * Allow file upload
  */
 app.use(fileUpload());
