@@ -1790,6 +1790,56 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
+    delete:
+      summary: Delete faculty training/seminar info
+      tags:
+      - Faculty - Accomplishments
+      description: Delete faculty training/seminar info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tsId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty training/seminar information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
   
   "/api/faculty/accomplishment/add/licensure-exam":
     post:
@@ -1891,6 +1941,56 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
+    delete:
+      summary: Delete faculty licensure exam info
+      tags:
+      - Faculty - Accomplishments
+      description: Delete faculty licensure exam info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenseId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty licensure exam information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
   
   "/api/faculty/accomplishment/add/research-grant":
     post:
@@ -1958,17 +2058,18 @@ paths:
                   {
                     "facultyId": "9",
                     "researchId": "1",
-                    "status": "Ongoing"
+                    "proof": "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg",
+                    "status": "For Verification"
                   },
                   {
                     "facultyId": "10",
                     "researchId": "1",
-                    "status": "Ongoing"
+                    "status": "Pending"
                   },
                   {
                     "facultyId": "8",
                     "researchId": "1",
-                    "status": "Ongoing"
+                    "status": "Pending"
                   }
                 ]
       responses:
@@ -2073,6 +2174,58 @@ paths:
                             ]
                           }
                         ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/accomplishment/{facultyId}/researcher":
+    delete:
+      summary: Delete faculty researcher info
+      tags:
+      - Faculty - Accomplishments
+      description: Delete faculty researcher info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                researchId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty researcher information deleted successfully"
         "500":
           description: Error
           content:
@@ -2743,6 +2896,7 @@ definitions:
         nonFacultyResearchers:
           type: string
           example: "Author 1, Author 2, Author 3"
+        
 
   addFacultyLoadSource:
     properties:

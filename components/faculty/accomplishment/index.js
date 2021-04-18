@@ -34,5 +34,8 @@ router.put('/:facultyId/public-service', accomplishmentController.editPublicServ
 router.put('/:facultyId/publication', accomplishmentController.editPublicationInfo);
 router.delete('/:facultyId/public-service', accomplishmentController.deletePublicService);
 router.delete('/:facultyId/publisher', accomplishmentController.deletePublisher);
+router.delete('/:facultyId/training-seminar', accomplishmentController.deleteTrainingSeminar);
+router.delete('/:facultyId/licensure-exam', accomplishmentController.deleteLicensureExam);
+router.delete('/:facultyId/researcher', accomplishmentController.deleteResearcher);
 
 module.exports = router;

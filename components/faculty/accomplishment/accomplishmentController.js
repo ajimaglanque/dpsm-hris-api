@@ -259,6 +259,7 @@ faculty.addLicensureExam = async (req, res) => {
                     examName: req.body.examName,
                     examDate: req.body.examDate,
                     licenseNumber: req.body.licenseNumber,
+                    rank: req.body.rank,
                     proof: filename,
                     status: 'For Verification'
                 }
@@ -271,6 +272,7 @@ faculty.addLicensureExam = async (req, res) => {
                     examName: req.body.examName,
                     examDate: req.body.examDate,
                     licenseNumber: req.body.licenseNumber,
+                    rank: req.body.rank,
                     status: 'Pending'
                 }
             }) 
@@ -933,6 +935,148 @@ faculty.deletePublisher = async (req, res) => {
                         success: true,
                         message: 'Faculty publication information deleted successfully'
                     }; 
+                }
+            })
+            
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteTrainingSeminar = async (req, res) => {
+    // logger.info('inside deleteTrainingSeminar()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await TrainingSeminar.destroy(
+            {
+                where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty training/seminar information cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty training/seminar information deleted successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteLicensureExam = async (req, res) => {
+    // logger.info('inside deleteLicensureExam()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await LicensureExam.destroy(
+            {
+                where: { facultyId: req.params.facultyId, licenseId: req.body.licenseId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty licensure exam information cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty licensure exam information deleted successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteResearcher = async (req, res) => {
+    // logger.info('inside deleteResearcher()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        deleted = await Researcher.destroy(
+            {
+                where: { facultyId: req.params.facultyId, researchId: req.body.researchId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty researcher information cannot be deleted'
+            };
+        } else {
+            await Researcher.count({ 
+                where: { researchId: req.body.researchId } 
+            }).then(async (count) => {
+                if(count == 0) {
+                    let deleted = await ResearchGrant.destroy(
+                        {
+                            where: { researchGrantId: req.body.researchId }
+                        }
+                    )
+
+                    if(deleted == 0) {
+                        jsonRes = {
+                            statusCode: 400,
+                            success: false,
+                            message: 'Faculty research grant information cannot be deleted'
+                        };
+                    } else {
+                        jsonRes = {
+                            statusCode: 200,
+                            success: true,
+                            message: 'Faculty research grant information deleted successfully'
+                        }; 
+                    }
+                } else {
+                    jsonRes = {
+                        statusCode: 200,
+                        success: true,
+                        message: 'Faculty researcher information deleted successfully'
+                    };
                 }
             })
             
