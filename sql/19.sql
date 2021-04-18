@@ -5,7 +5,7 @@ CREATE TABLE `faculty_dependents` (
     `birthdate` DATE NOT NULL , 
     `relationship` VARCHAR(20) NOT NULL ,
     `createdAt` TIMESTAMP NOT NULL , 
-    `updatedAt` TIMESTAMP NOT NULL ,
+    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (`dependentId`)
 ) ENGINE = InnoDB;
 

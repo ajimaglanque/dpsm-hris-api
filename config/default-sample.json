@@ -6,7 +6,7 @@
   },
   "token": {
     "secret":"",
-    "expriry": 0
+    "expiry": 0
   },
   "database": {
     "username": "",
