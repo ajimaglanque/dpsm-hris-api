@@ -1591,52 +1591,6 @@ paths:
       - bearerAuth: []
 
   "/api/faculty/accomplishment/{facultyId}/publisher":
-    put:
-      summary: Edit publisher info
-      tags:
-      - Faculty - Accomplishments
-      description: Edit publisher info
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/definitions/editFacultyPublisherInfoSource"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty publisher information updated successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
     delete:
       summary: Delete faculty publisher info
       tags:
@@ -1768,6 +1722,7 @@ paths:
                             "dateFrom": "2019-06-29",
                             "dateTo": "2019-06-27",
                             "venue": "UP ITDC",
+                            "remarks": "Remarks",
                             "proof": "65KG9KD3A4OXQEQM0TEJJH1QGHP78D16FBW.jpeg",
                             "status": "For Verification"
                           },
@@ -1782,6 +1737,52 @@ paths:
                             "status": "For Verification"
                           }
                         ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      summary: Edit faculty training/seminar info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty training/seminar info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyTrainingSeminarInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty training/seminar information updated successfully"
         "500":
           description: Error
           content:
@@ -2549,6 +2550,7 @@ definitions:
         emergencyContactNumber:
           type: string
           example: 09123456789
+  
   addFacultyUnitSource:
     properties:
         facultyId:
@@ -2809,19 +2811,6 @@ definitions:
           type: string
           example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
 
-  editFacultyPublisherInfoSource:
-    properties:
-        publicationId:
-          type: string
-          example: "1"
-        proof:
-          type: string
-          format: binary
-          example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
-        status:
-          type: string
-          example: "For Verification"
-
   addFacultyTSInfoSource:
     properties:
         facultyId:
@@ -2842,6 +2831,9 @@ definitions:
         venue:
           type: string
           example: "UP Diliman"
+        remarks:
+          type: string
+          example: "Remarks"
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
@@ -2863,6 +2855,33 @@ definitions:
         rank:
           type: string
           example: "3"
+        proof:
+          type: string
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+
+  editFacultyTrainingSeminarInfoSource:
+    properties:
+        tsId:
+          type: string
+          example: "1"
+        title:
+          type: string
+          example: "MySQL Training"
+        role:
+          type: string
+          example: "Speaker"
+        dateFrom:
+          type: string
+          example: "2004-01-06"
+        dateTo:
+          type: string
+          example: "2004-01-07"
+        venue:
+          type: string
+          example: "UP Diliman"
+        remarks:
+          type: string
+          example: "Remarks"
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"

@@ -37,6 +37,9 @@ const TrainingSeminar = sequelize.define('faculty_training_seminar', {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
+    remarks: {
+        type: DataTypes.STRING(255)
+    },
     proof: {
         type: DataTypes.STRING(100)
     },

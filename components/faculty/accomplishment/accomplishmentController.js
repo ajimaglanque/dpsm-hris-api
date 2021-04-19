@@ -192,6 +192,7 @@ faculty.addTrainingSeminar = async (req, res) => {
                     dateFrom: req.body.dateFrom,
                     dateTo: req.body.dateTo,
                     venue: req.body.venue,
+                    remarks: req.body.remarks,
                     proof: filename,
                     status: 'For Verification'
                 }
@@ -206,6 +207,7 @@ faculty.addTrainingSeminar = async (req, res) => {
                     dateFrom: req.body.dateFrom,
                     dateTo: req.body.dateTo,
                     venue: req.body.venue,
+                    remarks: req.body.remarks,
                     status: 'Pending'
                 }
             }) 
@@ -487,7 +489,7 @@ faculty.getTrainingSeminar = async (req, res) => {
     try {
         let facultyList = await TrainingSeminar.findAll({
             where: { facultyId: req.params.facultyId },
-            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             order: [['dateFrom', 'DESC']]
         });
 
@@ -835,6 +837,79 @@ faculty.editPublicationInfo = async (req, res) => {
                     message: 'Faculty publication information updated successfully'
                 }; 
             }
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editTrainingSeminarInfo = async (req, res) => {
+    // logger.info('inside editTrainingSeminarInfo()...');
+
+    let jsonRes;
+
+    try { 
+        if(req.files && req.files.proof && req.body.endDate) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            let filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+            updated = await TrainingSeminar.update(
+                { 
+                    title: req.body.title,
+                    role: req.body.role,
+                    dateFrom: req.body.dateFrom,
+                    dateTo: req.body.dateTo,
+                    venue: req.body.venue,
+                    remarks: req.body.remarks,
+                    proof: filename,
+                    status: 'For Verification'
+                }, {
+                    where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
+                }
+            ) 
+            
+            
+        } else {
+            updated = await TrainingSeminar.update(
+                { 
+                    title: req.body.title,
+                    role: req.body.role,
+                    dateFrom: req.body.dateFrom,
+                    dateTo: req.body.dateTo,
+                    venue: req.body.venue,
+                    remarks: req.body.remarks
+                }, {
+                    where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
+                }
+            ) 
+        }
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty training/seminar information cannot be updated'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty training/seminar information updated successfully'
+            }; 
         }
     } catch(error) {
         jsonRes = {
