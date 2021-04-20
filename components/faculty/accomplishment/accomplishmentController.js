@@ -28,46 +28,33 @@ faculty.addPublicService = async (req, res) => {
     let jsonRes;
     
     try {
+        let filename
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            [, created] = await PublicService.findOrCreate({
-                where: { facultyId: req.body.facultyId, type: req.body.type, position: req.body.position, startDate: req.body.startDate },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    type: req.body.type,
-                    position: req.body.position,
-                    organization: req.body.organization,
-                    description: req.body.description,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    proof: filename,
-                    status: 'For Verification'
-                }
-            }) 
-        } else { 
-            [, created] = await PublicService.findOrCreate({
-                where: { facultyId: req.body.facultyId, type: req.body.type, position: req.body.position, startDate: req.body.startDate },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    type: req.body.type,
-                    position: req.body.position,
-                    organization: req.body.organization,
-                    description: req.body.description,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    status: 'Pending'
-                }
-            }) 
-        }
+        } 
+        [, created] = await PublicService.findOrCreate({
+            where: { facultyId: req.body.facultyId, type: req.body.type, position: req.body.position, startDate: req.body.startDate },
+            defaults: {
+                facultyId: req.body.facultyId,
+                type: req.body.type,
+                position: req.body.position,
+                organization: req.body.organization,
+                description: req.body.description,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                proof: filename,
+                status: 'Pending'
+            }
+        }) 
 
         if(!created) {
             jsonRes = {
@@ -172,46 +159,34 @@ faculty.addTrainingSeminar = async (req, res) => {
     let jsonRes;
     
     try {
+        let filename
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            [, created] = await TrainingSeminar.findOrCreate({
-                where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    role: req.body.role,
-                    title: req.body.title,
-                    dateFrom: req.body.dateFrom,
-                    dateTo: req.body.dateTo,
-                    venue: req.body.venue,
-                    remarks: req.body.remarks,
-                    proof: filename,
-                    status: 'For Verification'
-                }
-            }) 
-        } else { 
-            [, created] = await TrainingSeminar.findOrCreate({
-                where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    role: req.body.role,
-                    title: req.body.title,
-                    dateFrom: req.body.dateFrom,
-                    dateTo: req.body.dateTo,
-                    venue: req.body.venue,
-                    remarks: req.body.remarks,
-                    status: 'Pending'
-                }
-            }) 
-        }
+        } 
+
+        [, created] = await TrainingSeminar.findOrCreate({
+            where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
+            defaults: {
+                facultyId: req.body.facultyId,
+                role: req.body.role,
+                title: req.body.title,
+                dateFrom: req.body.dateFrom,
+                dateTo: req.body.dateTo,
+                venue: req.body.venue,
+                remarks: req.body.remarks,
+                proof: filename,
+                status: 'Pending'
+            }
+        }) 
 
         if(!created) {
             jsonRes = {
@@ -243,42 +218,33 @@ faculty.addLicensureExam = async (req, res) => {
     let jsonRes;
     
     try {
+        let filename
+
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            [, created] = await LicensureExam.findOrCreate({
-                where: { facultyId: req.body.facultyId, examName: req.body.examName },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    examName: req.body.examName,
-                    examDate: req.body.examDate,
-                    licenseNumber: req.body.licenseNumber,
-                    rank: req.body.rank,
-                    proof: filename,
-                    status: 'For Verification'
-                }
-            }) 
-        } else { 
-            [, created] = await LicensureExam.findOrCreate({
-                where: { facultyId: req.body.facultyId, examName: req.body.examName },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    examName: req.body.examName,
-                    examDate: req.body.examDate,
-                    licenseNumber: req.body.licenseNumber,
-                    rank: req.body.rank,
-                    status: 'Pending'
-                }
-            }) 
-        }
+        } 
+
+        [, created] = await LicensureExam.findOrCreate({
+            where: { facultyId: req.body.facultyId, examName: req.body.examName },
+            defaults: {
+                facultyId: req.body.facultyId,
+                examName: req.body.examName,
+                examDate: req.body.examDate,
+                licenseNumber: req.body.licenseNumber,
+                rank: req.body.rank,
+                proof: filename,
+                status: 'Pending'
+            }
+        }) 
 
         if(!created) {
             jsonRes = {
@@ -707,47 +673,34 @@ faculty.editPublicServiceInfo = async (req, res) => {
     let jsonRes;
 
     try { 
+        let filename
+
         if(req.files && req.files.proof && req.body.endDate) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
+        } 
 
-            updated = await PublicService.update(
-                { 
-                    type: req.body.type,
-                    position: req.body.position,
-                    organization: req.body.organization,
-                    description: req.body.description,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    proof: filename,
-                    status: 'For Verification'
-                }, {
-                    where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
-                }
-            ) 
-            
-            
-        } else {
-            updated = await PublicService.update(
-                { 
-                    type: req.body.type,
-                    position: req.body.position,
-                    organization: req.body.organization,
-                    description: req.body.description,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate
-                }, {
-                    where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
-                }
-            ) 
-        }
+        updated = await PublicService.update(
+            { 
+                type: req.body.type,
+                position: req.body.position,
+                organization: req.body.organization,
+                description: req.body.description,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                proof: filename,
+                status: 'Pending'
+            }, {
+                where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
+            }
+        ) 
 
         if(updated == 0) {
             jsonRes = {
@@ -795,7 +748,7 @@ faculty.editPublicationInfo = async (req, res) => {
             let updated = await Publisher.update(
                 { 
                     proof: filename,
-                    status: "For Verification"
+                    status: "Pending"
                 }, {
                     where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
                 }
@@ -855,47 +808,35 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
     let jsonRes;
 
     try { 
+        let filename
+
         if(req.files && req.files.proof && req.body.endDate) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            updated = await TrainingSeminar.update(
-                { 
-                    title: req.body.title,
-                    role: req.body.role,
-                    dateFrom: req.body.dateFrom,
-                    dateTo: req.body.dateTo,
-                    venue: req.body.venue,
-                    remarks: req.body.remarks,
-                    proof: filename,
-                    status: 'For Verification'
-                }, {
-                    where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
-                }
-            ) 
-            
-            
-        } else {
-            updated = await TrainingSeminar.update(
-                { 
-                    title: req.body.title,
-                    role: req.body.role,
-                    dateFrom: req.body.dateFrom,
-                    dateTo: req.body.dateTo,
-                    venue: req.body.venue,
-                    remarks: req.body.remarks
-                }, {
-                    where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
-                }
-            ) 
-        }
+        } 
+
+        updated = await TrainingSeminar.update(
+            { 
+                title: req.body.title,
+                role: req.body.role,
+                dateFrom: req.body.dateFrom,
+                dateTo: req.body.dateTo,
+                venue: req.body.venue,
+                remarks: req.body.remarks,
+                proof: filename,
+                status: 'Pending'
+            }, {
+                where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
+            }
+        ) 
 
         if(updated == 0) {
             jsonRes = {

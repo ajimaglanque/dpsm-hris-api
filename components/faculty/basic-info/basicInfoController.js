@@ -177,48 +177,33 @@ faculty.addEducationInfo = async (req, res) => {
     let created
 
     try { 
+        let filename
         if(req.files && req.files.proof && req.body.endDate) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
-
-            [, created] = await EducationInfo.findOrCreate({
-                where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    institutionSchool: req.body.institutionSchool,
-                    degreeType: req.body.degreeType,
-                    degreeCert: req.body.degreeCert,
-                    majorSpecialization: req.body.majorSpecialization,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    proof: filename,
-                    status: 'For Verification'
-                }
-            }) 
-            
-            
-        } else { 
-            [, created] = await EducationInfo.findOrCreate({
-                where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
-                defaults: {
-                    facultyId: req.body.facultyId,
-                    institutionSchool: req.body.institutionSchool,
-                    degreeType: req.body.degreeType,
-                    degreeCert: req.body.degreeCert,
-                    majorSpecialization: req.body.majorSpecialization,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    status: 'Pending'
-                }
-            }) 
-        }
+        } 
+        
+        [, created] = await EducationInfo.findOrCreate({
+            where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
+            defaults: {
+                facultyId: req.body.facultyId,
+                institutionSchool: req.body.institutionSchool,
+                degreeType: req.body.degreeType,
+                degreeCert: req.body.degreeCert,
+                majorSpecialization: req.body.majorSpecialization,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                proof: filename,
+                status: 'Pending'
+            }
+        }) 
 
         if(!created) {
             jsonRes = {
@@ -619,47 +604,34 @@ faculty.editEducationInfo = async (req, res) => {
     let updated
 
     try { 
+        let filename
         if(req.files && req.files.proof && req.body.endDate) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            updated = await EducationInfo.update(
-                { 
-                    institutionSchool: req.body.institutionSchool,
-                    degreeType: req.body.degreeType,
-                    degreeCert: req.body.degreeCert,
-                    majorSpecialization: req.body.majorSpecialization,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    proof: filename,
-                    status: 'For Verification'
-                }, {
-                    where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
-                }
-            ) 
-            
-            
-        } else {
-            updated = await EducationInfo.update(
-                { 
-                    institutionSchool: req.body.institutionSchool,
-                    degreeType: req.body.degreeType,
-                    degreeCert: req.body.degreeCert,
-                    majorSpecialization: req.body.majorSpecialization,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate
-                }, {
-                    where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
-                }
-            ) 
-        }
+        } 
+
+        updated = await EducationInfo.update(
+            { 
+                institutionSchool: req.body.institutionSchool,
+                degreeType: req.body.degreeType,
+                degreeCert: req.body.degreeCert,
+                majorSpecialization: req.body.majorSpecialization,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                proof: filename,
+                status: 'Pending'
+            }, {
+                where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
+            }
+        ) 
 
         if(updated == 0) {
             jsonRes = {

@@ -20,7 +20,7 @@ const Researcher = sequelize.define('faculty_researcher', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['Pending', 'For Verification', 'Verified']],
+        isIn: [['Pending', 'Verified', 'Approved']],
         allowNull: false
     }
   });

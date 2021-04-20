@@ -34,7 +34,7 @@ const LicensureExam = sequelize.define('faculty_licensure_exam', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['Pending', 'For Verification', 'Verified']],
+        isIn: [['Pending', 'Verified', 'Approved']],
         allowNull: false
     }
   });

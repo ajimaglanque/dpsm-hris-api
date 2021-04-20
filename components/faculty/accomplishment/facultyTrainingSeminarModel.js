@@ -45,7 +45,7 @@ const TrainingSeminar = sequelize.define('faculty_training_seminar', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['Pending', 'For Verification', 'Verified']],
+        isIn: [['Pending', 'Verified', 'Approved']],
         allowNull: false
     }
   });
