@@ -794,7 +794,7 @@ paths:
                             "startDate": "1994-01-06",
                             "endDate": "1994-01-06",
                             "proof": null,
-                            "status": "Ongoing",
+                            "status": "Pending",
                             "createdAt": "2020-11-02T19:48:15.000Z",
                             "updatedAt": "2020-11-02T19:48:15.000Z"
                           },
@@ -806,7 +806,7 @@ paths:
                             "startDate": "1994-01-06",
                             "endDate": "1995-01-06",
                             "proof": "EOPOG2BJ01PZZITKDI9RTC1830APH6MNK9D.jpeg",
-                            "status": "For Verification",
+                            "status": "Verified",
                             "createdAt": "2020-11-13T07:30:20.000Z",
                             "updatedAt": "2020-11-13T20:30:13.000Z"
                           }
@@ -1199,7 +1199,7 @@ paths:
                             "startDate": "2010-06-01",
                             "endDate": "2012-03-30",
                             "proof": "P3018.png",
-                            "status": "For Verification"
+                            "status": "Pending"
                           },
                           {
                             "publicServiceId": 3,
@@ -1210,7 +1210,7 @@ paths:
                             "startDate": "2010-06-01",
                             "endDate": "2012-03-30",
                             "proof": "WHBJP.png",
-                            "status": "For Verification"
+                            "status": "Approved"
                           }
                         ]
         "500":
@@ -1465,7 +1465,7 @@ paths:
                               {
                                 "facultyId": 9,
                                 "proof": null,
-                                "status": "pending",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Aji",
@@ -1475,7 +1475,7 @@ paths:
                               {
                                 "facultyId": 10,
                                 "proof": null,
-                                "status": "pending",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Sarah",
@@ -1485,7 +1485,7 @@ paths:
                               {
                                 "facultyId": 8,
                                 "proof": null,
-                                "status": "pending",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Palomar",
                                     "firstName": "Diane",
@@ -1724,7 +1724,7 @@ paths:
                             "venue": "UP ITDC",
                             "remarks": "Remarks",
                             "proof": "65KG9KD3A4OXQEQM0TEJJH1QGHP78D16FBW.jpeg",
-                            "status": "For Verification"
+                            "status": "Pending"
                           },
                           {
                             "tsId": 18,
@@ -1734,7 +1734,7 @@ paths:
                             "dateTo": "2019-06-27",
                             "venue": "UP ITDC",
                             "proof": "TDWCCIZLOK0UAFX713LYM866P7G8AWQSWEL.jpeg",
-                            "status": "For Verification"
+                            "status": "Verified"
                           }
                         ]
         "500":
@@ -1931,7 +1931,7 @@ paths:
                             "licenseNumber": "UP ITDC",
                             "rank": null,
                             "proof": "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf",
-                            "status": "For Verification"
+                            "status": "Verified"
                           }
                         ]
         "500":
@@ -2060,7 +2060,7 @@ paths:
                     "facultyId": "9",
                     "researchId": "1",
                     "proof": "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg",
-                    "status": "For Verification"
+                    "status": "Approved"
                   },
                   {
                     "facultyId": "10",
@@ -2145,7 +2145,7 @@ paths:
                               {
                                 "facultyId": 9,
                                 "proof": null,
-                                "status": "Ongoing",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Aji",
@@ -2155,7 +2155,7 @@ paths:
                               {
                                 "facultyId": 10,
                                 "proof": null,
-                                "status": "Ongoing",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Sarah",
@@ -2165,7 +2165,7 @@ paths:
                               {
                                 "facultyId": 8,
                                 "proof": null,
-                                "status": "Ongoing",
+                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Palomar",
                                     "firstName": "Diane",
@@ -2604,7 +2604,7 @@ definitions:
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
-          example: "For Verification"
+          example: "Verified"
 
   addFacultyWorkExpInfoSource:
     properties:
