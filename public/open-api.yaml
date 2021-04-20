@@ -682,28 +682,43 @@ paths:
                       type: boolean
                       example: true
                     result:
-                      type: array
+                      type: object
                       example: 
-                        [
-                          {
-                            "employmentInfoId": 1,
-                            "startDate": "2004-01-06",
-                            "endDate": null,
-                            "faculty_employment_position": {
-                                "employmentType": "ftt",
-                                "position": "Instructor 1"
+                        {
+                          "facultyId": 1,
+                          "faculty_unit": {
+                            "unitId": 1,
+                            "unit": {
+                              "unit": "Chemistry"
                             }
                           },
-                          {
-                            "employmentInfoId": 8,
-                            "startDate": "1994-01-06",
-                            "endDate": "1995-01-06",
-                            "faculty_employment_position": {
+                          "faculty_employment_infos": [
+                            {
+                              "startDate": "2004-01-06",
+                              "endDate": null,
+                              "faculty_employment_position": {
+                                "employmentType": "ftt",
+                                "position": "Instructor 1"
+                              }
+                            },
+                            {
+                              "startDate": "1994-01-06",
+                              "endDate": "1995-01-06",
+                              "faculty_employment_position": {
                                 "employmentType": "ftt",
                                 "position": "Assistant Professor 1"
+                              }
+                            },
+                            {
+                              "startDate": "1994-01-06",
+                              "endDate": "1994-01-06",
+                              "faculty_employment_position": {
+                                "employmentType": "ftt",
+                                "position": "Assistant Professor 2"
+                              }
                             }
-                          }
-                        ]
+                          ]
+                        }
         "500":
           description: Error
           content:

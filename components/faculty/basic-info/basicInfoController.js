@@ -363,15 +363,27 @@ faculty.getEmploymentInfo = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await EmploymentInfo.findAll({
-            where: { facultyId: req.params.facultyId },
-            attributes: ['employmentInfoId', 'startDate', 'endDate'],
-            include: 
+        let facultyList = await PersonalInfo.findByPk(req.params.facultyId, {
+            attributes: ['facultyId'],
+            include: [
                 {
-                    model: EmploymentPosition,
-                    attributes: ['employmentType', 'position'],
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    include: {
+                        model: Unit,
+                        attributes: ['unit']
+                    }
                 },
-            order: [['startDate', 'DESC']]
+                {
+                    model: EmploymentInfo,
+                    attributes: ['startDate', 'endDate'],
+                    include: {
+                        model: EmploymentPosition,
+                        attributes: ['employmentType', 'position']
+                    }
+                }
+            ],
+            order: [[EmploymentInfo, 'startDate', 'DESC']]
         });
         
 
