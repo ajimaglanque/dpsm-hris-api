@@ -675,7 +675,7 @@ faculty.editPublicServiceInfo = async (req, res) => {
     try { 
         let filename
 
-        if(req.files && req.files.proof && req.body.endDate) {
+        if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
@@ -810,7 +810,7 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
     try { 
         let filename
 
-        if(req.files && req.files.proof && req.body.endDate) {
+        if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
