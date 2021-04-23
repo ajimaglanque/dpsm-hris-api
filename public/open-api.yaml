@@ -1957,6 +1957,52 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
+    put:
+      summary: Edit faculty licensure exam info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty licensure exam info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyLicensureExamInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty licensure exam information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
     delete:
       summary: Delete faculty licensure exam info
       tags:
@@ -2198,7 +2244,53 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-  
+    put:
+      summary: Edit faculty research grant info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty research grant info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyResearchGrantInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty research grant information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/{facultyId}/researcher":
     delete:
       summary: Delete faculty researcher info
@@ -2874,6 +2966,27 @@ definitions:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
 
+  editFacultyLicensureExamInfoSource:
+    properties:
+        licenseId:
+          type: string
+          example: "2"
+        examName:
+          type: string
+          example: "Chem Boards"
+        examDate:
+          type: string
+          example: "2004-01-06"
+        licenseNumber:
+          type: string
+          example: "2004-11774"
+        rank:
+          type: string
+          example: "3"
+        proof:
+          type: string
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+
   editFacultyTrainingSeminarInfoSource:
     properties:
         tsId:
@@ -2931,7 +3044,42 @@ definitions:
           type: string
           example: "Author 1, Author 2, Author 3"
         
-
+  editFacultyResearchGrantInfoSource:
+    properties:
+        researchId:
+          type: string
+          example: "1"
+        researchName:
+          type: string
+          example: "Research on Publications"
+        granter:
+          type: string
+          example: "WHO"
+        amount:
+          type: string
+          example: "1500000"
+        projectedStart:
+          type: string
+          example: "1994-01-06"
+        projectedEnd:
+          type: string
+          example: "1996-01-06"
+        actualStart:
+          type: string
+          example: "1994-05-30"
+        actualEnd:
+          type: string
+          example: "1997-12-15"
+        researchProgress:
+          type: string
+          example: "Ongoing"
+        nonFacultyResearchers:
+          type: string
+          example: "Author 1, Author 2, Author 3"
+        proof:
+          type: string
+          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
+  
   addFacultyLoadSource:
     properties:
         facultyId:

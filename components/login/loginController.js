@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 const util = require('../../helpers/util');
 
 const User = require('../user-enrollment/userEnrollmentModel')
-const Faculty = require('../faculty/basic-info/facultyPersonalInfoModel');
-const PersonalInfo = require('../faculty/basic-info/facultyPersonalInfoModel');
+const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel');
 
 // const logger = log4js.getLogger('controllers - accessToken');
 // logger.level = config.logLevel;

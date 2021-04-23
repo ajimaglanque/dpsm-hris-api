@@ -3,7 +3,7 @@
 const util = require('../../helpers/util');
 
 const User = require('./userEnrollmentModel')
-const PersonalInfo = require('../faculty/basic-info/facultyPersonalInfoModel')
+const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel')
 
 // const logger = log4js.getLogger('controllers - userEnrollment');
 // logger.level = config.logLevel;

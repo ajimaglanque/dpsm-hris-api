@@ -3,6 +3,10 @@ const express = require('express');
 // const config = require('config')
 
 const basicInfoController = require('./basicInfoController');
+const personalInfoController = require('./personal/personalInfoController');
+const workExpInfoController = require('./work-exp/workExpInfoController');
+const educationInfoController = require('./education/educationInfoController');
+const employmentInfoController = require('./employment/employmentInfoController');
 
 const router = express.Router();
 
@@ -19,23 +23,27 @@ const router = express.Router();
  * Add routes
  */
 
-router.post('/add/personal', basicInfoController.addPersonalInfo);
-router.post('/add/unit', basicInfoController.addUnit);
-router.post('/add/employment', basicInfoController.addEmploymentInfo);
-router.post('/add/education', basicInfoController.addEducationInfo);
-router.post('/add/work-exp', basicInfoController.addWorkExpInfo);
+router.post('/add/personal', personalInfoController.addPersonalInfo);
+router.post('/add/unit', personalInfoController.addUnit);
+router.get('/:facultyId', personalInfoController.getFacultyPersonalInfo);
+router.put('/:facultyId/personal', personalInfoController.editPersonalInfo);
+router.put('/dependent', personalInfoController.updateDependent);
+router.delete('/:facultyId/dependent', personalInfoController.deleteDependent);
+
+router.post('/add/work-exp', workExpInfoController.addWorkExpInfo);
+router.get('/:facultyId/work-exp', workExpInfoController.getWorkExpInfo);
+router.put('/:facultyId/work-exp', workExpInfoController.editWorkExpInfo);
+router.delete('/:facultyId/work-exp', workExpInfoController.deleteWorkExpInfo);
+
+router.post('/add/education', educationInfoController.addEducationInfo);
+router.get('/:facultyId/education', educationInfoController.getEducationInfo);
+router.put('/:facultyId/education', educationInfoController.editEducationInfo);
+router.delete('/:facultyId/education', educationInfoController.deleteEducationInfo);
+
+router.post('/add/employment', employmentInfoController.addEmploymentInfo);
+router.get('/:facultyId/employment', employmentInfoController.getEmploymentInfo);
+
 router.get('/all', basicInfoController.getAllFacultyInfo);
 router.get('/', basicInfoController.getAllFaculty);
-router.get('/:facultyId', basicInfoController.getFacultyPersonalInfo);
-router.get('/:facultyId/employment', basicInfoController.getEmploymentInfo);
-router.get('/:facultyId/education', basicInfoController.getEducationInfo);
-router.get('/:facultyId/work-exp', basicInfoController.getWorkExpInfo);
-router.put('/:facultyId/personal', basicInfoController.editPersonalInfo);
-router.put('/dependent', basicInfoController.updateDependent);
-router.put('/:facultyId/education', basicInfoController.editEducationInfo);
-router.put('/:facultyId/work-exp', basicInfoController.editWorkExpInfo);
-router.delete('/:facultyId/dependent', basicInfoController.deleteDependent);
-router.delete('/:facultyId/education', basicInfoController.deleteEducationInfo);
-router.delete('/:facultyId/work-exp', basicInfoController.deleteWorkExpInfo);
 
 module.exports = router;

@@ -1,6 +1,6 @@
-const sequelize = require('../../../helpers/mysql-db-helper');
+const sequelize = require('../../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
-const PersonalInfo = require('./facultyPersonalInfoModel')
+const PersonalInfo = require('../personal/personalInfoModel')
 const Unit = require('./unitModel')
 
 const FacultyUnit = sequelize.define('faculty_unit', {

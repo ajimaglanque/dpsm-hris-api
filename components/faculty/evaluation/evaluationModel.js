@@ -1,7 +1,7 @@
 const sequelize = require('../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
-const PersonalInfo = require('../basic-info/facultyPersonalInfoModel')
+const PersonalInfo = require('../basic-info/personal/personalInfoModel')
 
 const Evaluation = sequelize.define('faculty_evaluation', {
     // Model attributes are defined here

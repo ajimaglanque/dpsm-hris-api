@@ -1,17 +1,17 @@
-const sequelize = require('../../../helpers/mysql-db-helper');
+const sequelize = require('../../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
-const PersonalInfo = require('../basic-info/facultyPersonalInfoModel')
+const PersonalInfo = require('../../basic-info/personal/personalInfoModel')
 
-const Researcher = sequelize.define('faculty_researcher', {
+const PublisherInfo = sequelize.define('faculty_publisher', {
     // Model attributes are defined here
-    researcherId: {
+    publisherId: {
         type: DataTypes.INTEGER(8),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    researchId: {
+    publicationId: {
         type: DataTypes.INTEGER(8),
         allowNull: false
     },
@@ -25,7 +25,7 @@ const Researcher = sequelize.define('faculty_researcher', {
     }
   });
 
-  PersonalInfo.hasMany(Researcher, {foreignKey: 'facultyId'})
-  Researcher.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
+  PersonalInfo.hasMany(PublisherInfo, {foreignKey: 'facultyId'})
+  PublisherInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   
-  module.exports = Researcher
+  module.exports = PublisherInfo
