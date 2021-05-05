@@ -40,7 +40,6 @@ const ResearchGrant = sequelize.define('faculty_research_grant', {
     },
     actualStart: {
         type: DataTypes.DATE,
-        allowNull: false,
         validate: {
             isDate: true
         }
