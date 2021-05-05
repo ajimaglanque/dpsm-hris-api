@@ -43,7 +43,7 @@ router.delete('/:facultyId/education', educationInfoController.deleteEducationIn
 router.post('/add/employment', employmentInfoController.addEmploymentInfo);
 router.get('/:facultyId/employment', employmentInfoController.getEmploymentInfo);
 
-router.get('/all', basicInfoController.getAllFacultyInfo);
+router.get('/list/all', basicInfoController.getAllFacultyInfo);
 router.get('/', basicInfoController.getAllFaculty);
 
 module.exports = router;

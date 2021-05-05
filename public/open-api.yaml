@@ -206,7 +206,7 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/basic-info/all":
+  "/api/faculty/basic-info/list/all":
     get:
       summary: Get complete information of all faculty
       tags:
