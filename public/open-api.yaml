@@ -694,27 +694,33 @@ paths:
                           },
                           "faculty_employment_infos": [
                             {
+                              "employmentInfoId": 1,
                               "startDate": "2004-01-06",
                               "endDate": null,
                               "faculty_employment_position": {
-                                "employmentType": "ftt",
-                                "position": "Instructor 1"
+                                  "employmentPositionId": 1,
+                                  "employmentType": "ftt",
+                                  "position": "Instructor 1"
                               }
                             },
                             {
+                              "employmentInfoId": 8,
                               "startDate": "1994-01-06",
                               "endDate": "1995-01-06",
                               "faculty_employment_position": {
-                                "employmentType": "ftt",
-                                "position": "Assistant Professor 1"
+                                  "employmentPositionId": 24,
+                                  "employmentType": "ftp",
+                                  "position": "Associate Professor 3"
                               }
                             },
                             {
+                              "employmentInfoId": 9,
                               "startDate": "1994-01-06",
                               "endDate": "1994-01-06",
                               "faculty_employment_position": {
-                                "employmentType": "ftt",
-                                "position": "Assistant Professor 2"
+                                  "employmentPositionId": 20,
+                                  "employmentType": "ftp",
+                                  "position": "Assistant Professor 6"
                               }
                             }
                           ]

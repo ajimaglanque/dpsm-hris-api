@@ -12,7 +12,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
         autoIncrement: true,
         primaryKey: true
     },
-    position: {
+    employmentPositionId: {
         type: DataTypes.INTEGER(2),
         allowNull: false
     },
@@ -33,7 +33,7 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
   
   PersonalInfo.hasMany(EmploymentInfo, {foreignKey: 'facultyId'})
   EmploymentInfo.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
-  EmploymentInfo.hasOne(EmploymentPosition, {foreignKey: 'employmentPositionId'});
-  EmploymentPosition.hasMany(EmploymentInfo, {foreignKey: 'position'})
+  EmploymentPosition.hasMany(EmploymentInfo, {foreignKey: 'employmentPositionId'})
+  EmploymentInfo.belongsTo(EmploymentPosition, {foreignKey: 'employmentPositionId'});
 
   module.exports = EmploymentInfo

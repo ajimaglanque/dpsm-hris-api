@@ -74,10 +74,10 @@ faculty.getEmploymentInfo = async (req, res) => {
                 },
                 {
                     model: EmploymentInfo,
-                    attributes: ['startDate', 'endDate'],
+                    attributes: ['employmentInfoId', 'startDate', 'endDate'],
                     include: {
                         model: EmploymentPosition,
-                        attributes: ['employmentType', 'position']
+                        attributes: ['employmentPositionId', 'employmentType', 'position']
                     }
                 }
             ],
