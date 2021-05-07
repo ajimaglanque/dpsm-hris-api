@@ -1389,7 +1389,7 @@ paths:
       summary: Add faculty publisher info
       tags:
       - Faculty - Accomplishments
-      description: Bulk add faculty publisher info
+      description: Add faculty publisher info
       consumes:
         - application/json
       produces:
@@ -1397,27 +1397,15 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               example:
-                [
                   {
                     "facultyId": "9",
                     "publicationId": "4",
-                    "status": "Pending"
-                  },
-                  {
-                    "facultyId": "10",
-                    "publicationId": "4",
-                    "status": "Pending"
-                  },
-                  {
-                    "facultyId": "11",
-                    "publicationId": "4",
-                    "status": "Pending"
+                    "proof": "ASK23N4.jpg"
                   }
-                ]
       responses:
         "200":
           description: Success

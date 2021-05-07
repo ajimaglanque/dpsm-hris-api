@@ -62,13 +62,35 @@ faculty.addPublisher = async (req, res) => {
     let jsonRes;
     
     try {
-        let created = await Publisher.bulkCreate(req.body) 
+        let filename
+
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+        } 
+
+        let [, created] = await Publisher.findOrCreate({
+            where: { facultyId: req.body.facultyId, publicationId: req.body.publicationId },
+            defaults: {
+                facultyId: req.body.facultyId,
+                publicationId: req.body.publicationId,
+                proof: filename
+            }
+        }) 
 
         if(!created) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Could not bulk create faculty publisher information'
+                message: 'Could not create faculty publisher information'
             };
         } else {
             
