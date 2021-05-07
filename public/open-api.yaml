@@ -2875,9 +2875,9 @@ definitions:
         title:
           type: string
           example: "Publication"
-        journal:
+        citation:
           type: string
-          example: "Publication"
+          example: "Citation"
         url:
           type: string
           example: "https://google.com"
@@ -2896,7 +2896,7 @@ definitions:
         title:
           type: string
           example: "Publication Title"
-        journal:
+        citation:
           type: string
           example: "Journal published"
         url:

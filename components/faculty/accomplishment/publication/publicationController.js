@@ -25,7 +25,13 @@ faculty.addPublication = async (req, res) => {
     try {
         let [pblctn, created] = await Publication.findOrCreate({
             where: { title: req.body.title },
-            defaults: req.body
+            defaults: {
+                title: req.body.title,
+                citation: req.body.citation,
+                url: req.body.url,
+                publicationDate: req.body.publicationDate,
+                nonFacultyAuthors: req.body.nonFacultyAuthors
+            }
         }) 
 
         if(!created) {
