@@ -25,7 +25,17 @@ faculty.addResearchGrant = async (req, res) => {
     try {
         let [rsrchgrnt, created] = await ResearchGrant.findOrCreate({
             where: { researchName: req.body.researchName },
-            defaults: req.body
+            defaults: {
+                researchName: req.body.researchName,
+                granter: req.body.granter,
+                amount: req.body.amount,
+                projectedStart: req.body.projectedStart,
+                projectedEnd: req.body.projectedEnd,
+                actualStart: req.body.actualStart,
+                actualEnd: req.body.projectedEnd,
+                researchProgress: req.body.researchProgress,
+                nonFacultyResearchers: req.body.nonFacultyResearchers
+            }
         }) 
 
         if(!created) {
@@ -62,7 +72,29 @@ faculty.addResearcher = async (req, res) => {
     let jsonRes;
     
     try {
-        let created = await Researcher.bulkCreate(req.body) 
+        let filename
+
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+        } 
+
+        let [, created] = await Researcher.findOrCreate({
+            where: { facultyId: req.body.facultyId, researchId: req.body.researchId },
+            defaults: {
+                facultyId: req.body.facultyId,
+                researchId: req.body.researchId,
+                proof: filename
+            }
+        })
 
         if(!created) {
             jsonRes = {
