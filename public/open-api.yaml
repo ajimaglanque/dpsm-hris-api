@@ -115,6 +115,15 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -2666,7 +2675,7 @@ definitions:
         facultyId:
           type: string
           example: "1"
-        position:
+        employmentPositionId:
           type: string
           example: "20"
         startDate:

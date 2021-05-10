@@ -24,7 +24,16 @@ faculty.getAllFaculty = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await Unit.findAll({
+        let facultyList
+        let where = {}
+        if(req.query.unitId) {
+            where = {
+                unitId: req.query.unitId
+            }
+        }
+        
+        facultyList = await Unit.findAll({
+            where: where,
             attributes: ['unitId', 'unit'],
             include: 
                 {
