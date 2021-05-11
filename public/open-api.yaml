@@ -225,6 +225,15 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -398,6 +407,9 @@ paths:
                           "religion": "Catholic",
                           "emergencyContactPerson": "Hilda Cristobal",
                           "emergencyContactNumber": "09123456789",
+                          "faculty_unit": {
+                            "unitId": 1
+                          },
                           "faculty_dependents": [
                             {
                               "dependentId": 6,

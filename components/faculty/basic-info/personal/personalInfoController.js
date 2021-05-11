@@ -135,11 +135,16 @@ faculty.getFacultyPersonalInfo = async (req, res) => {
     try {
         let facultyList = await PersonalInfo.findByPk(req.params.facultyId, {
             attributes: { exclude: ['createdAt', 'updatedAt'] },
-            include: 
+            include: [
+                {
+                    model: FacultyUnit,
+                    attributes: ['unitId']
+                },
                 {
                     model: Dependent,
                     attributes: ['dependentId', 'name', 'birthDate', 'relationship']
                 }
+            ]
         });
 
         if(facultyList.length === 0) {

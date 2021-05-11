@@ -84,7 +84,14 @@ faculty.getAllFacultyInfo = async (req, res) => {
     let jsonRes;
     
     try {
-        let facultyList = await PersonalInfo.findAll({
+        let facultyList 
+        let unitIdWhere = {}
+        if(req.query.unitId) {
+            unitIdWhere = {
+                unitId: req.query.unitId
+            }
+        }
+        facultyList = await PersonalInfo.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt']
             },
@@ -95,7 +102,8 @@ faculty.getAllFacultyInfo = async (req, res) => {
                     include: {
                         model: Unit,
                         attributes: ['unit']
-                    }
+                    },
+                    where: unitIdWhere
                 },
                 {
                     model: EmploymentInfo,

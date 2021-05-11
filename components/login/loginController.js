@@ -6,6 +6,9 @@ const util = require('../../helpers/util');
 
 const User = require('../user-enrollment/userEnrollmentModel')
 const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel');
+const FacultyUnit = require('../faculty/basic-info/unit/facultyUnitModel');
+const EmploymentInfo = require('../faculty/basic-info/employment/employmentInfoModel');
+const EmploymentPosition = require('../faculty/basic-info/employment/employmentPositionModel');
 
 // const logger = log4js.getLogger('controllers - accessToken');
 // logger.level = config.logLevel;
@@ -24,7 +27,7 @@ login.login = async (req, res) => {
         const getUser = await User.findOne({
             where: { upemail: upemail }
         })
-
+        
         if(getUser === null) {
             jsonRes = {
                 errors: [{
@@ -42,19 +45,41 @@ login.login = async (req, res) => {
                 let userDetails = {
                     upemail: getUser.upemail,
                     role: getUser.role,
-                    userId: getUser.userId
+                    userId: getUser.userId,
                 };
                 
                 if(getUser.role == 1 || getUser.role == 2 || getUser.role == 3) { 
                     let faculty = await PersonalInfo.findOne({
                         where: { userId: getUser.userId },
-                        attributes: ['facultyId']
+                        attributes: ['facultyId', 'lastName', 'firstName']
                     })
                     
                     if(faculty != null) {
                         userDetails.facultyId = faculty.facultyId
+                        userDetails.name = faculty.lastName + ', ' + faculty.firstName
+
+                        const unit = await FacultyUnit.findOne({
+                            where: { facultyId: faculty.facultyId },
+                            attributes: ['unitId']
+                        })
+                        if(unit != null) {
+                            userDetails.unitId = unit.unitId
+                        }
+
+                        const employment = await EmploymentInfo.findOne({
+                            where: { facultyId: faculty.facultyId, endDate: null },
+                            include: {
+                                model: EmploymentPosition,
+                                attributes: ['position', 'employmentType']
+                            }
+                        })
+                        
+                        if(employment != null) {
+                            userDetails.employmentType= employment.faculty_employment_position.employmentType
+                            userDetails.position = employment.faculty_employment_position.position
+                        }
                     }
-                }
+                } 
 
                 // generate token
                 let token = jwt.sign(userDetails, config.token.secret, {
