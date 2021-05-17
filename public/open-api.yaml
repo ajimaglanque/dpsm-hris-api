@@ -2103,7 +2103,7 @@ paths:
                       type: object
                       example: 
                         {
-                          researchGrantId: "4"
+                          researchId: "4"
                         }
         "500":
           description: Error
@@ -2207,7 +2207,7 @@ paths:
                       example: 
                         [
                           {
-                            "researchGrantId": 1,
+                            "researchId": 1,
                             "researchName": "new publication title",
                             "granter": "journal of publication",
                             "amount": 1000000,
@@ -2436,6 +2436,176 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/approval/{facultyId}":
+    get:
+      summary: Get faculty approval list info
+      tags:
+      - Faculty - Approvals
+      description: Get faculty approval list info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: object
+                      example: 
+                        {
+                          "count": 2,
+                          "rows": [
+                            {
+                              "facultyId": 2,
+                              "lastName": "Palomar",
+                              "firstName": "Matthew",
+                              "faculty_education_infos": [],
+                              "faculty_public_services": [
+                                {
+                                    "publicServiceId": 9,
+                                    "type": "Within UPM",
+                                    "position": "Organizer",
+                                    "organization": "Socomsci",
+                                    "description": "No desc",
+                                    "startDate": "2010-06-01",
+                                    "endDate": "2020-12-13",
+                                    "proof": "QB8KYLQXBZ5L0BA59L6U7SN8.png",
+                                    "status": "Pending",
+                                    "createdAt": "2021-04-20T02:25:12.000Z",
+                                    "updatedAt": "2021-05-06T15:34:38.000Z",
+                                    "facultyId": 2
+                                },
+                                {
+                                    "publicServiceId": 10,
+                                    "type": "Within Pro",
+                                    "position": "Attendee",
+                                    "organization": "DOH",
+                                    "description": "",
+                                    "startDate": "2020-12-12",
+                                    "endDate": "2021-01-01",
+                                    "proof": "",
+                                    "status": "Pending",
+                                    "createdAt": "2021-04-20T02:27:55.000Z",
+                                    "updatedAt": "2021-04-20T02:25:50.000Z",
+                                    "facultyId": 2
+                                }
+                              ],
+                              "faculty_licensure_exams": [],
+                              "faculty_training_seminars": [
+                                {
+                                    "tsId": 6,
+                                    "role": "",
+                                    "title": "MySQL Training",
+                                    "dateFrom": "2019-06-27",
+                                    "dateTo": "2019-06-27",
+                                    "venue": "UP ITDC",
+                                    "remarks": null,
+                                    "proof": null,
+                                    "status": "Pending",
+                                    "createdAt": "2020-11-28T13:48:32.000Z",
+                                    "updatedAt": "2020-11-28T13:48:32.000Z",
+                                    "facultyId": 2
+                                },
+                                {
+                                    "tsId": 8,
+                                    "role": "",
+                                    "title": "MySQL Training",
+                                    "dateFrom": "2019-06-27",
+                                    "dateTo": "2019-06-27",
+                                    "venue": "UP ITDC",
+                                    "remarks": null,
+                                    "proof": null,
+                                    "status": "Pending",
+                                    "createdAt": "2020-11-28T14:03:10.000Z",
+                                    "updatedAt": "2020-11-28T14:03:10.000Z",
+                                    "facultyId": 2
+                                }
+                              ],
+                              "faculty_publishers": [
+                                {
+                                    "publisherId": 10,
+                                    "publicationId": 5,
+                                    "proof": "UMWEZF8EW7HWC8H5BSFCUETH.png",
+                                    "status": "Pending",
+                                    "createdAt": "2021-05-07T08:55:41.000Z",
+                                    "updatedAt": "2021-05-07T08:55:41.000Z",
+                                    "facultyId": 2
+                                }
+                              ],
+                              "faculty_researchers": [
+                                {
+                                    "researcherId": 7,
+                                    "researchId": 1,
+                                    "proof": "PN8OB9IA2HDTMCZ6ZIKEXFZHWKGVI5N7H7ESPEM6AI2S3ATNPOC.jpeg",
+                                    "status": "Pending",
+                                    "createdAt": "2020-11-30T15:25:23.000Z",
+                                    "updatedAt": "2021-04-23T04:00:53.000Z",
+                                    "facultyId": 2
+                                }
+                              ],
+                              "count": 6
+                            },
+                            {
+                              "facultyId": 3,
+                              "lastName": "Palomar",
+                              "firstName": "Lee",
+                              "faculty_education_infos": [],
+                              "faculty_public_services": [],
+                              "faculty_licensure_exams": [],
+                              "faculty_training_seminars": [],
+                              "faculty_publishers": [
+                                {
+                                    "publisherId": 11,
+                                    "publicationId": 5,
+                                    "proof": "UMWEZF8EW7HWC8H5BSFCUETH.png",
+                                    "status": "Pending",
+                                    "createdAt": "2021-05-07T09:02:54.000Z",
+                                    "updatedAt": "2021-05-07T09:02:54.000Z",
+                                    "facultyId": 3
+                                }
+                              ],
+                              "faculty_researchers": [
+                                {
+                                    "researcherId": 8,
+                                    "researchId": 1,
+                                    "proof": null,
+                                    "status": "Pending",
+                                    "createdAt": "2020-11-30T15:25:23.000Z",
+                                    "updatedAt": "2021-04-23T04:00:53.000Z",
+                                    "facultyId": 3
+                                }
+                              ],
+                              "count": 2
+                            }
+                        ],
+                          "approvalCount": 8
+                        }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    
   "/api/student/add/personal":
     post:
       summary: Add student personal info

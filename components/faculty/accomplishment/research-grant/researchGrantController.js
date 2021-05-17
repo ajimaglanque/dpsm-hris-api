@@ -147,7 +147,7 @@ faculty.getResearchGrant = async (req, res) => {
             })
 
             let researches = await ResearchGrant.findAll({
-                where: { researchGrantId: research },
+                where: { researchId: research },
                 attributes: {
                     exclude: ['createdAt', 'updatedAt']
                 },
@@ -236,7 +236,7 @@ faculty.editResearchGrant = async (req, res) => {
                     researchProgress: req.body.researchProgress,
                     nonFacultyResearchers: req.body.nonFacultyResearchers
                 }, {
-                    where: { researchGrantId: req.body.researchId }
+                    where: { researchId: req.body.researchId }
                 }
             ) 
     
@@ -291,7 +291,7 @@ faculty.deleteResearcher = async (req, res) => {
                 if(count == 0) {
                     let deleted = await ResearchGrant.destroy(
                         {
-                            where: { researchGrantId: req.body.researchId }
+                            where: { researchId: req.body.researchId }
                         }
                     )
 

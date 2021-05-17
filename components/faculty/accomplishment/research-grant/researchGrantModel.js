@@ -5,7 +5,7 @@ const Researcher = require('./researcherModel')
 
 const ResearchGrant = sequelize.define('faculty_research_grant', {
     // Model attributes are defined here
-    researchGrantId: {
+    researchId: {
         type: DataTypes.INTEGER(8),
         allowNull: false,
         autoIncrement: true,
@@ -59,7 +59,7 @@ const ResearchGrant = sequelize.define('faculty_research_grant', {
     }
   });
 
-  Researcher.belongsTo(ResearchGrant, {foreignKey: 'researchGrantId'})
+  Researcher.belongsTo(ResearchGrant, {foreignKey: 'researchId'})
   ResearchGrant.hasMany(Researcher, {foreignKey: 'researchId'});
   
   module.exports = ResearchGrant

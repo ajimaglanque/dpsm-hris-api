@@ -1,6 +1,8 @@
 const sequelize = require('../../../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
+const User = require('../../../user-enrollment/userEnrollmentModel')
+
 const PersonalInfo = sequelize.define('faculty_personal_info', {
     // Model attributes are defined here
     facultyId: {
@@ -93,5 +95,8 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
         allowNull: false
     }
   });
+
+  PersonalInfo.belongsTo(User, {foreignKey: 'userId'})
+  User.hasMany(PersonalInfo, {foreignKey: 'userId'});
 
   module.exports = PersonalInfo

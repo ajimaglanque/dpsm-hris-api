@@ -1,6 +1,8 @@
 const sequelize = require('../../helpers/mysql-db-helper');
 const { DataTypes } = require('sequelize');
 
+const Role = require('./roleModel')
+
 const User = sequelize.define('user', {
     // Model attributes are defined here
     userId: {
