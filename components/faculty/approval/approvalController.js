@@ -1,18 +1,19 @@
 // const log4js = require('log4js');
 // const config = require('config');
 const mime = require('mime-types')
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const util = require('../../../helpers/util');
 
 const PersonalInfo = require('../basic-info/personal/personalInfoModel')
 const User = require('../../user-enrollment/userEnrollmentModel')
-const Role = require('../../user-enrollment/roleModel')
 const EducationInfo = require('../basic-info/education/educationInfoModel')
 const PublicService = require('../accomplishment/public-service/publicServiceModel')
 const Publisher = require('../accomplishment/publication/publisherModel')
 const Researcher = require('../accomplishment/research-grant/researcherModel')
 const TrainingSeminar = require('../accomplishment/training-seminar/trainingSeminarModel')
 const LicensureExam = require('../accomplishment/licensure-exam/licensureExamModel')
+const FacultyUnit = require('../basic-info/unit/facultyUnitModel');
+const Unit = require('../basic-info/unit/unitModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -46,53 +47,83 @@ approval.getFacultyList = async (req, res) => {
                 message: 'Approver does not exist'
             };
         } else { 
-            // get count
             let role = getFaculty.user.role
             if(role == 2 || role == 3) {
                 let facultyCount = 0
-                let approvalCount = 0
-                let rows = []
                 let status
+                let unitIdWhere = {}
                 
                 if(role == 2) {
+                    unitIdWhere = {
+                        unitId: req.query.unitId
+                    }
                     status = {status: 'Pending'}
                 } else if(role == 3) {
                     status = {status: 'Verified'}
                 }
-                
-                let faculty = await PersonalInfo.findAndCountAll({
-                    // where: {facultyId: facultyId},
-                    attributes: ['facultyId', 'lastName', 'firstName'],
-                    include: [
-                        { model: EducationInfo, where: status, required: false},
-                        { model: PublicService, where: status, required: false },
-                        { model: LicensureExam, where: status, required: false },
-                        { model: TrainingSeminar, where: status, required: false },
-                        { model: Publisher, where: status, required: false },
-                        { model: Researcher, where: status, required: false },
+
+                let faculty = await Unit.findAndCountAll({
+                    where: unitIdWhere,
+                    attributes: ['unitId', 'unit'],
+                    include: 
+                        {
+                            model: FacultyUnit,
+                            attributes: ['facultyId'],
+                            include: 
+                            {
+                                model: PersonalInfo,
+                                attributes: ['lastName','firstName','middleName'],
+                                where: {facultyId: { [Op.ne]: facultyId } },
+                                include: [
+                                    { model: EducationInfo, where: status, required: false},
+                                    { model: PublicService, where: status, required: false },
+                                    { model: LicensureExam, where: status, required: false },
+                                    { model: TrainingSeminar, where: status, required: false },
+                                    { model: Publisher, where: status, required: false },
+                                    { model: Researcher, where: status, required: false },
+                                ]
+                            },
+                        },
+                    order: [
+                        ['unit'],
+                        [FacultyUnit, PersonalInfo, 'lastName'],
+                        [FacultyUnit, PersonalInfo, 'firstName'],
+                        [FacultyUnit, PersonalInfo, 'middleName']
                     ]
-                })
+                });
                 
-                
-                faculty.rows.forEach((row) => {
-                    if(row.faculty_education_infos.length > 0 || row.faculty_public_services.length > 0 || row.faculty_licensure_exams.length > 0 || row.faculty_training_seminars.length > 0 || row.faculty_publishers.length > 0 || row.faculty_researchers.length > 0) {
-                        facultyCount++
-                        let rowCount = row.faculty_education_infos.length + row.faculty_public_services.length + row.faculty_licensure_exams.length + row.faculty_training_seminars.length + row.faculty_publishers.length + row.faculty_researchers.length
-                        approvalCount += rowCount
-                        let newrow = row.dataValues
-                        newrow.count = rowCount
-                        rows.push(newrow)
-                    }
+                let result = {}
+                let newfaculty = []
+                faculty.rows.forEach((units, index) => {
+                    newfaculty.push({
+                        unitId: units.unitId,
+                        unit: units.unit,
+                        faculty_units: []
+                    })
                 })
 
-                faculty.count = facultyCount
-                faculty.approvalCount = approvalCount
-                faculty.rows = rows
+                faculty.rows.forEach((units, unitIndex) => { 
+                    units.faculty_units.forEach((row) => {
+                        if(row.faculty_personal_info.faculty_education_infos.length > 0 || row.faculty_personal_info.faculty_public_services.length > 0 || row.faculty_personal_info.faculty_licensure_exams.length > 0 || row.faculty_personal_info.faculty_training_seminars.length > 0 || row.faculty_personal_info.faculty_publishers.length > 0 || row.faculty_personal_info.faculty_researchers.length > 0) {
+                            facultyCount++
+                            
+                            let rowCount = row.faculty_personal_info.faculty_education_infos.length + row.faculty_personal_info.faculty_public_services.length + row.faculty_personal_info.faculty_licensure_exams.length + row.faculty_personal_info.faculty_training_seminars.length + row.faculty_personal_info.faculty_publishers.length + row.faculty_personal_info.faculty_researchers.length
+                            
+                            let newrow = row.dataValues
+                            newrow.forApprovalCount = rowCount
+                            newfaculty[unitIndex].faculty_units.push(newrow)
+                        }
+                    })
+                })
+
+                result.facultyCount = facultyCount
+                result.rows = newfaculty
+                
                 
                 jsonRes = {
                     statusCode: 200,
                     success: true,
-                    result: faculty
+                    result: result
                 }; 
             } else {
                 jsonRes = {
