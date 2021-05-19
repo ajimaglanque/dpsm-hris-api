@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const config = require('config')
 const cookieParser = require('cookie-parser');;
 const cors = require('cors');
+require('dotenv').config()
 const express = require('express');
 const fileUpload = require('express-fileupload')
 const fs = require('fs');
@@ -13,7 +14,7 @@ const nocache = require('nocache')
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 
-const node_env = config.app.node_env || 'development';
+const node_env = process.env.NODE_ENV || 'development';
 
 const errorHandler = require('./middlewares/error-handler')
 const routes = require('./components');
@@ -132,8 +133,11 @@ sequelize.authenticate()
 /**
  * Start server
  */
-const host = config.app.host;
-const port = config.app.port;
+const host = process.env.HOST;
+let port = process.env.PORT;
+if (port == null || port == "") {
+	port = 8000;
+}
 
 app.listen(port, () => {
 	// logger.info(`App listening on http://${host}:${port}`);

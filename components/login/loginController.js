@@ -82,8 +82,8 @@ login.login = async (req, res) => {
                 } 
 
                 // generate token
-                let token = jwt.sign(userDetails, config.token.secret, {
-                    expiresIn: config.token.expiry
+                let token = jwt.sign(userDetails, process.env.TOKEN_SECRET, {
+                    expiresIn: process.env.TOKEN_EXPIRY
                 }); 
 
                 jsonRes = {
