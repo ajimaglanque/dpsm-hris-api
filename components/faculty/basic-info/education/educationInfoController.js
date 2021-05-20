@@ -78,10 +78,15 @@ faculty.getEducationInfo = async (req, res) => {
     // logger.info('inside getEductionInfo()...');
 
     let jsonRes;
-    
+  
     try {
+        let where = {
+            facultyId: req.params.facultyId 
+        }
+        if(req.query.status) where.status = req.query.status
+
         let facultyList = await EducationInfo.findAll({
-            where: { facultyId: req.params.facultyId },
+            where: where,
             attributes: { exclude: ['facultyId'] },
             order: [['startDate', 'DESC']]
         });

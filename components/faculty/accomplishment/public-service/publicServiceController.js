@@ -80,8 +80,13 @@ faculty.getPublicService = async (req, res) => {
     let jsonRes;
     
     try {
+        let where = {
+            facultyId: req.params.facultyId 
+        }
+        if(req.query.status) where.status = req.query.status
+
         let facultyList = await PublicService.findAll({
-            where: { facultyId: req.params.facultyId },
+            where: where,
             attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
             order: [
                 ['type', 'DESC'],

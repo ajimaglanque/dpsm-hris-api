@@ -813,6 +813,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -1217,6 +1225,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -1465,6 +1481,14 @@ paths:
             in: path
             description: Faculty ID
             required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
             style: simple
             explode: false
             schema:
@@ -1730,6 +1754,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -1926,6 +1958,14 @@ paths:
             in: path
             description: Faculty ID
             required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
             style: simple
             explode: false
             schema:
@@ -2187,6 +2227,14 @@ paths:
             in: path
             description: Faculty ID
             required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+          - name: status
+            in: query
+            description: Status
+            required: false
             style: simple
             explode: false
             schema:

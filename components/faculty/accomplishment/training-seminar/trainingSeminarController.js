@@ -80,8 +80,13 @@ faculty.getTrainingSeminar = async (req, res) => {
     let jsonRes;
     
     try {
+        let where = {
+            facultyId: req.params.facultyId 
+        }
+        if(req.query.status) where.status = req.query.status
+
         let facultyList = await TrainingSeminar.findAll({
-            where: { facultyId: req.params.facultyId },
+            where: where,
             attributes: { exclude: ['createdAt', 'updatedAt'] },
             order: [['dateFrom', 'DESC']]
         });
