@@ -146,7 +146,8 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
                 venue: req.body.venue,
                 remarks: req.body.remarks,
                 proof: filename,
-                status: 'Pending'
+                status: req.body.status || 'Pending',
+                approverRemarks: req.body.approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
             }

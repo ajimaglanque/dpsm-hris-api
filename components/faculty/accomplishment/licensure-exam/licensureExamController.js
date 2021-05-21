@@ -142,7 +142,8 @@ faculty.editLicensureExamInfo = async (req, res) => {
                 licenseNumber: req.body.licenseNumber,
                 rank: req.body.rank,
                 proof: filename,
-                status: 'Pending'
+                status: req.body.status || 'Pending',
+                approverRemarks: req.body.approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, licenseId: req.body.licenseId }
             }

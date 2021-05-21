@@ -1645,6 +1645,64 @@ paths:
       - bearerAuth: []
 
   "/api/faculty/accomplishment/{facultyId}/publisher":
+    put:
+      summary: Edit faculty publisher info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty publisher info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                publicationId:
+                  type: string
+                  example: "2"
+                proof:
+                  type: string
+                  example: "WIj2Dv.jpg"
+                status:
+                  type: string
+                  example: "Approved"
+                approverRemarks:
+                  type: string
+                  example: "Date provided does not match date in proof //only required if status=Rejected"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty publisher information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
     delete:
       summary: Delete faculty publisher info
       tags:
@@ -2355,6 +2413,61 @@ paths:
       - bearerAuth: []
 
   "/api/faculty/accomplishment/{facultyId}/researcher":
+    put:
+      summary: Edit faculty researcher info
+      tags:
+      - Faculty - Accomplishments
+      description: Edit faculty researcher info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                researchId:
+                  type: string
+                  example: "2"
+                status:
+                  type: string
+                  example: "Approved"
+                approverRemarks:
+                  type: string
+                  example: "Date provided does not match date in proof //only required if status=Rejected"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty researcher information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
     delete:
       summary: Delete faculty researcher info
       tags:
@@ -3004,6 +3117,12 @@ definitions:
           type: string
           format: binary
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
+        status:
+          type: string
+          example: "Verified"
+        approverRemarks:
+          type: string
+          example: "Date provided does not match date in proof //only required if status=Rejected"
 
   editFacultyWorkExpInfoSource:
     properties:
@@ -3079,6 +3198,12 @@ definitions:
         proof:
           type: string
           example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
+        status:
+          type: string
+          example: "Verified"
+        approverRemarks:
+          type: string
+          example: "Date provided does not match date in proof //only required if status=Rejected"
 
   addFacultyPublicationInfoSource:
     properties:
@@ -3190,6 +3315,12 @@ definitions:
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+        status:
+          type: string
+          example: "Rejected"
+        approverRemarks:
+          type: string
+          example: "Date provided does not match date in proof //only required if status=Rejected"
 
   editFacultyTrainingSeminarInfoSource:
     properties:
@@ -3217,6 +3348,12 @@ definitions:
         proof:
           type: string
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+        status:
+          type: string
+          example: "Rejected"
+        approverRemarks:
+          type: string
+          example: "Date provided does not match date in proof //only required if status=Rejected"
 
   addFacultyResearchGrantInfoSource:
     properties:

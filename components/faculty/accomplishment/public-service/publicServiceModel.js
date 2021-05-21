@@ -46,8 +46,11 @@ const PublicServiceInfo = sequelize.define('faculty_public_service', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['Pending', 'Verified', 'Approved']],
+        isIn: [['Pending', 'Verified', 'Approved', 'Rejected']],
         allowNull: false
+    },
+    approverRemarks: {
+        type: DataTypes.STRING(100)
     }
   });
 

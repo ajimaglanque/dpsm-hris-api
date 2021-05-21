@@ -193,63 +193,120 @@ faculty.editPublicationInfo = async (req, res) => {
 
     try { 
         let updatedPublisher = true
+        let filename
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
 
-            let updated = await Publisher.update(
-                { 
-                    proof: filename,
-                    status: "Pending"
-                }, {
-                    where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
-                }
-            ) 
-            
-            if(updated == 0) {
-                jsonRes = {
-                    statusCode: 400,
-                    success: false,
-                    message: 'Faculty publisher information cannot be updated'
-                };
-                updatedPublisher = false
-            } 
         } 
+
+        let updated = await Publisher.update(
+            { 
+                proof: filename,
+                status: req.body.status || "Pending"
+            }, {
+                where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
+            }
+        ) 
         
-        if(updatedPublisher) {
-            let updated = await Publication.update(
-                { 
-                    title: req.body.title,
-                    journal: req.body.journal,
-                    url: req.body.url,
-                    publicationDate: req.body.publicationDate,
-                    nonFacultyAuthors: req.body.nonFacultyAuthors
-                }, {
-                    where: { publicationId: req.body.publicationId }
+        if(updated == 0) {
+            jsonRes = { 
+                statusCode: 400,
+                success: false,
+                message: 'Faculty publisher information cannot be updated'
+            };
+            updatedPublisher = false
+        } else {
+            if(updatedPublisher) {
+                let updatedPublication = await Publication.update(
+                    { 
+                        title: req.body.title,
+                        citation: req.body.citation,
+                        url: req.body.url,
+                        publicationDate: req.body.publicationDate,
+                        nonFacultyAuthors: req.body.nonFacultyAuthors
+                    }, {
+                        where: { publicationId: req.body.publicationId }
+                    }
+                ) 
+        
+                if(updatedPublication == 0) { console.log('b');
+                    jsonRes = {
+                        statusCode: 400,
+                        success: false,
+                        message: 'Faculty publication information cannot be updated'
+                    };
+                } else {
+                    jsonRes = {
+                        statusCode: 200,
+                        success: true,
+                        message: 'Faculty publication information updated successfully'
+                    }; 
                 }
-            ) 
-    
-            if(updated == 0) {
-                jsonRes = {
-                    statusCode: 400,
-                    success: false,
-                    message: 'Faculty publication information cannot be updated'
-                };
-            } else {
-                jsonRes = {
-                    statusCode: 200,
-                    success: true,
-                    message: 'Faculty publication information updated successfully'
-                }; 
             }
         }
+        
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editPublisherInfo = async (req, res) => {
+    // logger.info('inside editPublisherInfo()...');
+
+    let jsonRes;
+
+    try { 
+        let filename
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+        } 
+
+        let updated = await Publisher.update(
+            { 
+                proof: filename,
+                status: req.body.status || "Pending",
+                approverRemarks: req.body.approverRemarks
+            }, {
+                where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
+            }
+        ) 
+        
+        if(updated == 0) {
+            jsonRes = { 
+                statusCode: 400,
+                success: false,
+                message: 'Faculty publisher information cannot be updated'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty publisher information updated successfully'
+            }; 
+        }        
     } catch(error) {
         jsonRes = {
             statusCode: 500,

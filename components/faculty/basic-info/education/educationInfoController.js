@@ -146,7 +146,8 @@ faculty.editEducationInfo = async (req, res) => {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 proof: filename,
-                status: 'Pending'
+                status: req.body.status || 'Pending',
+                approverRemarks: req.body.approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
             }

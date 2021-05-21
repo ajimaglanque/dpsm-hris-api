@@ -196,35 +196,36 @@ faculty.editResearchGrant = async (req, res) => {
     let jsonRes;
 
     try { 
+        let filename
         let updatedResearcher = true
         if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
     
-            let filename = util.createRandomString(name.length)
+            filename = util.createRandomString(name.length)
             filename += '.' + fileExtension
             
             let path = 'uploads/' + filename
             proof.mv(path);
+        } 
 
-            let updated = await Researcher.update(
-                { 
-                    proof: filename,
-                    status: "Pending"
-                }, {
-                    where: { facultyId: req.params.facultyId, researchId: req.body.researchId }
-                }
-            ) 
-            
-            if(updated == 0) {
-                jsonRes = {
-                    statusCode: 400,
-                    success: false,
-                    message: 'Faculty researcher information cannot be updated'
-                };
-                updatedResearcher = false
-            } 
+        let updated = await Researcher.update(
+            { 
+                proof: filename,
+                status: req.body.status || "Pending"
+            }, {
+                where: { facultyId: req.params.facultyId, researchId: req.body.researchId }
+            }
+        ) 
+        
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty researcher information cannot be updated'
+            };
+            updatedResearcher = false
         } 
         
         if(updatedResearcher) {
@@ -248,16 +249,70 @@ faculty.editResearchGrant = async (req, res) => {
                 jsonRes = {
                     statusCode: 400,
                     success: false,
-                    message: 'Faculty publication information cannot be updated'
+                    message: 'Faculty research grant information cannot be updated'
                 };
             } else {
                 jsonRes = {
                     statusCode: 200,
                     success: true,
-                    message: 'Faculty publication information updated successfully'
+                    message: 'Faculty research grant information updated successfully'
                 }; 
             }
         }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editResearcherInfo = async (req, res) => {
+    // logger.info('inside editPublisherInfo()...');
+
+    let jsonRes;
+
+    try { 
+        let filename
+        if(req.files && req.files.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+
+        } 
+
+        let updated = await Researcher.update(
+            { 
+                proof: filename,
+                status: req.body.status || "Pending",
+                approverRemarks: req.body.approverRemarks
+            }, {
+                where: { facultyId: req.params.facultyId, researchId: req.body.researchId }
+            }
+        ) 
+        
+        if(updated == 0) {
+            jsonRes = { 
+                statusCode: 400,
+                success: false,
+                message: 'Faculty research grant information cannot be updated'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty research grant information updated successfully'
+            }; 
+        }        
     } catch(error) {
         jsonRes = {
             statusCode: 500,
