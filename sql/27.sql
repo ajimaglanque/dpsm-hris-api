@@ -1,0 +1,13 @@
+CREATE TABLE `admin_infos` ( 
+    `adminId` INT(8) NOT NULL AUTO_INCREMENT , 
+    `userId` INT(8) NOT NULL , 
+    `name` VARCHAR(200) NOT NULL , 
+    `createdAt` TIMESTAMP NOT NULL ,
+    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    PRIMARY KEY (`adminId`)
+) ENGINE = InnoDB;
+
+ALTER TABLE `admin_infos` 
+ADD FOREIGN KEY (`userId`) 
+REFERENCES `users`(`userId`) 
+ON DELETE RESTRICT ON UPDATE RESTRICT;

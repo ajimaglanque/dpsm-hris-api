@@ -3,6 +3,7 @@
 const util = require('../../helpers/util');
 
 const User = require('./userEnrollmentModel')
+const Admin = require('./adminModel')
 const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel')
 
 // const logger = log4js.getLogger('controllers - userEnrollment');
@@ -78,6 +79,38 @@ userEnrollment.userEnroll = async (req, res) => {
                             message: "Faculty added successfully",
                             result: {
                                 facultyId: fclty.facultyId
+                            }
+                        }; 
+                    }
+                } catch(error) {
+                    jsonRes = {
+                        statusCode: 500,
+                        success: false,
+                        error: error,
+                    };
+                }
+            } else if(req.body.role == 5) { // if admin staff
+                try {
+                    let [adminInfo, created] = await Admin.findOrCreate({
+                        where: { userId: usr.userId },
+                        defaults: {
+                            userId: usr.userId,
+                            name: req.body.name
+                        }
+                    })
+                    if(!created) {
+                        jsonRes = {
+                            statusCode: 400,
+                            success: false,
+                            message: 'Admin already exists'
+                        };
+                    } else {
+                        jsonRes = {
+                            statusCode: 200,
+                            success: true,
+                            message: "Admin added successfully",
+                            result: {
+                                adminId: adminInfo.adminId
                             }
                         }; 
                     }

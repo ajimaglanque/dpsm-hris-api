@@ -2892,6 +2892,9 @@ definitions:
         password:
           type: string
           example: "password"
+        name:
+          type: string
+          example: "Alma S. Capio //required only if role=5 (admin)"
         personalInfo:
           type: object
           example: {

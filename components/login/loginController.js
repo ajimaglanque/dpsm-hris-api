@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const util = require('../../helpers/util');
 
 const User = require('../user-enrollment/userEnrollmentModel')
+const Admin = require('../user-enrollment/adminModel')
 const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel');
 const FacultyUnit = require('../faculty/basic-info/unit/facultyUnitModel');
 const EmploymentInfo = require('../faculty/basic-info/employment/employmentInfoModel');
@@ -79,7 +80,16 @@ login.login = async (req, res) => {
                             userDetails.position = employment.faculty_employment_position.position
                         }
                     }
-                } 
+                } else if(getUser.role == 5) {
+                    let admin = await Admin.findOne({
+                        where: { userId: getUser.userId }
+                    })
+
+                    if(admin != null) {
+                        userDetails.adminId = admin.adminId
+                        userDetails.name = admin.name
+                    }
+                }
 
                 // generate token
                 let token = jwt.sign(userDetails, process.env.TOKEN_SECRET, {
