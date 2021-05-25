@@ -2219,7 +2219,7 @@ paths:
       - Faculty - Accomplishments
       description: Bulk add faculty researcher info
       consumes:
-        - application/json
+        - multipart/form-data
       produces:
         - application/json
       requestBody:
@@ -2229,24 +2229,12 @@ paths:
             schema:
               type: object
               example:
-                [
-                  {
-                    "facultyId": "9",
-                    "researchId": "1",
-                    "proof": "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg",
-                    "status": "Approved"
-                  },
-                  {
-                    "facultyId": "10",
-                    "researchId": "1",
-                    "status": "Pending"
-                  },
-                  {
-                    "facultyId": "8",
-                    "researchId": "1",
-                    "status": "Pending"
-                  }
-                ]
+                {
+                  "facultyId": "9",
+                  "researchId": "1",
+                  "proof": "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg",
+                  "status": "Approved"
+                }
       responses:
         "200":
           description: Success

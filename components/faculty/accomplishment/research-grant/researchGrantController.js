@@ -51,7 +51,7 @@ faculty.addResearchGrant = async (req, res) => {
                 success: true,
                 message: 'Faculty research grant information added successfully',
                 result: {
-                    researchGrantId: rsrchgrnt.researchGrantId
+                    researchId: rsrchgrnt.researchId
                 }
             }; 
         }
@@ -92,7 +92,8 @@ faculty.addResearcher = async (req, res) => {
             defaults: {
                 facultyId: req.body.facultyId,
                 researchId: req.body.researchId,
-                proof: filename
+                proof: filename,
+                status: 'Pending'
             }
         })
 
@@ -100,7 +101,7 @@ faculty.addResearcher = async (req, res) => {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Could not bulk create faculty researcher information'
+                message: 'Could not create faculty researcher information'
             };
         } else {
             
