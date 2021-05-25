@@ -117,7 +117,7 @@ faculty.getLicensureExam = async (req, res) => {
 
 faculty.editLicensureExamInfo = async (req, res) => {
     // logger.info('inside editLicensureExamInfo()...');
-
+    
     let jsonRes;
 
     try { 
@@ -140,7 +140,7 @@ faculty.editLicensureExamInfo = async (req, res) => {
                 examName: req.body.examName,
                 examDate: req.body.examDate,
                 licenseNumber: req.body.licenseNumber,
-                rank: req.body.rank,
+                rank: req.body.rank || null,
                 proof: filename,
                 status: req.body.status || 'Pending',
                 approverRemarks: req.body.approverRemarks
