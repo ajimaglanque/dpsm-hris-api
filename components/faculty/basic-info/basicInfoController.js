@@ -8,6 +8,7 @@ const EducationInfo = require('./education/educationInfoModel')
 const EmploymentInfo = require('./employment/employmentInfoModel')
 const WorkExpInfo = require('./work-exp/workExpInfoModel')
 const Unit = require('./unit/unitModel');
+const FacultyUpdates = require('../updates/facultyUpdateModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -42,8 +43,13 @@ faculty.getAllFaculty = async (req, res) => {
                     include: 
                         {
                             model: PersonalInfo,
-                            attributes: ['lastName','firstName','middleName']
-                        }
+                            attributes: ['lastName','firstName','middleName'],
+                            include: 
+                                {
+                                    model: FacultyUpdates,
+                                    attributes:['updatedAt']
+                                }
+                        },
                 },
             order: [
                 ['unit'],

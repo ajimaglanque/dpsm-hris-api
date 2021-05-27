@@ -5,6 +5,7 @@ const { Sequelize } = require('sequelize');
 const util = require('../../../../helpers/util');
 
 const TrainingSeminar = require('./trainingSeminarModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -57,6 +58,9 @@ faculty.addTrainingSeminar = async (req, res) => {
                 message: 'Faculty already has existing training/seminar information'
             };
         } else {
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -160,7 +164,9 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
                 message: 'Faculty training/seminar information cannot be updated'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -199,7 +205,9 @@ faculty.deleteTrainingSeminar = async (req, res) => {
                 message: 'Faculty training/seminar information cannot be deleted'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,

@@ -5,6 +5,7 @@ const { Sequelize } = require('sequelize');
 const util = require('../../../../helpers/util');
 
 const PublicService = require('./publicServiceModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -56,7 +57,9 @@ faculty.addPublicService = async (req, res) => {
                 message: 'Faculty already has existing public service information'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -162,7 +165,9 @@ faculty.editPublicServiceInfo = async (req, res) => {
                 message: 'Faculty public service information cannot be updated'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -201,7 +206,9 @@ faculty.deletePublicService = async (req, res) => {
                 message: 'Faculty public service information cannot be deleted'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,

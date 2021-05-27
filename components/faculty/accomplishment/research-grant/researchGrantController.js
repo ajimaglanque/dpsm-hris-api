@@ -7,6 +7,7 @@ const util = require('../../../../helpers/util');
 const ResearchGrant = require('./researchGrantModel')
 const Researcher = require('./researcherModel')
 const PersonalInfo = require('../../basic-info/personal/personalInfoModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -45,7 +46,9 @@ faculty.addResearchGrant = async (req, res) => {
                 message: 'Faculty already has existing research grant information'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -104,7 +107,9 @@ faculty.addResearcher = async (req, res) => {
                 message: 'Could not create faculty researcher information'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -253,6 +258,9 @@ faculty.editResearchGrant = async (req, res) => {
                     message: 'Faculty research grant information cannot be updated'
                 };
             } else {
+                FacultyUpdate.upsert({
+                    facultyId: req.params.facultyId
+                })
                 jsonRes = {
                     statusCode: 200,
                     success: true,
@@ -308,6 +316,9 @@ faculty.editResearcherInfo = async (req, res) => {
                 message: 'Faculty research grant information cannot be updated'
             };
         } else {
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -362,6 +373,9 @@ faculty.deleteResearcher = async (req, res) => {
                             message: 'Faculty research grant information cannot be deleted'
                         };
                     } else {
+                        FacultyUpdate.upsert({
+                            facultyId: req.params.facultyId
+                        })
                         jsonRes = {
                             statusCode: 200,
                             success: true,
@@ -369,6 +383,9 @@ faculty.deleteResearcher = async (req, res) => {
                         }; 
                     }
                 } else {
+                    FacultyUpdate.upsert({
+                        facultyId: req.params.facultyId
+                    })
                     jsonRes = {
                         statusCode: 200,
                         success: true,

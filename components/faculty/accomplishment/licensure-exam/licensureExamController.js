@@ -5,6 +5,7 @@ const { Sequelize } = require('sequelize');
 const util = require('../../../../helpers/util');
 
 const LicensureExam = require('./licensureExamModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -56,6 +57,9 @@ faculty.addLicensureExam = async (req, res) => {
                 message: 'Faculty already has existing licensure exam information'
             };
         } else {
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -156,7 +160,9 @@ faculty.editLicensureExamInfo = async (req, res) => {
                 message: 'Faculty licensure exam information cannot be updated'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -195,7 +201,9 @@ faculty.deleteLicensureExam = async (req, res) => {
                 message: 'Faculty licensure exam information cannot be deleted'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,

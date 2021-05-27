@@ -4,6 +4,7 @@ const mime = require('mime-types')
 const util = require('../../../../helpers/util');
 
 const EducationInfo = require('./educationInfoModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -56,7 +57,10 @@ faculty.addEducationInfo = async (req, res) => {
                 message: 'Faculty already has existing education information'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -160,7 +164,10 @@ faculty.editEducationInfo = async (req, res) => {
                 message: 'Faculty education information cannot be updated'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId,
+            })
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -199,7 +206,9 @@ faculty.deleteEducationInfo = async (req, res) => {
                 message: 'Faculty education information cannot be deleted'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,

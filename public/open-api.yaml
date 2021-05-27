@@ -148,15 +148,12 @@ paths:
                                       "faculty_personal_info": {
                                           "lastName": "Cristobal",
                                           "firstName": "Jodie",
-                                          "middleName": "Pacay"
-                                      }
-                                  },
-                                  {
-                                      "facultyId": 2,
-                                      "faculty_personal_info": {
-                                          "lastName": "Palomar",
-                                          "firstName": "Matthew",
-                                          "middleName": "Pacay"
+                                          "middleName": "Pacay",
+                                          "faculty_updates": [
+                                            {
+                                              "updatedAt": "2021-05-27T22:57:28.000Z"
+                                            }
+                                          ]
                                       }
                                   }
                               ]
@@ -170,15 +167,8 @@ paths:
                                       "faculty_personal_info": {
                                           "lastName": "Cristobal",
                                           "firstName": "Diane",
-                                          "middleName": "Pacay"
-                                      }
-                                  },
-                                  {
-                                      "facultyId": 5,
-                                      "faculty_personal_info": {
-                                          "lastName": "Cristobal",
-                                          "firstName": "Kenneth",
-                                          "middleName": "Pacay"
+                                          "middleName": "Pacay",
+                                          "faculty_updates": []
                                       }
                                   }
                               ]
@@ -192,15 +182,8 @@ paths:
                                       "faculty_personal_info": {
                                           "lastName": "Cristobal",
                                           "firstName": "Lee",
-                                          "middleName": "Pacay"
-                                      }
-                                  },
-                                  {
-                                      "facultyId": 8,
-                                      "faculty_personal_info": {
-                                          "lastName": "Palomar",
-                                          "firstName": "Diane",
-                                          "middleName": "Pacay"
+                                          "middleName": "Pacay",
+                                          "faculty_updates": []
                                       }
                                   }
                               ]

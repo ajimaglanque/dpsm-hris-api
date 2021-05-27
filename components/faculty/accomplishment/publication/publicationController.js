@@ -7,6 +7,7 @@ const util = require('../../../../helpers/util');
 const Publication = require('./publicationModel')
 const Publisher = require('./publisherModel')
 const PersonalInfo = require('../../basic-info/personal/personalInfoModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -41,7 +42,9 @@ faculty.addPublication = async (req, res) => {
                 message: 'Faculty already has existing publication information'
             };
         } else {
-            
+            FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -244,6 +247,9 @@ faculty.editPublicationInfo = async (req, res) => {
                         message: 'Faculty publication information cannot be updated'
                     };
                 } else {
+                    FacultyUpdate.upsert({
+                        facultyId: req.params.facultyId
+                    })
                     jsonRes = {
                         statusCode: 200,
                         success: true,
@@ -301,6 +307,9 @@ faculty.editPublisherInfo = async (req, res) => {
                 message: 'Faculty publisher information cannot be updated'
             };
         } else {
+            FacultyUpdate.upsert({
+                facultyId: req.params.facultyId
+            })
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -362,6 +371,9 @@ faculty.deletePublisher = async (req, res) => {
                 }
 
                 if(deletedPublication) {
+                    FacultyUpdate.upsert({
+                        facultyId: req.params.facultyId
+                    })
                     jsonRes = {
                         statusCode: 200,
                         success: true,
