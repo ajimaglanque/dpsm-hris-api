@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `status` VARCHAR(20) NOT NULL DEFAULT 'Inactive' AFTER `role`;
