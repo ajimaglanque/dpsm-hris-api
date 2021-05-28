@@ -20,6 +20,7 @@ const router = express.Router();
  */
 
 router.post('/', facultyLoadController.addFacultyLoad);
-// router.get('/:facultyId', facultyLoadController.getFacultyPersonalInfo);
+router.get('/:facultyId', facultyLoadController.getFacultyLoad);
+router.put('/:facultyId', facultyLoadController.editFacultyLoad);
 
 module.exports = router;

@@ -21,15 +21,19 @@ faculty.addFacultyLoad = async (req, res) => {
     let jsonRes;
     
     try {
-        let classRecord = req.files.classRecord
-        let name = classRecord.name
-        let fileExtension = mime.extension(classRecord.mimetype);
+        let setFile
 
-        let filename = util.createRandomString(name.length)
-        filename += '.' + fileExtension
-        
-        let path = 'uploads/' + filename
-        classRecord.mv(path);
+        if(req.files && req.files.setResults) {
+            let setResults = req.files.setResults
+            let name = setResults.name
+            let fileExtension = mime.extension(setResults.mimetype);
+    
+            setFile = util.createRandomString(name.length)
+            setFile += '.' + fileExtension
+            
+            let path = 'uploads/' + setFile
+            setResults.mv(path);
+        } 
 
         let [, created] = await FacultyLoad.findOrCreate({
             where: { facultyId: req.body.facultyId, academicYear: req.body.academicYear, subject: req.body.subject, section: req.body.section },
@@ -38,7 +42,7 @@ faculty.addFacultyLoad = async (req, res) => {
                 academicYear: req.body.academicYear,
                 subject: req.body.subject, 
                 section: req.body.section,
-                classRecord: filename
+                setResults: setFile
             }
         }) 
 
@@ -54,6 +58,114 @@ faculty.addFacultyLoad = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty class record added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getFacultyLoad = async (req, res) => {
+    // logger.info('inside getEductionInfo()...');
+
+    let jsonRes;
+  
+    try {
+        let where = {
+            facultyId: req.params.facultyId 
+        }
+
+        let facultyList = await FacultyLoad.findAll({
+            where: where,
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty employment info empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editFacultyLoad = async (req, res) => {
+    // logger.info('inside editFacultyLoad()...');
+
+    let jsonRes;
+    let updated
+
+    try { 
+        let setFile
+        let syllabusFile
+        if(req.files && req.files.setResults) {
+            let setResults = req.files.setResults
+            let name = setResults.name
+            let fileExtension = mime.extension(setResults.mimetype);
+    
+            setFile = util.createRandomString(name.length)
+            setFile += '.' + fileExtension
+            
+            let path = 'uploads/' + setFile
+            setResults.mv(path);
+        }
+        if(req.files && req.files.syllabus) {
+            let syllabus = req.files.syllabus
+            let name = syllabus.name
+            let fileExtension = mime.extension(syllabus.mimetype);
+    
+            syllabusFile = util.createRandomString(name.length)
+            syllabusFile += '.' + fileExtension
+            
+            let path = 'uploads/' + syllabusFile
+            syllabus.mv(path); 
+        }
+
+        updated = await FacultyLoad.update(
+            { 
+                academicYear: req.body.academicYear,
+                subject: req.body.subject, 
+                section: req.body.section,
+                setResults: setFile,
+                syllabus: syllabusFile
+            }, {
+                where: { facultyId: req.params.facultyId, recordId: req.body.recordId }
+            }
+        ) 
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty load information cannot be updated'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty load information updated successfully'
             }; 
         }
     } catch(error) {

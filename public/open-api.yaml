@@ -1420,12 +1420,16 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              example:
-                  {
-                    "facultyId": "9",
-                    "publicationId": "4",
-                    "proof": "ASK23N4.jpg"
-                  }
+              properties:
+                facultyId:
+                  type: string
+                  example: '9'
+                publicationId:
+                  type: string
+                  example: '4'
+                proof:
+                  type: file
+                  example: 'ASK23N4.jpg'
       responses:
         "200":
           description: Success
@@ -1651,12 +1655,13 @@ paths:
         content:
           multipart/form-data:
             schema:
+              type: object
               properties:
                 publicationId:
                   type: string
                   example: "2"
                 proof:
-                  type: string
+                  type: file
                   example: "WIj2Dv.jpg"
                 status:
                   type: string
@@ -2208,16 +2213,25 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
-              example:
-                {
-                  "facultyId": "9",
-                  "researchId": "1",
-                  "proof": "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg",
-                  "status": "Approved"
-                }
+              properties:
+                facultyId:
+                  type: string
+                  example: '9'
+                researchId:
+                  type: string
+                  example: '1'
+                proof:
+                  type: file
+                  example: '1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg'
+                status:
+                  type: string
+                  example: 'Approved'
+                approverRemarks:
+                  type: string
+                  example: '//required only if status=Rejected'
       responses:
         "200":
           description: Success
@@ -2407,6 +2421,7 @@ paths:
         content:
           multipart/form-data:
             schema:
+              type: object
               properties:
                 researchId:
                   type: string
@@ -2414,6 +2429,9 @@ paths:
                 status:
                   type: string
                   example: "Approved"
+                proof:
+                  type: file
+                  example: '1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg'
                 approverRemarks:
                   type: string
                   example: "Date provided does not match date in proof //only required if status=Rejected"
@@ -2559,103 +2577,7 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-    put:
-      summary: Edit faculty education info
-      tags:
-      - Faculty - Basic Information
-      description: Edit faculty education info
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/definitions/editFacultyEducationInfoSource"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty education information updated successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-    delete:
-      summary: Delete faculty education info
-      tags:
-      - Faculty - Basic Information
-      description: Delete faculty education info
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                educInfoId:
-                  type: string
-                  example: "12"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty education information deleted successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-  
+    
   "/api/faculty/reports/employment":
     get:
       summary: Get unit/department employment summary
@@ -2721,103 +2643,7 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-    put:
-      summary: Edit faculty education info
-      tags:
-      - Faculty - Basic Information
-      description: Edit faculty education info
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/definitions/editFacultyEducationInfoSource"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty education information updated successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-    delete:
-      summary: Delete faculty education info
-      tags:
-      - Faculty - Basic Information
-      description: Delete faculty education info
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                educInfoId:
-                  type: string
-                  example: "12"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty education information deleted successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-  
+    
   "/api/faculty/load":
     post:
       summary: Add faculty load
@@ -2857,6 +2683,133 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/load/{facultyId}":
+    get:
+      summary: Get faculty load info
+      tags:
+      - Faculty - Load
+      description: Get faculty load info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "recordId": 3,
+                            "academicYear": "1st Semester, AY 2020-2021",
+                            "subject": "CMSC 123",
+                            "section": "EJK",
+                            "setResults": "BUTHRWIAKTL.csv",
+                            "syllabus": null,
+                            "facultyId": 2
+                          },
+                          {
+                            "recordId": 4,
+                            "academicYear": "1st Semester, AY 2020-2021",
+                            "subject": "CMSC 124",
+                            "section": "MSG",
+                            "setResults": "L7UAC7U6LUUMUAND7JWVAP8QDPUIFNSHXOP.pdf",
+                            "syllabus": "UP89NF4NOK1JP6V7N79Y821UEIK29DBH4PKBHHSVKEVPM2VCLZHN.jpeg",
+                            "facultyId": 2
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      summary: Edit faculty load info
+      tags:
+      - Faculty - Load
+      description: Edit faculty load info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                recordId:
+                  type: string
+                  example: '5'
+                academicYear:
+                  type: string
+                  example: '2nd Semester, AY 2020-2021'
+                subject:
+                  type: string
+                  example: 'CMSC 127' 
+                section:
+                  type: string
+                  example: 'ISP' 
+                setResults:
+                  type: file
+                  example: 'L7UAC7U6LUUMUAND7JWVAP8QDPUIFNSHXOP.pdf'  
+                syllabus:
+                  type: file
+                  example: 'SHYHY1Q07WS8UP1P5CABX4NW57YZ9S3GVMR.pdf'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty load information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    
   "/api/faculty/evaluation":
     post:
       summary: Add faculty peer evaluation
@@ -3302,6 +3255,7 @@ definitions:
           example: "1994-01-06"
 
   addFacultyEducationInfoSource:
+    type: object
     properties:
         facultyId:
           type: string
@@ -3325,8 +3279,7 @@ definitions:
           type: string
           example: "1994-01-06"
         proof:
-          type: string
-          format: binary
+          type: file
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
@@ -3393,6 +3346,7 @@ definitions:
           example: 09123456789
 
   editFacultyEducationInfoSource:
+    type: object
     properties:
         educInfoId:
           type: string
@@ -3416,8 +3370,7 @@ definitions:
           type: string
           example: "2016-01-06"
         proof:
-          type: string
-          format: binary
+          type: file
           example: "J5IO84K233ZU6HKPK5RAATHK98W7I1Y2069.jpeg"
         status:
           type: string
@@ -3448,6 +3401,7 @@ definitions:
           example: "Taught elementary calculus for 3 years"
 
   addFacultyPublicServiceInfoSource:
+    type: object
     properties:
         facultyId:
           type: string
@@ -3471,10 +3425,11 @@ definitions:
           type: string
           example: "2020-07-01"
         proof:
-          type: string
+          type: file
           example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
 
   editFacultyPublicServiceInfoSource:
+    type: object
     properties:
         publicServiceId:
           type: string
@@ -3498,7 +3453,7 @@ definitions:
           type: string
           example: "2020-07-01"
         proof:
-          type: string
+          type: file
           example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
         status:
           type: string
@@ -3545,11 +3500,9 @@ definitions:
         nonFacultyAuthors:
           type: string
           example: "Author 1, Author 2, Author 3"
-        proof:
-          type: string
-          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
 
   addFacultyTSInfoSource:
+    type: object
     properties:
         facultyId:
           type: string
@@ -3573,10 +3526,11 @@ definitions:
           type: string
           example: "Remarks"
         proof:
-          type: string
+          type: file
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
 
   addFacultyLicensureExamInfoSource:
+    type: object
     properties:
         facultyId:
           type: string
@@ -3594,10 +3548,11 @@ definitions:
           type: string
           example: "3"
         proof:
-          type: string
+          type: file
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
 
   editFacultyLicensureExamInfoSource:
+    type: object
     properties:
         licenseId:
           type: string
@@ -3615,7 +3570,7 @@ definitions:
           type: string
           example: "3"
         proof:
-          type: string
+          type: file
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
         status:
           type: string
@@ -3625,6 +3580,7 @@ definitions:
           example: "Date provided does not match date in proof //only required if status=Rejected"
 
   editFacultyTrainingSeminarInfoSource:
+    type: object
     properties:
         tsId:
           type: string
@@ -3648,7 +3604,7 @@ definitions:
           type: string
           example: "Remarks"
         proof:
-          type: string
+          type: file
           example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
         status:
           type: string
@@ -3719,11 +3675,9 @@ definitions:
         nonFacultyResearchers:
           type: string
           example: "Author 1, Author 2, Author 3"
-        proof:
-          type: string
-          example: "5XH4DFNUPBJEOB79MH8E5QX2RKU.pdf"
   
   addFacultyLoadSource:
+    type: object
     properties:
         facultyId:
           type: string
@@ -3737,8 +3691,8 @@ definitions:
         section:
           type: string
           example: "MHI"
-        classRecord:
-          type: string
+        setResults:
+          type: file
           example: "BUTHRWIAKTL.csv"
 
   addFacultyEvaluationSource:
