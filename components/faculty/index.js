@@ -7,6 +7,7 @@ const accomplishments = require('./accomplishment');
 const facultyLoad = require('./faculty-load');
 const evaluations = require('./evaluation');
 const approval = require('./approval');
+const reports = require('./reports')
 
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.use('/accomplishment', accomplishments);
 router.use('/load', facultyLoad);
 router.use('/evaluation', evaluations);
 router.use('/approval', approval);
+router.use('/reports', reports);
 
 module.exports = router;
