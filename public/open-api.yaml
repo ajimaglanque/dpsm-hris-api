@@ -2656,6 +2656,168 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/reports/employment":
+    get:
+      summary: Get unit/department employment summary
+      tags:
+      - Reports
+      description: Get unit/department employment summary
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 10,
+                            "lastName": "Cristobal",
+                            "firstName": "Sarah",
+                            "faculty_unit": {
+                              "unitId": 1,
+                              "unit": {
+                                "unit": "Chemistry"
+                              }
+                            },
+                            "faculty_employment_infos": [
+                              {
+                                "employmentPositionId": 4,
+                                "startDate": "2020-11-02",
+                                "endDate": null,
+                                "faculty_employment_position": {
+                                  "position": "Instructor 4",
+                                  "employmentType": "ftt"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      summary: Edit faculty education info
+      tags:
+      - Faculty - Basic Information
+      description: Edit faculty education info
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/definitions/editFacultyEducationInfoSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty education information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete faculty education info
+      tags:
+      - Faculty - Basic Information
+      description: Delete faculty education info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: facultyId
+            in: path
+            description: Faculty ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                educInfoId:
+                  type: string
+                  example: "12"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty education information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/load":
     post:
       summary: Add faculty load
