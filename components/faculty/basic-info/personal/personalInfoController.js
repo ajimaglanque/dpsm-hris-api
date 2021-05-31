@@ -191,7 +191,8 @@ faculty.editPersonalInfo = async (req, res) => {
                 mobile: req.body.mobile,
                 email: req.body.email,
                 emergencyContactPerson: req.body.emergencyContactPerson,
-                emergencyContactNumber: req.body.emergencyContactNumber
+                emergencyContactNumber: req.body.emergencyContactNumber,
+                teachingPhilosophy: req.body.teachingPhilosophy
             }, {
                 where: { facultyId: req.params.facultyId }
             }
