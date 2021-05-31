@@ -2643,7 +2643,70 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-    
+  
+  "/api/faculty/reports/education":
+    get:
+      summary: Get unit/department education summary
+      tags:
+      - Reports
+      description: Get unit/department education summary
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 10,
+                            "lastName": "Cristobal",
+                            "firstName": "Sarah",
+                            "faculty_unit": {
+                              "unitId": 1,
+                              "unit": {
+                                "unit": "Chemistry"
+                              }
+                            },
+                            "faculty_education_infos": [
+                              {
+                                "educInfoId": 42,
+                                "degreeType": "BS",
+                                "degreeCert": "Computer Science",
+                                "endDate": "2019-03-16"
+                              }
+                            ]
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/load":
     post:
       summary: Add faculty load

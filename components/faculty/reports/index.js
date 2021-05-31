@@ -21,5 +21,6 @@ const router = express.Router();
 
 router.get('/accomplishment', reportsController.getAccomplishments);
 router.get('/employment', reportsController.getEmployments);
+router.get('/education', reportsController.getEducations);
 
 module.exports = router;
