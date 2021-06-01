@@ -1,4 +1,4 @@
-ALTER TABLE `faculty_class_records` CHANGE `classRecord` `setResults` VARCHAR(150) NULL CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `faculty_class_records` CHANGE `classRecord` `setResults` VARCHAR(150) NULL;
 
 ALTER TABLE `faculty_class_records` ADD `syllabus` VARCHAR(150) NULL AFTER `setResults`;
 
