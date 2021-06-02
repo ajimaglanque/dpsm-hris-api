@@ -5,6 +5,8 @@ const util = require('../../helpers/util');
 const User = require('./userEnrollmentModel')
 const Admin = require('./adminModel')
 const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel')
+const FacultyUnit = require('../faculty/basic-info/unit/facultyUnitModel');
+const EmploymentInfo = require('../faculty/basic-info/employment/employmentInfoModel')
 
 // const logger = log4js.getLogger('controllers - userEnrollment');
 // logger.level = config.logLevel;
@@ -64,7 +66,8 @@ userEnrollment.userEnroll = async (req, res) => {
                             civilStatus: req.body.personalInfo.civilStatus,
                             religion: req.body.personalInfo.religion,
                             emergencyContactPerson: req.body.personalInfo.emergencyContactPerson,
-                            emergencyContactNumber: req.body.personalInfo.emergencyContactNumber
+                            emergencyContactNumber: req.body.personalInfo.emergencyContactNumber,
+                            teachingPhilosophy: req.body.personalInfo.teachingPhilosophy
                         }
                     })
                     if(!created) {
@@ -74,14 +77,48 @@ userEnrollment.userEnroll = async (req, res) => {
                             message: 'Faculty already exists'
                         };
                     } else {
-                        jsonRes = {
-                            statusCode: 200,
-                            success: true,
-                            message: "Faculty added successfully",
-                            result: {
-                                facultyId: fclty.facultyId
+                        let [, created] = await FacultyUnit.findOrCreate({
+                            where: { facultyId: fclty.facultyId },
+                            defaults: {
+                                facultyId: fclty.facultyId,
+                                unitId: req.body.unitId
                             }
-                        }; 
+                        }) 
+                        if(!created) {
+                            jsonRes = {
+                                statusCode: 400,
+                                success: false,
+                                message: 'Faculty already assigned to a unit'
+                            };
+                        } else {
+                            let [, created] = await EmploymentInfo.findOrCreate({
+                                where: { facultyId: fclty.facultyId, employmentPositionId: req.body.employmentPositionId },
+                                defaults: {
+                                    facultyId: fclty.facultyId,
+                                    employmentPositionId: req.body.employmentPositionId,
+                                    startDate: req.body.startDate
+                                }
+                            }) 
+
+                            if(!created) {
+                                jsonRes = {
+                                    statusCode: 400,
+                                    success: false,
+                                    message: 'Faculty already has existing employment information'
+                                };
+                            } else {
+                                jsonRes = {
+                                    statusCode: 200,
+                                    success: true,
+                                    message: "Faculty added successfully",
+                                    result: {
+                                        facultyId: fclty.facultyId
+                                    }
+                                }; 
+                            }
+
+                        }
+
                     }
                 } catch(error) {
                     jsonRes = {

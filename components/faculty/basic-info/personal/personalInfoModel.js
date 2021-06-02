@@ -56,10 +56,7 @@ const PersonalInfo = sequelize.define('faculty_personal_info', {
         allowNull: false
     },
     landline: {
-        type: DataTypes.STRING(8),
-        validate: {
-            isNumeric: true
-        }
+        type: DataTypes.STRING(8)
     },
     mobile: {
         type: DataTypes.STRING(11),
