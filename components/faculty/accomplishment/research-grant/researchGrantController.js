@@ -134,8 +134,11 @@ faculty.getResearchGrant = async (req, res) => {
     let facultyList
     
     try {
+        let where = { facultyId: req.params.facultyId }
+        if(req.query.status) where.status = req.query.status
+
         facultyList = await Researcher.findAll({
-            where: { facultyId: req.params.facultyId },
+            where: where,
             attributes: ['researchId']
         });   
 
@@ -147,9 +150,6 @@ faculty.getResearchGrant = async (req, res) => {
                 message: 'Faculty research list empty'
             };
         } else {
-            let where = {}
-            if(req.query.status) where.status = req.query.status
-
             let research = []
             await facultyList.forEach((list) => {
                 research.push(list.researchId)
@@ -163,7 +163,6 @@ faculty.getResearchGrant = async (req, res) => {
                 include: 
                 {
                     model: Researcher,
-                    where: where,
                     attributes: ['facultyId', 'proof', 'status'],
                     include: 
                         {

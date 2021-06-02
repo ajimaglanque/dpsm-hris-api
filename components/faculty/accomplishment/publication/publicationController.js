@@ -127,8 +127,11 @@ faculty.getPublication = async (req, res) => {
     let facultyList
     
     try {
+        let where = { facultyId: req.params.facultyId }
+        if(req.query.status) where.status = req.query.status
+        
         facultyList = await Publisher.findAll({
-            where: { facultyId: req.params.facultyId },
+            where: where,
             attributes: ['publicationId']
         });   
 
@@ -140,9 +143,6 @@ faculty.getPublication = async (req, res) => {
                 message: 'Faculty publication list empty'
             };
         } else {
-            let where = {}
-            if(req.query.status) where.status = req.query.status
-
             let publication = []
             await facultyList.forEach((list) => {
                 publication.push(list.publicationId)
@@ -156,7 +156,6 @@ faculty.getPublication = async (req, res) => {
                 include: 
                 {
                     model: Publisher,
-                    where: where,
                     attributes: ['facultyId', 'proof', 'status'],
                     include: 
                         {

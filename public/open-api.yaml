@@ -1546,41 +1546,31 @@ paths:
                       example: 
                         [
                           {
-                            "publicationId": 5,
-                            "title": "new publication title",
-                            "journal": "journal of publication",
+                            "publicationId": 1,
+                            "title": "Updated Publication",
+                            "citation": "how to cite",
                             "url": null,
                             "publicationDate": "2019-11-06",
-                            "nonFacultyAuthors": "Author 1, Author 2, Author 3",
+                            "nonFacultyAuthors": null,
                             "faculty_publishers": [
                               {
-                                "facultyId": 9,
+                                "facultyId": 12,
                                 "proof": null,
-                                "status": "Pending",
+                                "status": "Verified",
                                 "faculty_personal_info": {
-                                    "lastName": "Cristobal",
-                                    "firstName": "Aji",
-                                    "middleName": "Pacay"
+                                  "lastName": "Cristobal",
+                                  "firstName": "Jodie",
+                                  "middleName": "Pacay"
                                 }
                               },
                               {
-                                "facultyId": 10,
+                                "facultyId": 2,
                                 "proof": null,
-                                "status": "Pending",
+                                "status": "Approved",
                                 "faculty_personal_info": {
-                                    "lastName": "Cristobal",
-                                    "firstName": "Sarah",
-                                    "middleName": "Pacay"
-                                }
-                              },
-                              {
-                                "facultyId": 8,
-                                "proof": null,
-                                "status": "Pending",
-                                "faculty_personal_info": {
-                                    "lastName": "Palomar",
-                                    "firstName": "Diane",
-                                    "middleName": "Pacay"
+                                  "lastName": "Palomar",
+                                  "firstName": "Matthew",
+                                  "middleName": "Pacay"
                                 }
                               }
                             ]
@@ -1598,29 +1588,9 @@ paths:
                                 "proof": null,
                                 "status": "Pending",
                                 "faculty_personal_info": {
-                                    "lastName": "Cristobal",
-                                    "firstName": "Aji",
-                                    "middleName": "Pacay"
-                                }
-                              },
-                              {
-                                "facultyId": 10,
-                                "proof": null,
-                                "status": "Pending",
-                                "faculty_personal_info": {
-                                    "lastName": "Cristobal",
-                                    "firstName": "Sarah",
-                                    "middleName": "Pacay"
-                                }
-                              },
-                              {
-                                "facultyId": 8,
-                                "proof": null,
-                                "status": "Pending",
-                                "faculty_personal_info": {
-                                    "lastName": "Palomar",
-                                    "firstName": "Diane",
-                                    "middleName": "Pacay"
+                                  "lastName": "Cristobal",
+                                  "firstName": "Aji",
+                                  "middleName": "Pacay"
                                 }
                               }
                             ]
