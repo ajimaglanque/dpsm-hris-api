@@ -110,4 +110,42 @@ faculty.getEmploymentInfo = async (req, res) => {
     }
 };
 
+faculty.getEmploymentPositions = async (req, res) => {
+    // logger.info('inside getEmploymentPositions()...');
+
+    let jsonRes;
+    
+    try {
+        let positionsList = await EmploymentPosition.findAll({
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        });
+        
+
+        if(positionsList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty positions list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: positionsList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 module.exports = faculty;

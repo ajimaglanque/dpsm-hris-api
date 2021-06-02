@@ -738,6 +738,56 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/basic-info/employment/positions":
+    get:
+      summary: Get employment positions list
+      tags:
+      - Faculty - Basic Information
+      description: Get employment positions list
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: object
+                      example: 
+                        [
+                          {
+                            "employmentPositionId": 1,
+                            "employmentType": "ftt",
+                            "position": "Instructor 1"
+                          },
+                          {
+                            "employmentPositionId": 2,
+                            "employmentType": "ftt",
+                            "position": "Instructor 2"
+                          },
+                          {
+                            "employmentPositionId": 3,
+                            "employmentType": "ftt",
+                            "position": "Instructor 3"
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/basic-info/add/education":
     post:
       summary: Add faculty education info
@@ -3227,8 +3277,18 @@ definitions:
             "civilStatus": "single",
             "religion": "Catholic",
             "emergencyContactPerson": "Hilda Cristobal",
-            "emergencyContactNumber": "09123456789"
+            "emergencyContactNumber": "09123456789",
+            "teachingPhilosophy": "Teaching Philosophy"
           }
+        unitId:
+          type: string
+          example: '3'
+        employmentPositionId:
+          type: string
+          example: '38'
+        startDate:
+          type: string
+          example: '2024-01-06'
 
   accessTokenSource:
     properties:
