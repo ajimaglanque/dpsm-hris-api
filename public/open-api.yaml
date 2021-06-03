@@ -471,45 +471,6 @@ paths:
       security:
       - bearerAuth: []
   
-  "/api/faculty/basic-info/add/unit":
-    post:
-      summary: Add faculty unit
-      tags:
-      - Faculty - Basic Information
-      description: Assign newly created faculty to a unit
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/addFacultyUnitSource"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty unit information added successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-  
   "/api/faculty/basic-info/dependent":
     put:
       summary: Add/Edit faculty dependent
@@ -1185,6 +1146,141 @@ paths:
                     message:
                       type: string
                       example: "Faculty work experience information deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/basic-info/add/unit":
+    post:
+      summary: Add faculty unit
+      tags:
+      - Faculty - Unit
+      description: Assign newly created faculty to a unit
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/addFacultyUnitSource"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty unit information added successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
+  "/api/faculty/basic-info/unit/{unitId}":
+    put:
+      summary: Edit faculty unit info
+      tags:
+      - Faculty - Unit
+      description: Edit faculty unit info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: path
+            description: Unit ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                incomingUnitHead:
+                  type: string
+                  example: '1'
+                approverRemarks:
+                  type: string
+                  example: 'Wrong faculty'
+
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty unit information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      summary: Delete faculty unit assignment info
+      tags:
+      - Faculty - Unit
+      description: Delete faculty unit assignment info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: path
+            description: Unit ID
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Faculty unit assignment information deleted successfully"
         "500":
           description: Error
           content:

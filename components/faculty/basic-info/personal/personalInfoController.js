@@ -91,42 +91,6 @@ faculty.updateDependent = async (req, res) => {
     }
 };
 
-faculty.addUnit = async (req, res) => {
-    // logger.info('inside addEmploymentInfo()...');
-
-    let jsonRes;
-    
-    try {
-        let [, created] = await FacultyUnit.findOrCreate({
-            where: { facultyId: req.body.facultyId },
-            defaults: req.body
-        }) 
-
-        if(!created) {
-            jsonRes = {
-                statusCode: 400,
-                success: false,
-                message: 'Faculty is already assigned to a faculty unit'
-            };
-        } else {
-            
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                message: 'Faculty unit information added successfully'
-            }; 
-        }
-    } catch(error) {
-        jsonRes = {
-            statusCode: 500,
-            success: false,
-            error: error,
-        };
-    } finally {
-        util.sendResponse(res, jsonRes);    
-    }
-};
-
 faculty.getFacultyPersonalInfo = async (req, res) => {
     // logger.info('inside getFacultyPersonalInfo()...');
 
