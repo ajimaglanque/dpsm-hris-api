@@ -3,6 +3,7 @@ const express = require('express');
 // const config = require('config')
 
 const userEnrollmentController = require('./userEnrollmentController');
+const authHandler = require('../../middlewares/authentication-handler');
 
 const router = express.Router();
 
@@ -20,5 +21,7 @@ const router = express.Router();
  * Add routes
  */
 router.post('/add', userEnrollmentController.userEnroll);
+router.use(authHandler.authenticateUser);
+router.put('/:userId', userEnrollmentController.editUser);
 
 module.exports = router;

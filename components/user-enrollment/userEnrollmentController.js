@@ -177,4 +177,51 @@ userEnrollment.userEnroll = async (req, res) => {
     util.sendResponse(res, jsonRes);    
 };
 
+userEnrollment.editUser = async (req, res) => {
+    // logger.info('inside editUser()...');
+
+    let jsonRes;
+    
+    try {
+        let body = {
+            role: req.body.role,
+            status: req.body.status
+        }
+        if(req.body.password) {
+            const salt = util.getSalt();
+            const passwordHash = util.hashPassword(req.body.password, salt);
+            body.password = passwordHash
+            body.salt = salt
+        }
+
+        let updated = await User.update(body, 
+            {
+                where: { userId: req.params.userId }
+            }
+        ) 
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty user information cannot be updated'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: "Faculty user information updated successfully"
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 module.exports = userEnrollment;

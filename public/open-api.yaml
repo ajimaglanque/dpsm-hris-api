@@ -67,6 +67,64 @@ paths:
               schema:
                 $ref: "#/definitions/ErrorResponse"
 
+  "/api/user/{userId}":
+    put:
+      summary: Edit user information
+      tags:
+      - User Enrollment
+      description: Update user details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  example: '2'
+                status:
+                  type: string
+                  example: 'Active'
+                password:
+                  type: string
+                  example: 'new password'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: string
+                      example: "Faculty user information updated successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/login":
     post:
       summary: Create access token 
