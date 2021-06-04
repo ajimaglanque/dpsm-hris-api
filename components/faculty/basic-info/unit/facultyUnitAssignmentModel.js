@@ -20,8 +20,8 @@ const FacultyUnitAssignment = sequelize.define('faculty_unit_assignment', {
     }
   });
 
-    PersonalInfo.hasOne(FacultyUnitAssignment, {foreignKey: 'incomingUnitHead'})
-    FacultyUnitAssignment.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
+    PersonalInfo.hasOne(FacultyUnitAssignment, {foreignKey: 'facultyId'})
+    FacultyUnitAssignment.belongsTo(PersonalInfo, {foreignKey: 'incomingUnitHead'});
     Unit.hasOne(FacultyUnitAssignment, {foreignKey: 'unitId'})
     FacultyUnitAssignment.belongsTo(Unit, {foreignKey: 'unitId'});
 

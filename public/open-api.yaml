@@ -1290,6 +1290,92 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/basic-info/unit/assignment":
+    get:
+      summary: Get faculty unit assignment info
+      tags:
+      - Faculty - Unit
+      description: Get faculty unit assignment info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: path
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: object
+                      example: [
+                        {
+                          "unitId": 2,
+                          "unit": "Mathematical and Computing Sciences",
+                          "faculty_unit_assignment": {
+                            "approverRemarks": "approverRemarks",
+                            "incomingUnitHead": 2,
+                            "faculty_personal_info": {
+                              "lastName": "Palomar",
+                              "firstName": "Matthew",
+                              "middleName": "Pacay"
+                            }
+                          },
+                          "faculty_units": [
+                            {
+                              "facultyId": 1,
+                              "faculty_personal_info": null
+                            },
+                            {
+                              "facultyId": 3,
+                              "faculty_personal_info": null
+                            },
+                            {
+                              "facultyId": 4,
+                              "faculty_personal_info": {
+                                "lastName": "Cristobal",
+                                "firstName": "Diane",
+                                "middleName": "Pacay",
+                                "user": {
+                                  "userId": 5,
+                                  "role": 2
+                                }
+                              }
+                            },
+                            {
+                              "facultyId": 12,
+                              "faculty_personal_info": null
+                            },
+                            {
+                              "facultyId": 47,
+                              "faculty_personal_info": null
+                            }
+                          ]
+                        }
+                      ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+  
   "/api/faculty/accomplishment/add/public-service":
     post:
       summary: Add faculty public service info

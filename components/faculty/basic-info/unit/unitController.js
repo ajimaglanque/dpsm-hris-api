@@ -4,7 +4,9 @@ const util = require('../../../../helpers/util');
 
 const PersonalInfo = require('../personal/personalInfoModel')
 const FacultyUnit = require('./facultyUnitModel');
+const Unit = require('./unitModel');
 const FacultyUnitAssignment = require('./facultyUnitAssignmentModel');
+const User = require('../../../user-enrollment/userEnrollmentModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -38,6 +40,76 @@ faculty.addUnit = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty unit information added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getUnitAssignment = async (req, res) => {
+    // logger.info('inside getUnitAssignment()...');
+
+    let jsonRes;
+    
+    try {
+        let where = {}
+        if(req.query.unitId) {
+            where.unitId = req.query.unitId
+        }
+        
+        let facultyList = await Unit.findAll({
+            where: where,
+            attributes: ['unitId', 'unit'],
+            include: [
+                {
+                    model: FacultyUnitAssignment,
+                    attributes: ['approverRemarks', 'incomingUnitHead'],
+                    include: 
+                    {
+                        model: PersonalInfo,
+                        attributes: ['lastName','firstName','middleName'],
+                    },
+                },
+                {
+                    model: FacultyUnit,
+                    attributes: ['facultyId'],
+                    include: 
+                    {
+                        model: PersonalInfo,
+                        attributes: ['lastName','firstName','middleName'],
+                        include: 
+                        {
+                            model: User,
+                            where: {role: '2'},
+                            attributes: ['userId', 'role'],                            
+                        }
+                    }
+                },
+            ],
+            order: [
+                ['unit']
+            ]
+        });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty not found'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
             }; 
         }
     } catch(error) {
