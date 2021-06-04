@@ -75,6 +75,11 @@ faculty.getUnitAssignment = async (req, res) => {
                     {
                         model: PersonalInfo,
                         attributes: ['lastName','firstName','middleName'],
+                        include: 
+                        {
+                            model: User,
+                            attributes: ['userId', 'role'],                            
+                        }
                     },
                 },
                 {
