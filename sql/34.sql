@@ -1,0 +1,1 @@
+ALTER TABLE `faculty_class_records` ADD `semester` VARCHAR(20) NOT NULL AFTER `academicYear`;

@@ -15,6 +15,10 @@ const FacultyLoad = sequelize.define('faculty_class_record', {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    semester: {
+        type: DataTypes.STRING(20),
+        allowNull: false
+    },
     subject: {
         type: DataTypes.STRING(20),
         allowNull: false

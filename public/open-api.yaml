@@ -3042,7 +3042,8 @@ paths:
                         [
                           {
                             "recordId": 3,
-                            "academicYear": "1st Semester, AY 2020-2021",
+                            "academicYear": "AY 2020-2021",
+                            "semester": "1st Semester",
                             "subject": "CMSC 123",
                             "section": "EJK",
                             "setResults": "BUTHRWIAKTL.csv",
@@ -3052,6 +3053,7 @@ paths:
                           {
                             "recordId": 4,
                             "academicYear": "1st Semester, AY 2020-2021",
+                            "semester": "1st Semester",
                             "subject": "CMSC 124",
                             "section": "MSG",
                             "setResults": "L7UAC7U6LUUMUAND7JWVAP8QDPUIFNSHXOP.pdf",
@@ -3097,7 +3099,10 @@ paths:
                   example: '5'
                 academicYear:
                   type: string
-                  example: '2nd Semester, AY 2020-2021'
+                  example: 'AY 2020-2021'
+                semester:
+                  type: string
+                  example: '2nd Semester'
                 subject:
                   type: string
                   example: 'CMSC 127' 
@@ -4017,7 +4022,10 @@ definitions:
           example: "2"
         academicYear:
           type: string
-          example: "1st Semester, AY 2020-2021"
+          example: "AY 2020-2021"
+        semester:
+          type: string
+          example: "1st Semester"
         subject:
           type: string
           example: "CMSC 123"

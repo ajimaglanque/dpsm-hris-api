@@ -40,6 +40,7 @@ faculty.addFacultyLoad = async (req, res) => {
             defaults: {
                 facultyId: req.body.facultyId,
                 academicYear: req.body.academicYear,
+                semester: req.body.semester, 
                 subject: req.body.subject, 
                 section: req.body.section,
                 setResults: setFile
@@ -146,6 +147,7 @@ faculty.editFacultyLoad = async (req, res) => {
         updated = await FacultyLoad.update(
             { 
                 academicYear: req.body.academicYear,
+                semester: req.body.semester, 
                 subject: req.body.subject, 
                 section: req.body.section,
                 setResults: setFile,
