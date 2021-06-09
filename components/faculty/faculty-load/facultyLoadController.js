@@ -84,7 +84,8 @@ faculty.getFacultyLoad = async (req, res) => {
 
         let facultyList = await FacultyLoad.findAll({
             where: where,
-            attributes: { exclude: ['createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            order: [['academicYear', 'DESC'], ['semester', 'ASC'], ['subject', 'ASC']]
         });
 
         if(facultyList.length === 0) {

@@ -3041,21 +3041,21 @@ paths:
                       example: 
                         [
                           {
-                            "recordId": 3,
-                            "academicYear": "AY 2020-2021",
+                            "recordId": 10,
+                            "academicYear": "2021",
                             "semester": "1st Semester",
                             "subject": "CMSC 123",
-                            "section": "EJK",
-                            "setResults": "BUTHRWIAKTL.csv",
+                            "section": "MHI",
+                            "setResults": "6YXHSCVC62IKJ0YVG3C76OTK85OP9MBHW2ZX8WM60WJUG0VS.pdf",
                             "syllabus": null,
                             "facultyId": 2
                           },
                           {
                             "recordId": 4,
-                            "academicYear": "1st Semester, AY 2020-2021",
-                            "semester": "1st Semester",
-                            "subject": "CMSC 124",
-                            "section": "MSG",
+                            "academicYear": "2021",
+                            "semester": "2nd Semester",
+                            "subject": "CMSC 123",
+                            "section": "MSI",
                             "setResults": "L7UAC7U6LUUMUAND7JWVAP8QDPUIFNSHXOP.pdf",
                             "syllabus": "UP89NF4NOK1JP6V7N79Y821UEIK29DBH4PKBHHSVKEVPM2VCLZHN.jpeg",
                             "facultyId": 2
