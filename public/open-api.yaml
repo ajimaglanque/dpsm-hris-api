@@ -125,6 +125,87 @@ paths:
       security:
       - bearerAuth: []
 
+  "/api/user/admin":
+    get:
+      summary: Get admin user information
+      tags:
+      - User Enrollment
+      description: Get admin user details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: object
+                      example: [
+                        {
+                          "adminId": 2,
+                          "userId": 72,
+                          "name": "Alma S. Capio"
+                        }
+                      ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
+  "/api/user/admin/{userId}":
+    delete:
+      summary: Delete admin user information
+      tags:
+      - User Enrollment
+      description: Delete admin user details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: string
+                      example: "Admin deleted successfully"
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/login":
     post:
       summary: Create access token 

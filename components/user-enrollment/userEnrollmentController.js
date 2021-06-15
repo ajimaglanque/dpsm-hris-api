@@ -224,4 +224,92 @@ userEnrollment.editUser = async (req, res) => {
     }
 };
 
+userEnrollment.getAdminUser = async (req, res) => {
+    // logger.info('inside getAdminUser()...');
+
+    let jsonRes;
+    
+    try {
+
+        let adminList = await Admin.findAll({
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            order: [['name']]
+        });
+
+        if(adminList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Admin not found'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: adminList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+userEnrollment.deleteAdminUser = async (req, res) => {
+    // logger.info('inside deleteAdminUser()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await Admin.destroy(
+            {
+                where: { userId: req.params.userId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Admin cannot be deleted'
+            };
+        } else {
+            deleted = await User.destroy(
+                {
+                    where: { userId: req.params.userId }
+                }
+            ) 
+            if(deleted == 0) {
+                jsonRes = {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Admin cannot be deleted'
+                };
+            } else {
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    message: 'Admin deleted successfully'
+                }; 
+            }
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 module.exports = userEnrollment;

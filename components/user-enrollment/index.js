@@ -23,5 +23,7 @@ const router = express.Router();
 router.post('/add', userEnrollmentController.userEnroll);
 router.use(authHandler.authenticateUser);
 router.put('/:userId', userEnrollmentController.editUser);
+router.get('/admin', userEnrollmentController.getAdminUser);
+router.delete('/admin/:userId', userEnrollmentController.deleteAdminUser);
 
 module.exports = router;
