@@ -1,6 +1,7 @@
 // const log4js = require('log4js');
 // const config = require('config');
 const util = require('../../../helpers/util');
+const { Op } = require('sequelize');
 
 const PersonalInfo = require('./personal/personalInfoModel')
 const FacultyUnit = require('./unit/facultyUnitModel');
@@ -27,20 +28,24 @@ faculty.getAllFaculty = async (req, res) => {
     
     try {
         let facultyList
+        let unitwhere = {}
         let where = {}
         if(req.query.unitId) {
-            where = {
-                unitId: req.query.unitId
-            }
+            unitwhere.unitId = req.query.unitId
+        }
+
+        if(req.query.facultyId) {
+            where = {facultyId: { [Op.ne]: req.query.facultyId } }
         }
         
         facultyList = await Unit.findAll({
-            where: where,
+            where: unitwhere,
             attributes: ['unitId', 'unit'],
             include: 
                 {
                     model: FacultyUnit,
                     attributes: ['facultyId'],
+                    where: where,
                     include: 
                         {
                             model: PersonalInfo,

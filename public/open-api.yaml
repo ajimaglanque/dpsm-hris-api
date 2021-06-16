@@ -263,6 +263,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: facultyId
+            in: query
+            description: Faculty ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -1441,7 +1449,7 @@ paths:
         - application/json
       parameters:
           - name: unitId
-            in: path
+            in: query
             description: Unit ID
             required: false
             style: simple
