@@ -47,7 +47,6 @@ router.get('/employment/positions', employmentInfoController.getEmploymentPositi
 router.post('/add/unit', unitController.addUnit);
 router.get('/unit/assignment', unitController.getUnitAssignment);
 router.put('/unit/:unitId', unitController.editUnitAssignment);
-router.delete('/unit/:unitId', unitController.deleteUnitAssignment);
 
 router.get('/list/all', basicInfoController.getAllFacultyInfo);
 router.get('/', basicInfoController.getAllFaculty);
