@@ -265,7 +265,7 @@ paths:
               type: string
           - name: facultyId
             in: query
-            description: Faculty ID
+            description: Faculty ID to be excluded in the response
             required: false
             style: simple
             explode: false
@@ -1396,47 +1396,7 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-    delete:
-      summary: Delete faculty unit assignment info
-      tags:
-      - Faculty - Unit
-      description: Delete faculty unit assignment info
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-          - name: unitId
-            in: path
-            description: Unit ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty unit assignment information deleted successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
-  
+    
   "/api/faculty/basic-info/unit/assignment":
     get:
       summary: Get faculty unit assignment info
@@ -1471,47 +1431,58 @@ paths:
                       type: object
                       example: [
                         {
+                          "unitId": 1,
+                          "unit": "Chemistry",
+                          "incomingUnitHead": 7,
+                          "approverRemarks": null,
+                          "faculty_personal_info": {
+                            "lastName": "Palomar",
+                            "firstName": "Jodie",
+                            "middleName": "Pacay",
+                            "user": {
+                              "userId": 8,
+                              "role": 1
+                            }
+                          },
+                          "currentUnitHead": {
+                            "facultyId": 5,
+                            "faculty_personal_info": {
+                              "lastName": "Cristobal",
+                              "firstName": "Kenneth",
+                              "middleName": "Pacay",
+                              "user": {
+                                "userId": 6,
+                                "role": 2
+                              }
+                            }
+                          }
+                        },
+                        {
                           "unitId": 2,
                           "unit": "Mathematical and Computing Sciences",
-                          "faculty_unit_assignment": {
-                            "approverRemarks": "approverRemarks",
-                            "incomingUnitHead": 2,
+                          "incomingUnitHead": 4,
+                          "approverRemarks": null,
+                          "faculty_personal_info": {
+                            "lastName": "Cristobal",
+                            "firstName": "Diane",
+                            "middleName": "Pacay",
+                            "user": {
+                              "userId": 5,
+                              "role": 2
+                            }
+                          },
+                          "currentUnitHead": {
+                            "facultyId": 2,
                             "faculty_personal_info": {
                               "lastName": "Palomar",
                               "firstName": "Matthew",
-                              "middleName": "Pacay"
-                            }
-                          },
-                          "faculty_units": [
-                            {
-                              "facultyId": 1,
-                              "faculty_personal_info": null
-                            },
-                            {
-                              "facultyId": 3,
-                              "faculty_personal_info": null
-                            },
-                            {
-                              "facultyId": 4,
-                              "faculty_personal_info": {
-                                "lastName": "Cristobal",
-                                "firstName": "Diane",
-                                "middleName": "Pacay",
-                                "user": {
-                                  "userId": 5,
-                                  "role": 2
-                                }
+                              "middleName": "Pacay",
+                              "user": {
+                                "userId": 3,
+                                "role": 2
                               }
-                            },
-                            {
-                              "facultyId": 12,
-                              "faculty_personal_info": null
-                            },
-                            {
-                              "facultyId": 47,
-                              "faculty_personal_info": null
                             }
-                          ]
+                          }
                         }
                       ]
         "500":
