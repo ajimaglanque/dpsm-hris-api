@@ -1,13 +1,10 @@
 // const log4js = require('log4js');
 // const config = require('config');
 const util = require('../../../helpers/util');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 
 const PersonalInfo = require('./personal/personalInfoModel')
 const FacultyUnit = require('./unit/facultyUnitModel');
-const EducationInfo = require('./education/educationInfoModel')
-const EmploymentInfo = require('./employment/employmentInfoModel')
-const WorkExpInfo = require('./work-exp/workExpInfoModel')
 const Unit = require('./unit/unitModel');
 const FacultyUpdates = require('../updates/facultyUpdateModel');
 const User = require('../../user-enrollment/userEnrollmentModel')
@@ -103,15 +100,21 @@ faculty.getAllFacultyInfo = async (req, res) => {
     try {
         let facultyList 
         let unitIdWhere = {}
+        let where = {}
+        
         if(req.query.unitId) {
             unitIdWhere = {
                 unitId: req.query.unitId
             }
         }
+
+        if(req.query.facultyId) {
+            where = {facultyId: { [Op.ne]: req.query.facultyId } }
+        }
+
         facultyList = await PersonalInfo.findAll({
-            attributes: {
-                exclude: ['createdAt', 'updatedAt']
-            },
+            attributes: ['facultyId', 'userId', 'lastName', 'firstName', 'middleName'],
+            where: where,
             include: [
                 {
                     model: FacultyUnit,
@@ -121,34 +124,12 @@ faculty.getAllFacultyInfo = async (req, res) => {
                         attributes: ['unit']
                     },
                     where: unitIdWhere
-                },
-                {
-                    model: EmploymentInfo,
-                    attributes: {
-                        exclude: ['employmentInfoId', 'facultyId', 'createdAt', 'updatedAt']
-                    },
-                    
-                },
-                {
-                    model: EducationInfo,
-                    attributes: {
-                        exclude: ['educInfoId', 'facultyId', 'createdAt', 'updatedAt']
-                    }
-                },
-                {
-                    model: WorkExpInfo,
-                    attributes: {
-                        exclude: ['workExpId', 'facultyId', 'createdAt', 'updatedAt']
-                    }
                 }
             ],
             order: [
                 ['lastName', 'ASC'],
                 ['firstName','ASC'],
-                ['middleName', 'ASC'],
-                [EmploymentInfo, 'startDate', 'DESC'],
-                [EducationInfo, 'startDate', 'DESC'],
-                [WorkExpInfo, 'endDate', 'DESC'],
+                ['middleName', 'ASC']
             ]
           });
 
