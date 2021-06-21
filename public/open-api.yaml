@@ -125,6 +125,49 @@ paths:
       security:
       - bearerAuth: []
 
+  "/api/user/validate-password":
+    post:
+      summary: Validate Password
+      tags:
+      - User Enrollment
+      description: Check if password is correct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 'password'
+                userId:
+                  type: string
+                  example: '2'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/user/admin":
     get:
       summary: Get admin user information

@@ -25,5 +25,6 @@ router.use(authHandler.authenticateUser);
 router.put('/:userId', userEnrollmentController.editUser);
 router.get('/admin', userEnrollmentController.getAdminUser);
 router.delete('/admin/:userId', userEnrollmentController.deleteAdminUser);
+router.post('/validate-password', userEnrollmentController.comparePassword);
 
 module.exports = router;

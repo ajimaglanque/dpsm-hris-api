@@ -312,4 +312,39 @@ userEnrollment.deleteAdminUser = async (req, res) => {
     }
 };
 
+userEnrollment.comparePassword = async (req, res) => {
+    let jsonRes;
+
+    try { 
+        const getUser = await User.findOne({
+            where: { userId: req.body.userId },
+            attributes: ['password', 'salt']
+        })
+
+        const password = req.body.password;
+        
+        let salt = getUser.salt
+        const passwordHash = util.hashPassword(password, salt);
+
+        if(passwordHash === getUser.password) {
+            jsonRes = {
+                statusCode: 200,
+                success: true
+            }; 
+        } else { 
+            jsonRes = {
+                statusCode: 500,
+                success: false
+            };
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+}
+
 module.exports = userEnrollment;
