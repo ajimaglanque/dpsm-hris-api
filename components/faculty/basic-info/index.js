@@ -43,6 +43,8 @@ router.delete('/:facultyId/education', educationInfoController.deleteEducationIn
 router.post('/add/employment', employmentInfoController.addEmploymentInfo);
 router.get('/:facultyId/employment', employmentInfoController.getEmploymentInfo);
 router.get('/employment/positions', employmentInfoController.getEmploymentPositions);
+router.put('/:facultyId/employment', employmentInfoController.editEmploymentInfo);
+router.delete('/:facultyId/employment', employmentInfoController.deleteEmploymentInfo);
 
 router.post('/add/unit', unitController.addUnit);
 router.get('/unit/assignment', unitController.getUnitAssignment);

@@ -26,7 +26,7 @@ faculty.addEmploymentInfo = async (req, res) => {
     
     try {
         let [, created] = await EmploymentInfo.findOrCreate({
-            where: { facultyId: req.body.facultyId, position: req.body.position },
+            where: { facultyId: req.body.facultyId, employmentPositionId: req.body.employmentPositionId },
             defaults: req.body
         }) 
 
@@ -135,6 +135,88 @@ faculty.getEmploymentPositions = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 result: positionsList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.editEmploymentInfo = async (req, res) => {
+    // logger.info('inside editEmployment()...');
+
+    let jsonRes;
+    let updated
+
+    try { 
+        
+        updated = await EmploymentInfo.update(
+            { 
+                employmentPositionId: req.body.employmentPositionId,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate
+            }, {
+                where: { facultyId: req.params.facultyId, employmentInfoId: req.body.employmentInfoId }
+            }
+        ) 
+
+        if(updated == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty employment information cannot be updated'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty employment information updated successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteEmploymentInfo = async (req, res) => {
+    // logger.info('inside deleteEmployment()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await EmploymentInfo.destroy(
+           {
+                where: { facultyId: req.params.facultyId, employmentInfoId: req.body.employmentInfoId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty employment information cannot be deleted'
+            };
+        } else {
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty employment information deleted successfully'
             }; 
         }
     } catch(error) {
