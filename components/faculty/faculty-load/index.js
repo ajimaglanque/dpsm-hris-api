@@ -22,5 +22,6 @@ const router = express.Router();
 router.post('/', facultyLoadController.addFacultyLoad);
 router.get('/:facultyId', facultyLoadController.getFacultyLoad);
 router.put('/:facultyId', facultyLoadController.editFacultyLoad);
+router.delete('/:facultyId', facultyLoadController.deleteFacultyLoad);
 
 module.exports = router;

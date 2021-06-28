@@ -147,8 +147,6 @@ faculty.editFacultyLoad = async (req, res) => {
 
         updated = await FacultyLoad.update(
             { 
-                academicYear: req.body.academicYear,
-                semester: req.body.semester, 
                 subject: req.body.subject, 
                 section: req.body.section,
                 setResults: setFile,
@@ -169,6 +167,44 @@ faculty.editFacultyLoad = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty load information updated successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.deleteFacultyLoad = async (req, res) => {
+    // logger.info('inside deleteFacultyLoad()...');
+
+    let jsonRes;
+    let deleted
+
+    try { 
+        
+        deleted = await FacultyLoad.destroy(
+           {
+                where: { facultyId: req.params.facultyId, recordId: req.body.recordId }
+            }
+        ) 
+
+        if(deleted == 0) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'Faculty load information cannot be deleted'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Faculty load information deleted successfully'
             }; 
         }
     } catch(error) {
