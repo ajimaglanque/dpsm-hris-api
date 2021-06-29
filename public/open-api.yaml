@@ -3291,12 +3291,6 @@ paths:
                 recordId:
                   type: string
                   example: '5'
-                academicYear:
-                  type: string
-                  example: 'AY 2020-2021'
-                semester:
-                  type: string
-                  example: '2nd Semester'
                 subject:
                   type: string
                   example: 'CMSC 127' 
