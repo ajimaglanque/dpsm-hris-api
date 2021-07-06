@@ -223,6 +223,21 @@ reports.getEducations = async (req, res) => {
                 unitId: req.query.unitId
             }
         }
+
+        let filter = []
+        filter.push({
+            endDate: { [Op.ne]: null }
+        });
+        if(req.query.startDate) filter.push({
+            endDate: { [Op.gte]: req.query.startDate }
+        })
+        if(req.query.endDate) filter.push({
+            endDate: { [Op.lte]: req.query.endDate }
+        })
+        let educWhere = {
+            [Op.and]: [ filter ]
+        } 
+        
         facultyList = await PersonalInfo.findAll({
             attributes: ['facultyId', 'lastName', 'firstName'],
             include: [
@@ -238,7 +253,7 @@ reports.getEducations = async (req, res) => {
                 {
                     model: Education,
                     attributes: ['educInfoId', 'degreeType', 'degreeCert', 'endDate'],
-                    where: {endDate: { [Op.ne]: null } },
+                    where: educWhere
                 },
             ],
             order: [
