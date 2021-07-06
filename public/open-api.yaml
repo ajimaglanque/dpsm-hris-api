@@ -2981,6 +2981,22 @@ paths:
             explode: false
             schema:
               type: string
+          - name: startDate
+            in: query
+            description: Start Date
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+          - name: endDate
+            in: query
+            description: End Date
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success

@@ -35,10 +35,34 @@ reports.getAccomplishments = async (req, res) => {
     try {
         let facultyList 
         let unitIdWhere = {}
+        let psaDateWhere = {}
+        let pubDateWhere = {}
+        let tsDateWhere = {}
+        let rgDateWhere = {}
+
         if(req.query.unitId) {
             unitIdWhere = {
                 unitId: req.query.unitId
             }
+        }
+        if(req.query.startDate) {
+            psaDateWhere.startDate = { [Op.gte]: req.query.startDate } 
+            tsDateWhere.dateFrom = { [Op.gte]: req.query.startDate } 
+            rgDateWhere.actualStart = { [Op.gte]: req.query.startDate } 
+            if(req.query.endDate) {
+                pubDateWhere.publicationDate = { [Op.between]: [req.query.startDate, req.query.endDate] } 
+            } else {
+                pubDateWhere.publicationDate = { [Op.gte]: req.query.startDate } 
+            }
+        }
+
+        if(req.query.endDate) {
+            psaDateWhere.endDate = { [Op.lte]: req.query.endDate } 
+            tsDateWhere.dateTo = { [Op.lte]: req.query.endDate } 
+            rgDateWhere.actualEnd = { [Op.lte]: req.query.endDate } 
+            if(req.query.startDate) {
+                pubDateWhere.publicationDate = { [Op.between]: [req.query.startDate, req.query.endDate] } 
+            } else pubDateWhere.publicationDate = { [Op.lte]: req.query.endDate } 
         }
         facultyList = await PersonalInfo.findAll({
             attributes: ['facultyId', 'lastName', 'firstName'],
@@ -54,26 +78,34 @@ reports.getAccomplishments = async (req, res) => {
                 },
                 {
                     model: PSAInfo,
-                    attributes: ['position', 'organization', 'startDate', 'endDate']
+                    attributes: ['position', 'organization', 'startDate', 'endDate'],
+                    required: false,
+                    where: psaDateWhere
                 },
                 {
                     model: Publisher,
                     attributes: ['publicationId'], 
+                    required: false,
                     include: {
                         model: Publication,
-                        attributes: ['title', 'publicationDate']
+                        attributes: ['title', 'publicationDate'],
+                        where: pubDateWhere
                     }
                 }, 
                 {
                     model: Training,
-                    attributes: ['role', 'title', 'dateFrom', 'dateTo']
+                    attributes: ['role', 'title', 'dateFrom', 'dateTo'],
+                    required: false,
+                    where: tsDateWhere
                 },
                 {
                     model: Researcher,
                     attributes: ['researchId'],
+                    required: false,
                     include: {
                         model: Research,
-                        attributes: ['researchName', 'actualStart', 'actualEnd']
+                        attributes: ['researchName', 'actualStart', 'actualEnd'],
+                        where: rgDateWhere
                     }
                 },
             ],
