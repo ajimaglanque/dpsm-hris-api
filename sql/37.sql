@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `remarks` VARCHAR(50) NULL AFTER `status`;

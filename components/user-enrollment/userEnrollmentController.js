@@ -185,7 +185,8 @@ userEnrollment.editUser = async (req, res) => {
     try {
         let body = {
             role: req.body.role,
-            status: req.body.status
+            status: req.body.status,
+            remarks: req.body.remarks
         }
         if(req.body.password) {
             const salt = util.getSalt();

@@ -16,7 +16,7 @@ const FacultyUpdates = sequelize.define('faculty_update', {
     }
   });
 
-  PersonalInfo.hasMany(FacultyUpdates, {foreignKey: 'facultyId'})
+  PersonalInfo.hasOne(FacultyUpdates, {foreignKey: 'facultyId'})
   FacultyUpdates.belongsTo(PersonalInfo, {foreignKey: 'facultyId'});
   
   module.exports = FacultyUpdates

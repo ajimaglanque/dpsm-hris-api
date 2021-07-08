@@ -17,8 +17,13 @@ const User = sequelize.define('user', {
     },
     status: {
         type: DataTypes.STRING(20),
-        isIn: [['Inactive', 'Active', 'Retired', 'Resigned']],
+        isIn: [['Inactive', 'Active']],
         allowNull: false
+    },
+    remarks: {
+        type: DataTypes.STRING(20),
+        isIn: [['Retired', 'Resigned', 'On Leave']],
+        allowNull: true
     },
     upemail: {
         type: DataTypes.STRING(50),

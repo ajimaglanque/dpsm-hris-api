@@ -98,7 +98,10 @@ paths:
                   example: '2'
                 status:
                   type: string
-                  example: 'Active'
+                  example: 'Active/Inactive'
+                remarks:
+                  type: string
+                  example: 'Retired/Resigned/On Leave'
                 password:
                   type: string
                   example: 'new password'
@@ -334,17 +337,19 @@ paths:
                               "unit": "Chemistry",
                               "faculty_units": [
                                   {
-                                      "facultyId": 1,
-                                      "faculty_personal_info": {
-                                          "lastName": "Cristobal",
-                                          "firstName": "Jodie",
-                                          "middleName": "Pacay",
-                                          "faculty_updates": [
-                                            {
-                                              "updatedAt": "2021-05-27T22:57:28.000Z"
-                                            }
-                                          ]
+                                    "facultyId": 14,
+                                    "faculty_personal_info": {
+                                      "lastName": "Cristobal",
+                                      "firstName": "Jodie",
+                                      "middleName": "Pacay",
+                                      "faculty_update": {
+                                        "updatedAt": "2021-06-02T14:25:01.000Z"
+                                      },
+                                      "user": {
+                                        "status": "Active",
+                                        "remarks": null
                                       }
+                                    }
                                   }
                               ]
                           },
@@ -358,7 +363,11 @@ paths:
                                           "lastName": "Cristobal",
                                           "firstName": "Diane",
                                           "middleName": "Pacay",
-                                          "faculty_updates": []
+                                          "faculty_updates": [],
+                                          "user": {
+                                            "status": "Inactive",
+                                            "remarks": 'Retired'
+                                          }
                                       }
                                   }
                               ]
@@ -373,7 +382,11 @@ paths:
                                           "lastName": "Cristobal",
                                           "firstName": "Lee",
                                           "middleName": "Pacay",
-                                          "faculty_updates": []
+                                          "faculty_updates": [],
+                                          "user": {
+                                            "status": "Inactive",
+                                            "remarks": 'Resigned'
+                                          }
                                       }
                                   }
                               ]

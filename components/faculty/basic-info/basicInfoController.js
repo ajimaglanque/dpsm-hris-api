@@ -54,7 +54,7 @@ faculty.getAllFaculty = async (req, res) => {
                                 },
                                 {
                                     model: User,
-                                    attributes: ['status']
+                                    attributes: ['userId', 'status', 'remarks']
                                 }
                             ]
                         },
