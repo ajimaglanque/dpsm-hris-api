@@ -37,6 +37,14 @@ login.login = async (req, res) => {
                 }],
                 statusCode: 401
             };
+        } else if(getUser.status != 'Active') {
+            jsonRes = {
+                errors: [{
+                    code: 401,
+                    message: 'User account is inactive'
+                }],
+                statusCode: 401
+            };
         } else {
             const password = req.body.password;
             let salt = getUser.salt
