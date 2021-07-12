@@ -79,12 +79,11 @@ login.login = async (req, res) => {
                             where: { facultyId: faculty.facultyId, endDate: null },
                             include: {
                                 model: EmploymentPosition,
-                                attributes: ['position', 'employmentType']
+                                attributes: ['position']
                             }
                         })
                         
-                        if(employment != null) {
-                            userDetails.employmentType= employment.faculty_employment_position.employmentType
+                        if(employment != null) { 
                             userDetails.position = employment.faculty_employment_position.position
                         }
                     }

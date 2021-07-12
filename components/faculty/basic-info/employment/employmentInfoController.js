@@ -74,10 +74,10 @@ faculty.getEmploymentInfo = async (req, res) => {
                 },
                 {
                     model: EmploymentInfo,
-                    attributes: ['employmentInfoId', 'startDate', 'endDate'],
+                    attributes: ['employmentInfoId', 'status', 'category', 'startDate', 'endDate'],
                     include: {
                         model: EmploymentPosition,
-                        attributes: ['employmentPositionId', 'employmentType', 'position']
+                        attributes: ['employmentPositionId', 'position']
                     }
                 }
             ],
@@ -159,6 +159,8 @@ faculty.editEmploymentInfo = async (req, res) => {
         updated = await EmploymentInfo.update(
             { 
                 employmentPositionId: req.body.employmentPositionId,
+                status: req.body.status,
+                category: req.body.category,
                 startDate: req.body.startDate,
                 endDate: req.body.endDate
             }, {

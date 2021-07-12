@@ -16,6 +16,14 @@ const EmploymentInfo = sequelize.define('faculty_employment_info', {
         type: DataTypes.INTEGER(2),
         allowNull: false
     },
+    status: {
+        type: DataTypes.STRING(9),
+        allowNull: false
+    },
+    category: {
+        type: DataTypes.STRING(9),
+        allowNull: false
+    },
     startDate: {
         type: DataTypes.DATE,
         allowNull: false,

@@ -35,7 +35,8 @@ approval.getFacultyList = async (req, res) => {
             attributes: ['userId'],
             include: {
                 model: User,
-                attributes: ['role']
+                attributes: ['role', 'status', 'userId'],
+                where: {status: 'Active'}
             }
         })
 

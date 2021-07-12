@@ -155,6 +155,26 @@ reports.getEmployments = async (req, res) => {
                 unitId: req.query.unitId
             }
         }
+
+        let filter = []
+        filter.push({
+            endDate: { [Op.eq]: null }
+        });
+        if(req.query.startDate) {
+            if(req.query.endDate) {
+                filter.push({
+                    startDate: { [Op.between]: [req.query.startDate, req.query.endDate] }
+                })
+            } else {
+                filter.push({
+                    startDate: { [Op.gte]: req.query.startDate }
+                })
+            }
+        }
+        let empWhere = {
+            [Op.and]: [ filter ]
+        } 
+
         facultyList = await PersonalInfo.findAll({
             attributes: ['facultyId', 'lastName', 'firstName'],
             include: [
@@ -169,11 +189,11 @@ reports.getEmployments = async (req, res) => {
                 },
                 {
                     model: Employment,
-                    attributes: ['employmentPositionId', 'startDate', 'endDate'],
-                    where: {endDate: null},
+                    attributes: ['employmentPositionId', 'status', 'category', 'startDate', 'endDate'],
+                    where: empWhere,
                     include: {
                         model: Position,
-                        attributes: ['position', 'employmentType']
+                        attributes: ['position']
                     }
                 },
             ],
