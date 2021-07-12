@@ -31,7 +31,7 @@ userEnrollment.userEnroll = async (req, res) => {
             where: { upemail: req.body.upemail },
             defaults: {
                 role: req.body.role,
-                status: req.body.status || 'Active',
+                status: 'Active',
                 upemail: req.body.upemail,
                 password: passwordHash,
                 salt: salt
@@ -96,6 +96,8 @@ userEnrollment.userEnroll = async (req, res) => {
                                 defaults: {
                                     facultyId: fclty.facultyId,
                                     employmentPositionId: req.body.employmentPositionId,
+                                    status: req.body.status,
+                                    category: req.body.category,
                                     startDate: req.body.startDate
                                 }
                             }) 
