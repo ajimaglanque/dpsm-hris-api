@@ -317,6 +317,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: status
+            in: query
+            description: Filter by Employment Status (Allowed value - 'ft')
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -342,6 +350,12 @@ paths:
                                       "lastName": "Cristobal",
                                       "firstName": "Jodie",
                                       "middleName": "Pacay",
+                                      "faculty_employment_infos": [
+                                        {
+                                          "status": "Full-time",
+                                          "category": "Permanent"
+                                        }
+                                      ],
                                       "faculty_update": {
                                         "updatedAt": "2021-06-02T14:25:01.000Z"
                                       },
@@ -358,17 +372,26 @@ paths:
                               "unit": "Mathematical and Computing Sciences",
                               "faculty_units": [
                                   {
-                                      "facultyId": 4,
-                                      "faculty_personal_info": {
-                                          "lastName": "Cristobal",
-                                          "firstName": "Diane",
-                                          "middleName": "Pacay",
-                                          "faculty_updates": [],
-                                          "user": {
-                                            "status": "Inactive",
-                                            "remarks": 'Retired'
-                                          }
+                                    "facultyId": 1,
+                                    "faculty_personal_info": {
+                                      "lastName": "Cristobal",
+                                      "firstName": "Jodie",
+                                      "middleName": "Pacay",
+                                      "faculty_employment_infos": [
+                                        {
+                                          "status": "Full-time",
+                                          "category": "Permanent"
+                                        }
+                                      ],
+                                      "faculty_update": {
+                                        "updatedAt": "2021-05-27T23:04:15.000Z"
+                                      },
+                                      "user": {
+                                        "userId": 1,
+                                        "status": "Active",
+                                        "remarks": null
                                       }
+                                    }
                                   }
                               ]
                           },
@@ -382,6 +405,12 @@ paths:
                                           "lastName": "Cristobal",
                                           "firstName": "Lee",
                                           "middleName": "Pacay",
+                                          "faculty_employment_infos": [
+                                            {
+                                              "status": "Full-time",
+                                              "category": "Permanent"
+                                            }
+                                          ],
                                           "faculty_updates": [],
                                           "user": {
                                             "status": "Inactive",
@@ -428,6 +457,14 @@ paths:
             explode: false
             schema:
               type: string
+          - name: status
+            in: query
+            description: Filter by Employment Status (Allowed value - 'ft')
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
       responses:
         "200":
           description: Success
@@ -449,6 +486,12 @@ paths:
                             "lastName": "Palomar",
                             "firstName": "Lee",
                             "middleName": "Pacay",
+                            "faculty_employment_infos": [
+                              {
+                                "status": "Full-time",
+                                "category": "Permanent"
+                              }
+                            ],
                             "faculty_unit": {
                               "unitId": 2,
                               "unit": {
@@ -462,6 +505,12 @@ paths:
                             "lastName": "Palomar",
                             "firstName": "Matthew",
                             "middleName": "Pacay",
+                            "faculty_employment_infos": [
+                              {
+                                "status": "Full-time",
+                                "category": "Permanent"
+                              }
+                            ],
                             "faculty_unit": {
                               "unitId": 2,
                               "unit": {
@@ -1020,17 +1069,14 @@ paths:
                         [
                           {
                             "employmentPositionId": 1,
-                            "employmentType": "ftt",
                             "position": "Instructor 1"
                           },
                           {
                             "employmentPositionId": 2,
-                            "employmentType": "ftt",
                             "position": "Instructor 2"
                           },
                           {
                             "employmentPositionId": 3,
-                            "employmentType": "ftt",
                             "position": "Instructor 3"
                           }
                         ]

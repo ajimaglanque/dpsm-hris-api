@@ -8,6 +8,7 @@ const FacultyUnit = require('./unit/facultyUnitModel');
 const Unit = require('./unit/unitModel');
 const FacultyUpdates = require('../updates/facultyUpdateModel');
 const User = require('../../user-enrollment/userEnrollmentModel')
+const Employment = require('./employment/employmentInfoModel')
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -27,12 +28,22 @@ faculty.getAllFaculty = async (req, res) => {
         let facultyList
         let unitwhere = {}
         let where = {}
+        let empwhere = {}
+        let userwhere = {}
+
         if(req.query.unitId) {
             unitwhere.unitId = req.query.unitId
         }
 
         if(req.query.facultyId) {
             where = {facultyId: { [Op.ne]: req.query.facultyId } }
+        }
+
+        if(req.query.status && req.query.status=='ft') {
+            empwhere.status = 'Full-time'
+            empwhere.category = 'Permanent'
+            empwhere.endDate = null
+            userwhere.status = 'Active'
         }
         
         facultyList = await Unit.findAll({
@@ -46,14 +57,20 @@ faculty.getAllFaculty = async (req, res) => {
                     include: 
                         {
                             model: PersonalInfo,
-                            attributes: ['lastName','firstName','middleName'],
+                            attributes: ['facultyId', 'lastName','firstName','middleName'],
                             include: [
+                                {
+                                    model: Employment,
+                                    where: empwhere,
+                                    attributes: ['status', 'category']
+                                },
                                 {
                                     model: FacultyUpdates,
                                     attributes:['updatedAt']
                                 },
                                 {
                                     model: User,
+                                    where: userwhere,
                                     attributes: ['userId', 'status', 'remarks']
                                 }
                             ]
@@ -101,6 +118,8 @@ faculty.getAllFacultyInfo = async (req, res) => {
         let facultyList 
         let unitIdWhere = {}
         let where = {}
+        let empwhere = {}
+        let userwhere = {}
         
         if(req.query.unitId) {
             unitIdWhere = {
@@ -112,10 +131,22 @@ faculty.getAllFacultyInfo = async (req, res) => {
             where = {facultyId: { [Op.ne]: req.query.facultyId } }
         }
 
+        if(req.query.status && req.query.status=='ft') {
+            empwhere.status = 'Full-time'
+            empwhere.category = 'Permanent'
+            empwhere.endDate = null
+            userwhere.status = 'Active'
+        }
+
         facultyList = await PersonalInfo.findAll({
             attributes: ['facultyId', 'userId', 'lastName', 'firstName', 'middleName'],
             where: where,
             include: [
+                {
+                    model: Employment,
+                    where: empwhere,
+                    attributes: ['status', 'category']
+                },
                 {
                     model: FacultyUnit,
                     attributes: ['unitId'],
@@ -124,6 +155,11 @@ faculty.getAllFacultyInfo = async (req, res) => {
                         attributes: ['unit']
                     },
                     where: unitIdWhere
+                },
+                {
+                    model: User,
+                    where: userwhere,
+                    attributes: ['userId']
                 }
             ],
             order: [
