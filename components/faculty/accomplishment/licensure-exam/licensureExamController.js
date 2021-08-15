@@ -37,6 +37,10 @@ faculty.addLicensureExam = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         [, created] = await LicensureExam.findOrCreate({
             where: { facultyId: req.body.facultyId, examName: req.body.examName },
             defaults: {
@@ -46,7 +50,7 @@ faculty.addLicensureExam = async (req, res) => {
                 licenseNumber: req.body.licenseNumber,
                 rank: req.body.rank,
                 proof: filename,
-                status: 'Pending'
+                status: status
             }
         }) 
 
@@ -139,6 +143,14 @@ faculty.editLicensureExamInfo = async (req, res) => {
             proof.mv(path);
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         updated = await LicensureExam.update(
             { 
                 examName: req.body.examName,
@@ -146,8 +158,8 @@ faculty.editLicensureExamInfo = async (req, res) => {
                 licenseNumber: req.body.licenseNumber,
                 rank: req.body.rank || null,
                 proof: filename,
-                status: req.body.status || 'Pending',
-                approverRemarks: req.body.approverRemarks
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, licenseId: req.body.licenseId }
             }

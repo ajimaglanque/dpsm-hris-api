@@ -36,6 +36,10 @@ faculty.addTrainingSeminar = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         [, created] = await TrainingSeminar.findOrCreate({
             where: { facultyId: req.body.facultyId, title: req.body.title, dateFrom: req.body.dateFrom },
             defaults: {
@@ -47,7 +51,7 @@ faculty.addTrainingSeminar = async (req, res) => {
                 venue: req.body.venue,
                 remarks: req.body.remarks,
                 proof: filename,
-                status: 'Pending'
+                status: status
             }
         }) 
 
@@ -141,6 +145,14 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         updated = await TrainingSeminar.update(
             { 
                 title: req.body.title,
@@ -150,8 +162,8 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
                 venue: req.body.venue,
                 remarks: req.body.remarks,
                 proof: filename,
-                status: req.body.status || 'Pending',
-                approverRemarks: req.body.approverRemarks
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
             }

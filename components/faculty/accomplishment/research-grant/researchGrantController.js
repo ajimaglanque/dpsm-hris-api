@@ -90,13 +90,17 @@ faculty.addResearcher = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         let [, created] = await Researcher.findOrCreate({
             where: { facultyId: req.body.facultyId, researchId: req.body.researchId },
             defaults: {
                 facultyId: req.body.facultyId,
                 researchId: req.body.researchId,
                 proof: filename,
-                status: 'Pending'
+                status: status
             }
         })
 
@@ -163,7 +167,7 @@ faculty.getResearchGrant = async (req, res) => {
                 include: 
                 {
                     model: Researcher,
-                    attributes: ['facultyId', 'proof', 'status'],
+                    attributes: ['facultyId', 'proof', 'status', 'approverRemarks'],
                     include: 
                         {
                             model: PersonalInfo,
@@ -215,10 +219,19 @@ faculty.editResearchGrant = async (req, res) => {
             proof.mv(path);
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         let updated = await Researcher.update(
             { 
                 proof: filename,
-                status: req.body.status || "Pending"
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, researchId: req.body.researchId }
             }

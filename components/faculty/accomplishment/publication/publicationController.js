@@ -86,12 +86,17 @@ faculty.addPublisher = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         let [, created] = await Publisher.findOrCreate({
             where: { facultyId: req.body.facultyId, publicationId: req.body.publicationId },
             defaults: {
                 facultyId: req.body.facultyId,
                 publicationId: req.body.publicationId,
-                proof: filename
+                proof: filename,
+                status: status
             }
         }) 
 
@@ -156,7 +161,7 @@ faculty.getPublication = async (req, res) => {
                 include: 
                 {
                     model: Publisher,
-                    attributes: ['facultyId', 'proof', 'status'],
+                    attributes: ['facultyId', 'proof', 'status', 'approverRemarks'],
                     include: 
                         {
                             model: PersonalInfo,
@@ -209,10 +214,19 @@ faculty.editPublicationInfo = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         let updated = await Publisher.update(
             { 
                 proof: filename,
-                status: req.body.status || "Pending"
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
             }
@@ -289,11 +303,19 @@ faculty.editPublisherInfo = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         let updated = await Publisher.update(
             { 
                 proof: filename,
-                status: req.body.status || "Pending",
-                approverRemarks: req.body.approverRemarks
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
             }

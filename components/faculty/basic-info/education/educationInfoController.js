@@ -34,6 +34,10 @@ faculty.addEducationInfo = async (req, res) => {
             let path = 'uploads/' + filename
             proof.mv(path);
         } 
+
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
         
         [, created] = await EducationInfo.findOrCreate({
             where: { facultyId: req.body.facultyId, degreeType: req.body.degreeType, degreeCert: req.body.degreeCert },
@@ -46,7 +50,7 @@ faculty.addEducationInfo = async (req, res) => {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 proof: filename,
-                status: 'Pending'
+                status: status
             }
         }) 
 
@@ -141,6 +145,14 @@ faculty.editEducationInfo = async (req, res) => {
 
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         updated = await EducationInfo.update(
             { 
                 institutionSchool: req.body.institutionSchool,
@@ -150,8 +162,8 @@ faculty.editEducationInfo = async (req, res) => {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 proof: filename,
-                status: req.body.status || 'Pending',
-                approverRemarks: req.body.approverRemarks
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
             }

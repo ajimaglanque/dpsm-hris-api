@@ -35,6 +35,11 @@ faculty.addPublicService = async (req, res) => {
             proof.mv(path);
 
         } 
+
+        let status = 'Pending'
+        if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         [, created] = await PublicService.findOrCreate({
             where: { facultyId: req.body.facultyId, type: req.body.type, position: req.body.position, startDate: req.body.startDate },
             defaults: {
@@ -46,7 +51,7 @@ faculty.addPublicService = async (req, res) => {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 proof: filename,
-                status: 'Pending'
+                status: status
             }
         }) 
 
@@ -142,6 +147,14 @@ faculty.editPublicServiceInfo = async (req, res) => {
             proof.mv(path);
         } 
 
+        let status = 'Pending'
+        let approverRemarks = req.body.approverRemarks
+        if(req.body.status) {
+            status = req.body.status
+            if(status != 'Rejected') approverRemarks = null
+        } else if(res.locals.user.role == 2) status = 'Verified'
+        else if(res.locals.user.role == 3) status = 'Approved';
+
         updated = await PublicService.update(
             { 
                 type: req.body.type,
@@ -151,8 +164,8 @@ faculty.editPublicServiceInfo = async (req, res) => {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 proof: filename,
-                status: req.body.status || 'Pending',
-                approverRemarks: req.body.approverRemarks
+                status: status,
+                approverRemarks: approverRemarks
             }, {
                 where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
             }
