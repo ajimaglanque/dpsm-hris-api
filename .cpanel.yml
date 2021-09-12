@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/dpsmzfbe/public_html/dpsm-hris-api/
+    - /bin/cp -R * $DEPLOYPATH
