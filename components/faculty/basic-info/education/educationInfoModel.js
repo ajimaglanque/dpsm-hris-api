@@ -18,7 +18,7 @@ const EducationInfo = sequelize.define('faculty_education_info', {
     degreeType: {
         type: DataTypes.STRING(10),
         validate: {
-            isIn: [['AA', 'AS', 'BA', 'BS', 'MA', 'MS', 'MD', 'PhD']]
+            isIn: [['AA', 'AS', 'BA', 'BS', 'MA', 'MS', 'MD', 'PhD', 'DEng', 'DrPH']]
         }
     },
     degreeCert: {
