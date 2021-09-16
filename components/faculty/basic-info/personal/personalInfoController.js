@@ -144,6 +144,7 @@ faculty.editPersonalInfo = async (req, res) => {
     try {
         let updated = await PersonalInfo.update(
             { 
+                firstName: req.body.firstName,
                 middleName: req.body.middleName,
                 lastName: req.body.lastName,
                 suffix: req.body.suffix,
