@@ -963,6 +963,12 @@ paths:
                 employmentPositionId:
                   type: string
                   example: "13"
+                status:
+                  type: string
+                  example: "Full-time"
+                category:
+                  type: string
+                  example: "Permanent"
                 startDate:
                   type: string
                   example: "2020-06-23"
@@ -3914,6 +3920,12 @@ definitions:
         employmentPositionId:
           type: string
           example: "20"
+        status:
+          type: string
+          example: "Full-time"
+        category:
+          type: string
+          example: "Permanent"
         startDate:
           type: string
           example: "1994-01-06"
