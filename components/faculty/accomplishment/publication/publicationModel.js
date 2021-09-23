@@ -13,15 +13,16 @@ const PublicationInfo = sequelize.define('faculty_publication', {
         primaryKey: true
     },
     title: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false
     },
     citation: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: false
     },
     url: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
+        allowNull: true,
         validate: {
             isUrl: true
         }
@@ -34,7 +35,7 @@ const PublicationInfo = sequelize.define('faculty_publication', {
         }
     },
     nonFacultyAuthors: {
-        type: DataTypes.STRING(150)
+        type: DataTypes.TEXT
     }
   });
 

@@ -3839,6 +3839,12 @@ definitions:
         startDate:
           type: string
           example: '2024-01-06'
+        status:
+          type: string
+          example: "Full-time"
+        category:
+          type: string
+          example: "Permanent"
 
   accessTokenSource:
     properties:
