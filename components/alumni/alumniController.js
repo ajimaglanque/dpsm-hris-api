@@ -5,7 +5,7 @@ const util = require('../../helpers/util');
 const PersonalInfo = require('./alumniPersonalInfoModel')
 const WorkExpInfo = require('./alumniWorkExpInfoModel')
 
-// const logger = log4js.getLogger('controllers - alumni');
+
 // logger.level = config.logLevel;
 // console.log('controllers - alumni');
 
