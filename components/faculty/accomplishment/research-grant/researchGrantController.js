@@ -112,7 +112,7 @@ faculty.addResearcher = async (req, res) => {
             };
         } else {
             FacultyUpdate.upsert({
-                facultyId: req.params.facultyId
+                facultyId: req.body.facultyId
             })
             jsonRes = {
                 statusCode: 200,

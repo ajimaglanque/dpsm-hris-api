@@ -90,7 +90,7 @@ faculty.addPublisher = async (req, res) => {
         if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
-        let [, created] = await Publisher.findOrCreate({
+        let [publisher, created] = await Publisher.findOrCreate({
             where: { facultyId: req.body.facultyId, publicationId: req.body.publicationId },
             defaults: {
                 facultyId: req.body.facultyId,
@@ -100,11 +100,11 @@ faculty.addPublisher = async (req, res) => {
             }
         }) 
 
-        if(!created) {
+        if(!publisher) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Could not create faculty publisher information'
+                message: 'Could not find or create faculty publisher information'
             };
         } else {
             
