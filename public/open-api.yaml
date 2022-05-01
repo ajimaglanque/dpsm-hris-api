@@ -251,7 +251,116 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
       security:
       - bearerAuth: []
-
+  
+  "/api/user/forgot-password":
+    post:
+      summary: Reset user password 
+      tags:
+      - User Enrollment
+      description: Reset user password
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                upemail:
+                  type: string
+                  example: 'jpcristobal1@up.edu.ph'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: 'Email sent to j**********1@up.edu.ph'
+                    result:
+                      type: object
+                      example: {
+                          "messageId": "<ac60389a-43ef-8e6c-cfde-0d73fa43f697@gmail.com>"
+                      }
+                    
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+  
+  "/api/user/forgot-password/{userId}/{token}":
+    post:
+      summary: Set new password 
+      tags:
+      - User Enrollment
+      description: Set new password
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: token
+          in: path
+          description: Password reset token
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 'password'
+                password2:
+                  type: string
+                  example: 'password'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: 'Password reset successfully'
+                    
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+  
   "/api/login":
     post:
       summary: Create access token 
