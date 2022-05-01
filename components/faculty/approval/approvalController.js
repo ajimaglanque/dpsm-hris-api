@@ -33,11 +33,18 @@ approval.getFacultyList = async (req, res) => {
         let facultyId = req.params.facultyId
         let getFaculty = await PersonalInfo.findByPk(facultyId, {
             attributes: ['userId'],
-            include: {
-                model: User,
-                attributes: ['role', 'status', 'userId'],
-                where: {status: 'Active'}
-            }
+            include: [
+                {
+                    model: User,
+                    attributes: ['role', 'status', 'userId'],
+                    where: {status: 'Active'},
+                },
+                {
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    where: {facultyId: facultyId}
+                }
+            ]
         })
 
         if(!getFaculty){
@@ -56,7 +63,7 @@ approval.getFacultyList = async (req, res) => {
                 
                 if(role == 2) {
                     unitIdWhere = {
-                        unitId: req.query.unitId
+                        unitId: req.query.unitId ? req.query.unitId : getFaculty.faculty_unit.unitId
                     }
                     status = {status: 'Pending'}
                 } else if(role == 3) {
