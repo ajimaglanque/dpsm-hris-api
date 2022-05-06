@@ -444,6 +444,42 @@ userEnrollment.sendEmail = async (req, res) => {
     }
 }
 
+userEnrollment.verifyToken = async (req, res) => {
+    let jsonRes;
+
+    try { 
+        // validate user id
+        const getUser = await User.findOne({
+            where: { userId: req.params.userId },
+            attributes: ['password', 'salt']
+        })
+
+        if(!getUser) {
+            jsonRes = {
+                statusCode: 400,
+                success: false,
+                message: 'User does not exist',
+            };
+        } else {
+            const payload = await jwt.verify(req.params.token, process.env.TOKEN_SECRET)
+            
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Token verified'
+            };
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+}
+
 userEnrollment.resetPassword = async (req, res) => {
     let jsonRes;
 

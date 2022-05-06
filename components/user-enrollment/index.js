@@ -22,6 +22,7 @@ const router = express.Router();
  */
 router.post('/add', userEnrollmentController.userEnroll);
 router.post('/forgot-password', userEnrollmentController.sendEmail);
+router.get('/forgot-password/:userId/:token', userEnrollmentController.verifyToken);
 router.post('/forgot-password/:userId/:token', userEnrollmentController.resetPassword);
 router.use(authHandler.authenticateUser);
 router.put('/:userId', userEnrollmentController.editUser);
