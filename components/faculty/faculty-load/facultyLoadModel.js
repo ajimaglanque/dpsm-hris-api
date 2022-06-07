@@ -27,9 +27,6 @@ const FacultyLoad = sequelize.define('faculty_class_record', {
         type: DataTypes.STRING(5),
         allowNull: false
     },
-    setResults: {
-        type: DataTypes.STRING(150)
-    },
     syllabus: {
         type: DataTypes.STRING(150)
     }

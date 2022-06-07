@@ -219,7 +219,7 @@ faculty.deleteEducationInfo = async (req, res) => {
             };
         } else {
             FacultyUpdate.upsert({
-                facultyId: req.body.facultyId
+                facultyId: req.params.facultyId
             })
             jsonRes = {
                 statusCode: 200,
