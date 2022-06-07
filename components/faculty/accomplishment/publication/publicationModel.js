@@ -21,11 +21,7 @@ const PublicationInfo = sequelize.define('faculty_publication', {
         allowNull: false
     },
     url: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        validate: {
-            isUrl: true
-        }
+        type: DataTypes.TEXT
     },
     publicationDate: {
         type: DataTypes.DATE,
