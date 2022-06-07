@@ -27,10 +27,7 @@ const TrainingSeminar = sequelize.define('faculty_training_seminar', {
         allowNull: false
     },
     dateTo: {
-        type: DataTypes.STRING,
-        validate: {
-            isDate: true
-        }
+        type: DataTypes.STRING
     },
     venue: {
         type: DataTypes.STRING(100),
