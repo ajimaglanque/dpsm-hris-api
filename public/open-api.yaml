@@ -3503,9 +3503,12 @@ paths:
                 section:
                   type: string
                   example: 'ISP' 
-                setResults:
-                  type: file
-                  example: 'L7UAC7U6LUUMUAND7JWVAP8QDPUIFNSHXOP.pdf'  
+                semester:
+                  type: string
+                  example: 'ISP' 
+                academicYear:
+                  type: string
+                  example: 'ISP' 
                 syllabus:
                   type: file
                   example: 'SHYHY1Q07WS8UP1P5CABX4NW57YZ9S3GVMR.pdf'

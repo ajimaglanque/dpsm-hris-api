@@ -120,19 +120,7 @@ faculty.editFacultyLoad = async (req, res) => {
     let updated
 
     try { 
-        let setFile
         let syllabusFile
-        if(req.files && req.files.setResults) {
-            let setResults = req.files.setResults
-            let name = setResults.name
-            let fileExtension = mime.extension(setResults.mimetype);
-    
-            setFile = util.createRandomString(name.length)
-            setFile += '.' + fileExtension
-            
-            let path = 'uploads/' + setFile
-            setResults.mv(path);
-        }
         if(req.files && req.files.syllabus) {
             let syllabus = req.files.syllabus
             let name = syllabus.name
@@ -149,7 +137,8 @@ faculty.editFacultyLoad = async (req, res) => {
             { 
                 subject: req.body.subject, 
                 section: req.body.section,
-                setResults: setFile,
+                semester: req.body.semester,
+                academicYear: req.body.academicYear,
                 syllabus: syllabusFile
             }, {
                 where: { facultyId: req.params.facultyId, recordId: req.body.recordId }
