@@ -641,7 +641,7 @@ paths:
     post:
       summary: Add faculty personal info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Personal Info
       description: Add faculty personal info
       consumes:
         - application/json
@@ -686,7 +686,7 @@ paths:
     get:
       summary: Get faculty personal info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Personal Info
       description: Get faculty personal info
       consumes:
         - application/json
@@ -764,7 +764,7 @@ paths:
     put:
       summary: Edit faculty personal info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Personal Info
       description: Edit faculty personal info
       consumes:
         - application/json
@@ -818,7 +818,7 @@ paths:
     put:
       summary: Add/Edit faculty dependent
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Personal Info
       description: Add faculty dependent if no dependentId passed; Edit otherwise
       consumes:
         - application/json
@@ -872,7 +872,7 @@ paths:
     delete:
       summary: Delete faculty dependent info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Personal Info
       description: Delete faculty dependent info
       consumes:
         - application/json
@@ -924,7 +924,7 @@ paths:
     post:
       summary: Add faculty employment info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Employment Info
       description: Add faculty employment info
       consumes:
         - application/json
@@ -963,7 +963,7 @@ paths:
     get:
       summary: Get faculty employment info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Employment Info
       description: Get faculty employment info
       consumes:
         - application/json
@@ -1044,7 +1044,7 @@ paths:
     put:
       summary: Edit faculty employment info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Employment Info
       description: Edit faculty employment info
       consumes:
         - application/json
@@ -1109,7 +1109,7 @@ paths:
     delete:
       summary: Delete faculty employment info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Employment Info
       description: Delete faculty employment info
       consumes:
         - application/json
@@ -1161,7 +1161,7 @@ paths:
     get:
       summary: Get employment positions list
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Employment Info
       description: Get employment positions list
       consumes:
         - application/json
@@ -1208,7 +1208,7 @@ paths:
     post:
       summary: Add faculty education info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Education Info
       description: Add faculty education info
       consumes:
         - application/json
@@ -1247,7 +1247,7 @@ paths:
     get:
       summary: Get faculty education info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Education Info
       description: Get faculty education info
       consumes:
         - application/json
@@ -1321,7 +1321,7 @@ paths:
     put:
       summary: Edit faculty education info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Education Info
       description: Edit faculty education info
       consumes:
         - multipart/form-data
@@ -1367,7 +1367,7 @@ paths:
     delete:
       summary: Delete faculty education info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Education Info
       description: Delete faculty education info
       consumes:
         - application/json
@@ -1419,7 +1419,7 @@ paths:
     post:
       summary: Add faculty work experience info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Work Experience Info
       description: Add faculty work experience info
       consumes:
         - application/json
@@ -1458,7 +1458,7 @@ paths:
     get:
       summary: Get faculty work experience info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Work Experience Info
       description: Get faculty work experience info
       consumes:
         - application/json
@@ -1516,7 +1516,7 @@ paths:
     put:
       summary: Edit faculty work experience info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Work Experience Info
       description: Edit faculty work experience info
       consumes:
         - multipart/form-data
@@ -1562,7 +1562,7 @@ paths:
     delete:
       summary: Delete faculty work experience info
       tags:
-      - Faculty - Basic Information
+      - Faculty - Basic Information - Work Experience Info
       description: Delete faculty work experience info
       consumes:
         - application/json
@@ -1802,11 +1802,106 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/public-service":
+    get:
+      summary: Get all approved faculty public service info
+      tags:
+      - Faculty - Accomplishments - Public Service
+      description: Get all approved faculty public service info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 58,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "Bustillo",
+                                "firstName": "John Paul",
+                                "faculty_public_services": [
+                                    {
+                                        "type": "Within Pro",
+                                        "position": "Resource Speaker",
+                                        "organization": "Association of Nuclear Medicine Technologists ",
+                                        "description": "served as resource person on use of Raman spectroscopy technique",
+                                        "startDate": "2021-01-04",
+                                        "endDate": "2021-01-04",
+                                        "status": "Approved"
+                                    }
+                                ]
+                            }
+                          },
+                          {
+                            "facultyId": 48,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "De Luna",
+                                "firstName": "Marie Josephine",
+                                "faculty_public_services": [
+                                    {
+                                        "type": "Within UPM",
+                                        "position": "Resource Speaker",
+                                        "organization": "UPM TTBDO",
+                                        "description": "served as resource speaker on University Patent Application",
+                                        "startDate": "2021-09-01",
+                                        "endDate": "2021-09-01",
+                                        "status": "Approved"
+                                    },
+                                    {
+                                        "type": "Within Wor",
+                                        "position": "Trainor",
+                                        "organization": "AUN",
+                                        "description": "served as trainor for AUN ",
+                                        "startDate": "2021-01-12",
+                                        "endDate": "2021-01-14",
+                                        "status": "Approved"
+                                    }
+                                ]
+                            }
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/add/public-service":
     post:
       summary: Add faculty public service info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Public Service
       description: Add faculty public service info
       consumes:
         - multipart/form-data
@@ -1851,7 +1946,7 @@ paths:
     get:
       summary: Get faculty public service info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Public Service
       description: Get faculty public service info
       consumes:
         - application/json
@@ -1923,7 +2018,7 @@ paths:
     put:
       summary: Edit faculty public service info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Public Service
       description: Edit faculty public service info
       consumes:
         - multipart/form-data
@@ -1969,7 +2064,7 @@ paths:
     delete:
       summary: Delete faculty public service info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Public Service
       description: Delete faculty public service info
       consumes:
         - application/json
@@ -2017,11 +2112,87 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/publication":
+    get:
+      summary: Get all approved faculty publication info
+      tags:
+      - Faculty - Accomplishments - Publication
+      description: Get all approved faculty publication info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 48,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "De Luna",
+                                "firstName": "Marie Josephine",
+                                "faculty_publishers": [
+                                    {
+                                        "status": "Approved",
+                                        "faculty_publication": {
+                                            "title": "Investigation of gamma-irradiated multilayered polyethylene terephthalate/polypropylene composite fi",
+                                            "citation": "Ilao, R. C., Maestre, R. T., & De Luna, M. J. (201",
+                                            "url": "https://proceedings.spp-online.org/issue/view/SPP-2019",
+                                            "publicationDate": "2019-03-25",
+                                            "nonFacultyAuthors": "Romarica Costales Ilao, Ralph Thomas Maestre"
+                                        }
+                                    },
+                                    {
+                                        "status": "Approved",
+                                        "faculty_publication": {
+                                            "title": "Rapid quantitative determination of the unsaturated fat content of commercial cooking oils using Ram",
+                                            "citation": "Edquila, K. M. V., Maestre, R. T. C., & De Luna, M",
+                                            "url": "https://books.google.com.ph/books?hl=en&lr=&id=hq4SEAAAQBAJ&oi=fnd&pg=PA46&dq=info:JxznrEftFWYJ:scho",
+                                            "publicationDate": "2019-03-27",
+                                            "nonFacultyAuthors": "Kathleen Mae Valleja Edquila, Ralph Thomas Maestre, Ma. Sheila Magboo, Eden Huelgas, Marcelina Lirazan, Cathy Cruz Valencia, Pie Calayan, Vicky Belo K"
+                                        }
+                                    }
+                                ]
+                            }
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/add/publication":
     post:
       summary: Add faculty publication info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Add faculty publication info
       consumes:
         - application/json
@@ -2066,7 +2237,7 @@ paths:
     post:
       summary: Add faculty publisher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Add faculty publisher info
       consumes:
         - application/json
@@ -2115,7 +2286,7 @@ paths:
     get:
       summary: Get faculty publication info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Get faculty publication info
       consumes:
         - application/json
@@ -2215,7 +2386,7 @@ paths:
     put:
       summary: Edit faculty publication info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Edit faculty publication info
       consumes:
         - multipart/form-data
@@ -2263,7 +2434,7 @@ paths:
     put:
       summary: Edit faculty publisher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Edit faculty publisher info
       consumes:
         - multipart/form-data
@@ -2322,7 +2493,7 @@ paths:
     delete:
       summary: Delete faculty publisher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Publication
       description: Delete faculty publisher info
       consumes:
         - application/json
@@ -2370,11 +2541,76 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/training-seminar":
+    get:
+      summary: Get all approved faculty training/seminar info
+      tags:
+      - Faculty - Accomplishments - Training/Seminar
+      description: Get all approved faculty training/seminar info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 48,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "De Luna",
+                                "firstName": "Marie Josephine",
+                                "faculty_training_seminars": [
+                                  {
+                                      "role": "Resource Person",
+                                      "title": "Curricular Revision of BS Applied Physics, BS Biochemistry and BS Computer Science Programs",
+                                      "dateFrom": "2017-08-23",
+                                      "dateTo": "2017-08-25",
+                                      "venue": "Manila Pavillon Hotel (Waterfront Hotel)",
+                                      "remarks": "3 day workshop",
+                                      "status": "Approved"
+                                  }
+                                ]
+                            }
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/add/training-seminar":
     post:
       summary: Add faculty training/seminar info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Training/Seminar
       description: Add faculty training/seminar info
       consumes:
         - multipart/form-data
@@ -2413,7 +2649,7 @@ paths:
     get:
       summary: Get faculty training/seminar info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Training/Seminar
       description: Get faculty training/seminar info
       consumes:
         - application/json
@@ -2484,7 +2720,7 @@ paths:
     put:
       summary: Edit faculty training/seminar info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Training/Seminar
       description: Edit faculty training/seminar info
       consumes:
         - multipart/form-data
@@ -2530,7 +2766,7 @@ paths:
     delete:
       summary: Delete faculty training/seminar info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Training/Seminar
       description: Delete faculty training/seminar info
       consumes:
         - application/json
@@ -2578,11 +2814,74 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/licensure-exam":
+    get:
+      summary: Get all approved faculty licensure exam info
+      tags:
+      - Faculty - Accomplishments - Licensure Exam
+      description: Get all approved faculty licensure exam info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 48,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "De Luna",
+                                "firstName": "Marie Josephine",
+                                "faculty_licensure_exams": [
+                                  {
+                                      "examName": "Civil Service Professional",
+                                      "examDate": "2021-09-01",
+                                      "licenseNumber": "123456",
+                                      "rank": 0,
+                                      "status": "Approved"
+                                  }
+                                ]
+                            }
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/add/licensure-exam":
     post:
       summary: Add faculty licensure exam info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Licensure Exam
       description: Add faculty licensure exam info
       consumes:
         - multipart/form-data
@@ -2621,7 +2920,7 @@ paths:
     get:
       summary: Get faculty licensure exam info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Licensure Exam
       description: Get faculty licensure exam info
       consumes:
         - application/json
@@ -2689,7 +2988,7 @@ paths:
     put:
       summary: Edit faculty licensure exam info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Licensure Exam
       description: Edit faculty licensure exam info
       consumes:
         - multipart/form-data
@@ -2735,7 +3034,7 @@ paths:
     delete:
       summary: Delete faculty licensure exam info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Licensure Exam
       description: Delete faculty licensure exam info
       consumes:
         - application/json
@@ -2783,11 +3082,81 @@ paths:
       security:
       - bearerAuth: []
   
+  "/api/faculty/accomplishment/research-grant":
+    get:
+      summary: Get all approved faculty research grant info
+      tags:
+      - Faculty - Accomplishments - Research Grant
+      description: Get all approved faculty research grant info
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+          - name: unitId
+            in: query
+            description: Unit ID
+            required: false
+            style: simple
+            explode: false
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    result:
+                      type: array
+                      example: 
+                        [
+                          {
+                            "facultyId": 48,
+                            "unit": {
+                                "unit": "Physics and Geology"
+                            },
+                            "faculty_personal_info": {
+                                "lastName": "De Luna",
+                                "firstName": "Marie Josephine",
+                                "faculty_researchers": [
+                                  {
+                                      "status": "Approved",
+                                      "faculty_research_grant": {
+                                          "researchName": "Research 1",
+                                          "granter": "UP Manila",
+                                          "amount": 100000,
+                                          "projectedStart": "2021-09-01",
+                                          "projectedEnd": "2021-09-30",
+                                          "actualStart": "2021-09-06",
+                                          "actualEnd": "2021-09-30",
+                                          "researchProgress": "Ongoing",
+                                          "nonFacultyResearchers": ""
+                                      }
+                                  }
+                                ]
+                            }
+                          }
+                        ]
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+      security:
+      - bearerAuth: []
+
   "/api/faculty/accomplishment/add/research-grant":
     post:
       summary: Add faculty research grant info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Add faculty research grant info
       consumes:
         - application/json
@@ -2832,7 +3201,7 @@ paths:
     post:
       summary: Add faculty researcher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Bulk add faculty researcher info
       consumes:
         - multipart/form-data
@@ -2887,7 +3256,7 @@ paths:
     get:
       summary: Get faculty research grant info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Get faculty research grant info
       consumes:
         - application/json
@@ -2981,7 +3350,7 @@ paths:
     put:
       summary: Edit faculty research grant info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Edit faculty research grant info
       consumes:
         - multipart/form-data
@@ -3029,7 +3398,7 @@ paths:
     put:
       summary: Edit faculty researcher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Edit faculty researcher info
       consumes:
         - multipart/form-data
@@ -3088,7 +3457,7 @@ paths:
     delete:
       summary: Delete faculty researcher info
       tags:
-      - Faculty - Accomplishments
+      - Faculty - Accomplishments - Research Grant
       description: Delete faculty researcher info
       consumes:
         - application/json

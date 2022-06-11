@@ -26,16 +26,19 @@ router.post('/add/public-service', publicServiceController.addPublicService);
 router.get('/:facultyId/public-service', publicServiceController.getPublicService);
 router.put('/:facultyId/public-service', publicServiceController.editPublicServiceInfo);
 router.delete('/:facultyId/public-service', publicServiceController.deletePublicService);
+router.get('/public-service', publicServiceController.getAllPublicService);
 
 router.post('/add/licensure-exam', licensureExamController.addLicensureExam);
 router.get('/:facultyId/licensure-exam', licensureExamController.getLicensureExam);
 router.put('/:facultyId/licensure-exam', licensureExamController.editLicensureExamInfo);
 router.delete('/:facultyId/licensure-exam', licensureExamController.deleteLicensureExam);
+router.get('/licensure-exam', licensureExamController.getAllLicensureExam);
 
 router.post('/add/training-seminar', trainingSeminarController.addTrainingSeminar);
 router.get('/:facultyId/training-seminar', trainingSeminarController.getTrainingSeminar);
 router.put('/:facultyId/training-seminar', trainingSeminarController.editTrainingSeminarInfo);
 router.delete('/:facultyId/training-seminar', trainingSeminarController.deleteTrainingSeminar);
+router.get('/training-seminar', trainingSeminarController.getAllTrainingSeminar);
 
 router.post('/add/publication', publicationController.addPublication);
 router.post('/add/publisher', publicationController.addPublisher);
@@ -43,6 +46,7 @@ router.get('/:facultyId/publication', publicationController.getPublication);
 router.put('/:facultyId/publication', publicationController.editPublicationInfo);
 router.put('/:facultyId/publisher', publicationController.editPublisherInfo);
 router.delete('/:facultyId/publisher', publicationController.deletePublisher);
+router.get('/publication', publicationController.getAllPublication);
 
 router.post('/add/research-grant', researchGrantController.addResearchGrant);
 router.post('/add/researcher', researchGrantController.addResearcher);
@@ -50,5 +54,6 @@ router.get('/:facultyId/research-grant', researchGrantController.getResearchGran
 router.put('/:facultyId/research-grant', researchGrantController.editResearchGrant);
 router.put('/:facultyId/researcher', researchGrantController.editResearcherInfo);
 router.delete('/:facultyId/researcher', researchGrantController.deleteResearcher);
+router.get('/research-grant', researchGrantController.getAllResearchGrant);
 
 module.exports = router;

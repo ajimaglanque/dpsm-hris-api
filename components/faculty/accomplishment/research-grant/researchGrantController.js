@@ -8,6 +8,8 @@ const ResearchGrant = require('./researchGrantModel')
 const Researcher = require('./researcherModel')
 const PersonalInfo = require('../../basic-info/personal/personalInfoModel')
 const FacultyUpdate = require('../../updates/facultyUpdateModel')
+const FacultyUnit = require('../../basic-info/unit/facultyUnitModel');
+const Unit = require('../../basic-info/unit/unitModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -186,6 +188,69 @@ faculty.getResearchGrant = async (req, res) => {
                 statusCode: 200,
                 success: true,
                 result: researches
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getAllResearchGrant = async (req, res) => {
+
+    let jsonRes;
+    let facultyList
+    let where = req.query.unitId ? { unitId: req.query.unitId } : {}
+    
+    try {
+        facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Researcher,
+                        attributes: ['status'],
+                        required: true,
+                        where: { status: 'Approved' },
+                        include: {
+                            model: ResearchGrant,
+                            attributes: { exclude: ['researchId', 'createdAt', 'updatedAt'] },
+                            required: true
+                        },
+                        order: [
+                            ['projectedStart', 'DESC'],
+                            ['researchName', 'ASC']
+                        ]
+                    }
+                }
+            ]    
+        })
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty research list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
             }; 
         }
     } catch(error) {

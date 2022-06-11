@@ -5,7 +5,10 @@ const { Sequelize } = require('sequelize');
 const util = require('../../../../helpers/util');
 
 const PublicService = require('./publicServiceModel')
-const FacultyUpdate = require('../../updates/facultyUpdateModel')
+const FacultyUpdate = require('../../updates/facultyUpdateModel');
+const PersonalInfo = require('../../basic-info/personal/personalInfoModel');
+const FacultyUnit = require('../../basic-info/unit/facultyUnitModel');
+const Unit = require('../../basic-info/unit/unitModel');
 
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
@@ -101,6 +104,63 @@ faculty.getPublicService = async (req, res) => {
                 ['startDate', 'DESC']
             ]
         });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty not found'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
+faculty.getAllPublicService = async (req, res) => {
+
+    let jsonRes;
+    let where = req.query.unitId ? { unitId: req.query.unitId } : {}
+
+    try {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: PublicService,
+                        attributes: { exclude: ['publicServiceId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
+                        required: true,
+                        where: { status: 'Approved' }
+                    },
+                    order: [
+                        ['type', 'ASC']
+                        ['startDate', 'DESC'],
+                    ]
+                }
+            ]
+        })
 
         if(facultyList.length === 0) {
             jsonRes = {
