@@ -13,6 +13,7 @@ const Publication = require('../accomplishment/publication/publicationModel');
 const Training = require('../accomplishment/training-seminar/trainingSeminarModel')
 const Researcher = require('../accomplishment/research-grant/researcherModel')
 const Research = require('../accomplishment/research-grant/researchGrantModel')
+const Licensure = require('../accomplishment/licensure-exam/licensureExamModel')
 const User = require('../../user-enrollment/userEnrollmentModel')
 const Employment = require('../basic-info/employment/employmentInfoModel')
 const Position = require('../basic-info/employment/employmentPositionModel')
@@ -35,9 +36,10 @@ reports.getAccomplishments = async (req, res) => {
     try {
         let facultyList 
         let unitIdWhere = {}
-        let psaDateWhere = {}
+        let psaDateWhere = { status: 'Approved' }
         let pubDateWhere = {}
-        let tsDateWhere = {}
+        let tsDateWhere = { status: 'Approved' }
+        let licExamDateWhere = { status: 'Approved' }
         let rgDateWhere = {}
 
         if(req.query.unitId) {
@@ -48,8 +50,10 @@ reports.getAccomplishments = async (req, res) => {
         if(req.query.startDate) {
             psaDateWhere.startDate = { [Op.gte]: req.query.startDate } 
             tsDateWhere.dateFrom = { [Op.gte]: req.query.startDate } 
+            licExamDateWhere.examDate = { [Op.gte]: req.query.startDate } 
             rgDateWhere.actualStart = { [Op.gte]: req.query.startDate } 
             if(req.query.endDate) {
+                licExamDateWhere.examDate = { [Op.between]: [req.query.startDate, req.query.endDate] }
                 pubDateWhere.publicationDate = { [Op.between]: [req.query.startDate, req.query.endDate] } 
             } else {
                 pubDateWhere.publicationDate = { [Op.gte]: req.query.startDate } 
@@ -59,8 +63,10 @@ reports.getAccomplishments = async (req, res) => {
         if(req.query.endDate) {
             psaDateWhere.endDate = { [Op.lte]: req.query.endDate } 
             tsDateWhere.dateTo = { [Op.lte]: req.query.endDate } 
+            licExamDateWhere.examDate = { [Op.lte]: req.query.endDate } 
             rgDateWhere.actualEnd = { [Op.lte]: req.query.endDate } 
             if(req.query.startDate) {
+                licExamDateWhere.examDate = { [Op.between]: [req.query.startDate, req.query.endDate] }
                 pubDateWhere.publicationDate = { [Op.between]: [req.query.startDate, req.query.endDate] } 
             } else pubDateWhere.publicationDate = { [Op.lte]: req.query.endDate } 
         }
@@ -78,14 +84,15 @@ reports.getAccomplishments = async (req, res) => {
                 },
                 {
                     model: PSAInfo,
-                    attributes: ['position', 'organization', 'startDate', 'endDate'],
+                    attributes: ['position', 'organization', 'startDate', 'endDate', 'status'],
                     required: false,
                     where: psaDateWhere
                 },
                 {
                     model: Publisher,
-                    attributes: ['publicationId'], 
+                    attributes: ['publicationId', 'status'], 
                     required: false,
+                    where: {status: 'Approved'},
                     include: {
                         model: Publication,
                         attributes: ['title', 'publicationDate'],
@@ -94,14 +101,21 @@ reports.getAccomplishments = async (req, res) => {
                 }, 
                 {
                     model: Training,
-                    attributes: ['role', 'title', 'dateFrom', 'dateTo'],
+                    attributes: ['role', 'title', 'dateFrom', 'dateTo', 'status'],
                     required: false,
                     where: tsDateWhere
                 },
                 {
-                    model: Researcher,
-                    attributes: ['researchId'],
+                    model: Licensure,
+                    attributes: ['examName', 'examDate', 'licenseNumber', 'rank', 'status'],
                     required: false,
+                    where: licExamDateWhere
+                },
+                {
+                    model: Researcher,
+                    attributes: ['researchId', 'status'],
+                    required: false,
+                    where: {status: 'Approved'},
                     include: {
                         model: Research,
                         attributes: ['researchName', 'actualStart', 'actualEnd'],
@@ -255,7 +269,7 @@ reports.getEducations = async (req, res) => {
             endDate: { [Op.lte]: req.query.endDate }
         })
         let educWhere = {
-            [Op.and]: [ filter ]
+            [Op.and]: [ {status: 'Approved'}, filter ]
         } 
         
         facultyList = await PersonalInfo.findAll({
@@ -272,7 +286,7 @@ reports.getEducations = async (req, res) => {
                 },
                 {
                     model: Education,
-                    attributes: ['educInfoId', 'degreeType', 'degreeCert', 'endDate'],
+                    attributes: ['educInfoId', 'degreeType', 'degreeCert', 'endDate', 'status'],
                     where: educWhere
                 },
             ],
