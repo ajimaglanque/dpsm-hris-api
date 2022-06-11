@@ -376,27 +376,20 @@ userEnrollment.sendEmail = async (req, res) => {
 
         const token = await jwt.sign(payload, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRY})
     
-        const link = `${process.env.HOST}:${process.env.PORT}/api/user/forgot-password/${getUser.userId}/${token}`
+        const link = `${process.env.WEB_URL}/reset-password/${getUser.userId}/${token}`
         
-        // send email thru gmail api
-        const oAuth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_REDIRECT_URI)
-    oAuth2Client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN})
-        const accessToken = await oAuth2Client.getAccessToken()
-            
+        /** NOTE: Change to transporter of choice for deployment. For demo purposes, currently using mailtrap */
         const transporter = await nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.mailtrap.io",
+            port: 2525,
             auth: {
-                type: 'OAuth2',
-                user: process.env.GOOGLE_USER_EMAIL,
-                clientId: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-                accessToken: accessToken
+              user: "f775a828fcee7d",
+              pass: "760c54c0f1026c"
             }
-        })
+        });
             
         let info = {
-            from: '"DPSM QA Portal" <jodbod02@gmail.com>', // sender address
+            from: `"DPSM QA Portal" <noreply@${process.env.WEB_URL}>`, // sender address
             to: req.body.upemail, // list of receivers
             subject: "DPSM QA Portal Reset Password", // Subject line
             text: "DPSM QA Portal Reset Password", // plain text body
@@ -490,40 +483,30 @@ userEnrollment.resetPassword = async (req, res) => {
             attributes: ['password', 'salt']
         })
 
-        
-        // validate password, pw2
-        if(req.body.password == req.body.password2) {
-            // find user with the payload upemail & id
-            // update
-            const passwordHash = util.hashPassword(req.body.password, getUser.salt);
-    
-            const payload = jwt.verify(req.params.token, process.env.TOKEN_SECRET)
-    
-            let updated = await User.update({password: passwordHash}, 
-                {
-                    where: { userId: req.params.userId }
-                }
-            ) 
-    
-            if(updated == 0) {
-                jsonRes = {
-                    statusCode: 400,
-                    success: false,
-                    message: 'Password reset failed'
-                };
-            } else {
-                jsonRes = {
-                    statusCode: 200,
-                    success: true,
-                    message: "Password reset successfully"
-                }; 
+        await jwt.verify(req.params.token, process.env.TOKEN_SECRET)
+
+        // find user with the payload upemail & id
+        const passwordHash = util.hashPassword(req.body.password, getUser.salt);
+
+
+        let updated = await User.update({password: passwordHash}, 
+            {
+                where: { userId: req.params.userId }
             }
-        } else {
+        ) 
+
+        if(updated == 0) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Passwords not the same'
+                message: 'Password reset failed'
             };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: "Password reset successfully"
+            }; 
         }
 
     } catch(error) {

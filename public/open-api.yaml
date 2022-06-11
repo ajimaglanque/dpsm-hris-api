@@ -398,9 +398,6 @@ paths:
                 password:
                   type: string
                   example: 'password'
-                password2:
-                  type: string
-                  example: 'password'
       responses:
         "200":
           description: Success
