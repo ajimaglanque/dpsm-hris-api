@@ -300,6 +300,68 @@ paths:
                 $ref: "#/definitions/ErrorResponse"
   
   "/api/user/forgot-password/{userId}/{token}":
+    get:
+      summary: Verify User ID and Token
+      tags:
+      - User Enrollment
+      description: Verify User ID and Token
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: token
+          in: path
+          description: Password reset token
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: "Token verified"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: object
+                    example: {
+                      name: "JsonWebTokenError",
+                      message: "invalid signature"
+                    }
+        "500":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
     post:
       summary: Set new password 
       tags:
