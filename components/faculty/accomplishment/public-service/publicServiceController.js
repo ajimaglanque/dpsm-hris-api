@@ -130,63 +130,6 @@ faculty.getPublicService = async (req, res) => {
     }
 };
 
-faculty.getAllPublicService = async (req, res) => {
-
-    let jsonRes;
-    let where = req.query.unitId ? { unitId: req.query.unitId } : {}
-
-    try {
-        let facultyList = await FacultyUnit.findAll({
-            where: where,
-            attributes: ['facultyId'],
-            include: [
-                {
-                    model: Unit,
-                    attributes: ['unit']
-                },
-                {
-                    model: PersonalInfo,
-                    attributes: ['lastName', 'firstName'],
-                    required: true,
-                    include: {
-                        model: PublicService,
-                        attributes: { exclude: ['publicServiceId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
-                        required: true,
-                        where: { status: 'Approved' }
-                    },
-                    order: [
-                        ['type', 'ASC']
-                        ['startDate', 'DESC'],
-                    ]
-                }
-            ]
-        })
-
-        if(facultyList.length === 0) {
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                result: null,
-                message: 'Faculty not found'
-            };
-        } else {
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                result: facultyList
-            }; 
-        }
-    } catch(error) {
-        jsonRes = {
-            statusCode: 500,
-            success: false,
-            error: error,
-        };
-    } finally {
-        util.sendResponse(res, jsonRes);    
-    }
-};
-
 faculty.editPublicServiceInfo = async (req, res) => {
     // logger.info('inside editPublicServiceInfo()...');
 

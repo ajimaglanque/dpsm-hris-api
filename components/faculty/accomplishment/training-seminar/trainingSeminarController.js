@@ -127,62 +127,6 @@ faculty.getTrainingSeminar = async (req, res) => {
     }
 };
 
-faculty.getAllTrainingSeminar = async (req, res) => {
-
-    let jsonRes;
-    let where = req.query.unitId ? { unitId: req.query.unitId } : {}
-    
-    try {
-        let facultyList = await FacultyUnit.findAll({
-            where: where,
-            attributes: ['facultyId'],
-            include: [
-                {
-                    model: Unit,
-                    attributes: ['unit']
-                },
-                {
-                    model: PersonalInfo,
-                    attributes: ['lastName', 'firstName'],
-                    required: true,
-                    include: {
-                        model: TrainingSeminar,
-                        attributes: { exclude: ['tsId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
-                        required: true,
-                        where: { status: 'Approved' }
-                    },
-                    order: [
-                        ['dateFrom', 'DESC']
-                    ]
-                }
-            ]
-        })
-
-        if(facultyList.length === 0) {
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                result: null,
-                message: 'Faculty not found'
-            };
-        } else {
-            jsonRes = {
-                statusCode: 200,
-                success: true,
-                result: facultyList
-            }; 
-        }
-    } catch(error) {
-        jsonRes = {
-            statusCode: 500,
-            success: false,
-            error: error,
-        };
-    } finally {
-        util.sendResponse(res, jsonRes);    
-    }
-};
-
 faculty.editTrainingSeminarInfo = async (req, res) => {
     // logger.info('inside editTrainingSeminarInfo()...');
 

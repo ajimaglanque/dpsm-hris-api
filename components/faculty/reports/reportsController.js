@@ -19,6 +19,10 @@ const Employment = require('../basic-info/employment/employmentInfoModel')
 const Position = require('../basic-info/employment/employmentPositionModel')
 const Education = require('../basic-info/education/educationInfoModel')
 
+const psController = require('../accomplishment/public-service/publicServiceController')
+
+let XLSX = require("xlsx")
+
 // const logger = log4js.getLogger('controllers - faculty');
 // logger.level = config.logLevel;
 // console.log('controllers - userEnrollment');
@@ -320,6 +324,291 @@ reports.getEducations = async (req, res) => {
         };
     } finally {
         util.sendResponse(res, jsonRes);    
+    }
+};
+
+reports.downloadAccomplishments = async (req, res) => {
+    let body = req.body
+
+    let psContent = []
+    let pubContent = []
+    let tsContent = []
+    let rgContent = []
+    let leContent = []
+
+    let where = req.query.unitId ? { unitId: req.query.unitId } : {}
+
+    if(body.includes('publicService')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: PSAInfo,
+                        attributes: { exclude: ['publicServiceId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
+                        required: true,
+                        where: { status: 'Approved' }
+                    },
+                    order: [
+                        ['type', 'ASC']
+                        ['startDate', 'DESC'],
+                    ]
+                }
+            ]
+        })
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_public_services.forEach((j) => {
+                    psContent.push({
+                        Unit: i.unit.unit,
+                        Name: `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        Type: j.type,
+                        Position: j.position,
+                        Organization: j.organization,
+                        Description: j.description,
+                        StartDate: j.startDate,
+                        EndDate: j.endDate
+                    })
+                })
+            })
+        }
+    }
+
+    if(body.includes('publication')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Publisher,
+                        attributes: ['status'],
+                        required: true,
+                        where: { status: 'Approved' },
+                        include: {
+                            model: Publication,
+                            attributes: { exclude: ['publicationId', 'createdAt', 'updatedAt'] },
+                            required: true
+                        },
+                        order: [
+                            ['publicationDate', 'DESC'],
+                            ['title', 'ASC']
+                        ]
+                    }
+                }
+            ]    
+        })
+
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_publishers.forEach((j) => { 
+                    pubContent.push({
+                        "Unit": i.unit.unit,
+                        "Name": `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        "Title": j.faculty_publication.title,
+                        "Citation": j.faculty_publication.citation,
+                        "URL": j.faculty_publication.url,
+                        "Publication Date": j.faculty_publication.publicationDate,
+                        "Non Faculty Authors": j.faculty_publication.nonFacultyAuthors
+                    })
+                })
+                
+            })
+        }
+    }
+
+    if(body.includes('trainingSeminar')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Training,
+                        attributes: { exclude: ['tsId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
+                        required: true,
+                        where: { status: 'Approved' }
+                    },
+                    order: [
+                        ['dateFrom', 'DESC']
+                    ]
+                }
+            ]
+        })
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_training_seminars.forEach((j) => {
+                    tsContent.push({
+                        "Unit": i.unit.unit,
+                        "Name": `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        "Role": j.role,
+                        "Title": j.title,
+                        "Date From": j.dateFrom,
+                        "Date To": j.dateTo,
+                        "Venue": j.venue,
+                        "Remarks": j.remarks
+                    })
+                })
+            })
+        }
+    }
+
+    if(body.includes('researchGrant')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Researcher,
+                        attributes: ['status'],
+                        required: true,
+                        where: { status: 'Approved' },
+                        include: {
+                            model: Research,
+                            attributes: { exclude: ['researchId', 'createdAt', 'updatedAt'] },
+                            required: true
+                        },
+                        order: [
+                            ['projectedStart', 'DESC'],
+                            ['researchName', 'ASC']
+                        ]
+                    }
+                }
+            ]    
+        })
+
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_researchers.forEach((j) => {
+                    rgContent.push({
+                        "Unit": i.unit.unit,
+                        "Name": `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        "Research Name": j.faculty_research_grant.researchName,
+                        "Granter": j.faculty_research_grant.granter,
+                        "Amount": j.faculty_research_grant.amount,
+                        "Projected Start": j.faculty_research_grant.projectedStart,
+                        "Projected End": j.faculty_research_grant.projectedEnd,
+                        "Actual Start": j.faculty_research_grant.actualStart,
+                        "Actual End": j.faculty_research_grant.actualEnd,
+                        "Research Progress": j.faculty_research_grant.researchProgress,
+                        "Non Faculty Researchers": j.faculty_research_grant.nonFacultyResearchers
+                    })
+                })
+            })
+        }
+    }
+
+    if(body.includes('licensureExam')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Licensure,
+                        attributes: { exclude: ['licenseId', 'facultyId', 'proof', 'approverRemarks', 'createdAt', 'updatedAt'] },
+                        required: true,
+                        where: { status: 'Approved' }
+                    },
+                    order: [
+                        ['examDate', 'DESC']
+                    ]
+                }
+            ]
+        })
+
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_licensure_exams.forEach((j) => {
+                    leContent.push({
+                        "Unit": i.unit.unit,
+                        "Name": `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        "Exam Name": j.examName,
+                        "Exam Date": j.examDate,
+                        "License Number": j.licenseNumber,
+                        "rank": j.rank
+                    })
+                })
+            })
+        }
+    }
+
+    const workbook = XLSX.utils.book_new()
+
+    if (psContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(psContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Public Services")
+    }
+
+    if (pubContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(pubContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Publications")
+    }
+
+    if (tsContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(tsContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Training and Seminars")
+    }
+
+    if (rgContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(rgContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Research Grants")
+    }
+
+    if (leContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(leContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Licensure Exams")
+    }
+    if(workbook.SheetNames.length > 0) {
+        XLSX.write(workbook, {bookType: 'xlsx', type: 'buffer'})
+        XLSX.write(workbook, {bookType: 'xlsx', type: 'binary'})
+        XLSX.writeFile(workbook, "uploads/reports.xlsx")
+        res.status(200)
+        res.download("uploads/reports.xlsx")
+    } else {
+        jsonRes = {
+            statusCode: 200,
+            success: true,
+            message: 'No records available'
+        };
+        util.sendResponse(res, jsonRes);   
     }
 };
 
