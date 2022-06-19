@@ -395,7 +395,6 @@ reports.downloadAccomplishments = async (req, res) => {
                     required: true,
                     include: {
                         model: Publisher,
-                        attributes: ['status'],
                         required: true,
                         include: {
                             model: Publication,
@@ -488,7 +487,6 @@ reports.downloadAccomplishments = async (req, res) => {
                     required: true,
                     include: {
                         model: Researcher,
-                        attributes: ['status'],
                         required: true,
                         include: {
                             model: Research,
