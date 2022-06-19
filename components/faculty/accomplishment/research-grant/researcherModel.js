@@ -14,16 +14,6 @@ const Researcher = sequelize.define('faculty_researcher', {
     researchId: {
         type: DataTypes.INTEGER(8),
         allowNull: false
-    },
-    proof: {
-        type: DataTypes.STRING
-    },
-    status: {
-        type: DataTypes.STRING(20),
-        isIn: [['Pending', 'Verified', 'Approved', 'Rejected']]
-    },
-    approverRemarks: {
-        type: DataTypes.STRING(100)
     }
   });
 

@@ -1,9 +1,9 @@
 openapi: '3.0.0'
 info:
-  title: 'UPM DPSM HRIS'
+  title: 'UPM DPSM QA Portal API'
   version: '1.0.0'
   description: >-
-    Human Resource Information System for the University of the Philippines Manila Department of Physical Sciences and Mathematics.
+    Performance Evaluation System for the University of the Philippines Manila Department of Physical Sciences and Mathematics.
 
 paths:
   "/api/health":
@@ -1895,7 +1895,7 @@ paths:
                       type: object
                       example: 
                         {
-                          publicationId: "4"
+                          publicServiceId: "4"
                         }
         "500":
           description: Error
@@ -2085,11 +2085,11 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - multipart/form-data
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/definitions/addFacultyPublicationInfoSource"
       responses:
@@ -2144,9 +2144,6 @@ paths:
                 publicationId:
                   type: string
                   example: '4'
-                proof:
-                  type: file
-                  example: 'ASK23N4.jpg'
       responses:
         "200":
           description: Success
@@ -2219,11 +2216,12 @@ paths:
                             "url": null,
                             "publicationDate": "2019-11-06",
                             "nonFacultyAuthors": null,
+                            "proof": "",
+                            "status": "Pending",
+                            "approverRemarks": "",
                             "faculty_publishers": [
                               {
                                 "facultyId": 12,
-                                "proof": null,
-                                "status": "Verified",
                                 "faculty_personal_info": {
                                   "lastName": "Cristobal",
                                   "firstName": "Jodie",
@@ -2232,8 +2230,6 @@ paths:
                               },
                               {
                                 "facultyId": 2,
-                                "proof": null,
-                                "status": "Approved",
                                 "faculty_personal_info": {
                                   "lastName": "Palomar",
                                   "firstName": "Matthew",
@@ -2249,11 +2245,12 @@ paths:
                             "url": null,
                             "publicationDate": "2011-11-06",
                             "nonFacultyAuthors": "Author 1, Author 2, Author 3",
+                            "proof": "",
+                            "status": "Pending",
+                            "approverRemarks": "",
                             "faculty_publishers": [
                               {
                                 "facultyId": 9,
-                                "proof": null,
-                                "status": "Pending",
                                 "faculty_personal_info": {
                                   "lastName": "Cristobal",
                                   "firstName": "Aji",
@@ -2319,65 +2316,6 @@ paths:
       - bearerAuth: []
 
   "/api/faculty/accomplishment/{facultyId}/publisher":
-    put:
-      summary: Edit faculty publisher info
-      tags:
-      - Faculty - Accomplishments - Publication
-      description: Edit faculty publisher info
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                publicationId:
-                  type: string
-                  example: "2"
-                proof:
-                  type: file
-                  example: "WIj2Dv.jpg"
-                status:
-                  type: string
-                  example: "Approved"
-                approverRemarks:
-                  type: string
-                  example: "Date provided does not match date in proof //only required if status=Rejected"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty publisher information updated successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
     delete:
       summary: Delete faculty publisher info
       tags:
@@ -2892,7 +2830,7 @@ paths:
       summary: Add faculty researcher info
       tags:
       - Faculty - Accomplishments - Research Grant
-      description: Bulk add faculty researcher info
+      description: Add faculty researcher info
       consumes:
         - multipart/form-data
       produces:
@@ -2910,15 +2848,6 @@ paths:
                 researchId:
                   type: string
                   example: '1'
-                proof:
-                  type: file
-                  example: '1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg'
-                status:
-                  type: string
-                  example: 'Approved'
-                approverRemarks:
-                  type: string
-                  example: '//required only if status=Rejected'
       responses:
         "200":
           description: Success
@@ -2986,8 +2915,8 @@ paths:
                         [
                           {
                             "researchId": 1,
-                            "researchName": "new publication title",
-                            "granter": "journal of publication",
+                            "researchName": "new research title",
+                            "granter": "granter of research",
                             "amount": 1000000,
                             "projectedStart": "2019-11-06",
                             "projectedEnd": "2019-11-06",
@@ -2995,11 +2924,12 @@ paths:
                             "actualEnd": "2019-11-06",
                             "researchProgress": "Ongoing",
                             "nonFacultyResearchers": "Author 1, Author 2, Author 3",
+                            "proof": null,
+                            "status": "Pending",
+                            "approverRemarks": null,
                             "faculty_researchers": [
                               {
                                 "facultyId": 9,
-                                "proof": null,
-                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Aji",
@@ -3008,8 +2938,6 @@ paths:
                               },
                               {
                                 "facultyId": 10,
-                                "proof": null,
-                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Cristobal",
                                     "firstName": "Sarah",
@@ -3018,8 +2946,6 @@ paths:
                               },
                               {
                                 "facultyId": 8,
-                                "proof": null,
-                                "status": "Pending",
                                 "faculty_personal_info": {
                                     "lastName": "Palomar",
                                     "firstName": "Diane",
@@ -3085,65 +3011,6 @@ paths:
       - bearerAuth: []
 
   "/api/faculty/accomplishment/{facultyId}/researcher":
-    put:
-      summary: Edit faculty researcher info
-      tags:
-      - Faculty - Accomplishments - Research Grant
-      description: Edit faculty researcher info
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-          - name: facultyId
-            in: path
-            description: Faculty ID
-            required: true
-            style: simple
-            explode: false
-            schema:
-              type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                researchId:
-                  type: string
-                  example: "2"
-                status:
-                  type: string
-                  example: "Approved"
-                proof:
-                  type: file
-                  example: '1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg'
-                approverRemarks:
-                  type: string
-                  example: "Date provided does not match date in proof //only required if status=Rejected"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                      example: true
-                    message:
-                      type: string
-                      example: "Faculty researcher information updated successfully"
-        "500":
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/ErrorResponse"
-      security:
-      - bearerAuth: []
     delete:
       summary: Delete faculty researcher info
       tags:
@@ -3820,28 +3687,54 @@ paths:
                                               ],
                                               "faculty_publishers": [
                                                   {
-                                                      "publisherId": 11,
-                                                      "publicationId": 5,
-                                                      "proof": "UMWEZF8EW7HWC8H5BSFCUETH.png",
-                                                      "status": "Pending",
-                                                      "createdAt": "2021-05-07T09:02:54.000Z",
-                                                      "updatedAt": "2021-05-07T09:02:54.000Z",
-                                                      "facultyId": 3
+                                                      "publisherId": 18,
+                                                      "publicationId": 14,
+                                                      "createdAt": "2021-10-06T08:08:20.000Z",
+                                                      "updatedAt": "2021-11-10T09:47:34.000Z",
+                                                      "facultyId": 52,
+                                                      "faculty_publication": {
+                                                          "publicationId": 14,
+                                                          "title": "New Publication",
+                                                          "citation": "New Citation",
+                                                          "url": "http://new.com",
+                                                          "publicationDate": "2021-01-01",
+                                                          "nonFacultyAuthors": "Test",
+                                                          "proof": "CIYUQ3R6IU5U2KH2S2DRBHB5PZK76JPMN6RZNKX4MVKBZZA9QR58N0POZMSOLEG0H4UJ1EICGQJLP8FKLI7678FPNYL0D.jpeg",
+                                                          "status": "Pending",
+                                                          "approverRemarks": "Admin, Chemistry Head: No proof",
+                                                          "createdAt": "2021-10-06T08:08:20.000Z",
+                                                          "updatedAt": "2022-06-19T11:26:58.000Z"
+                                                      }
                                                   }
                                               ],
                                               "faculty_researchers": [
                                                   {
-                                                      "researcherId": 8,
-                                                      "researchId": 1,
-                                                      "proof": null,
-                                                      "status": "Pending",
-                                                      "createdAt": "2020-11-30T15:25:23.000Z",
-                                                      "updatedAt": "2021-04-23T04:00:53.000Z",
-                                                      "facultyId": 3
+                                                    "researcherId": 5,
+                                                    "researchId": 7,
+                                                    "createdAt": "2021-11-10T09:00:26.000Z",
+                                                    "updatedAt": "2021-12-09T02:53:35.000Z",
+                                                    "facultyId": 52,
+                                                    "faculty_research_grant": {
+                                                        "researchId": 7,
+                                                        "researchName": "Test Research",
+                                                        "granter": "Test Sponsor",
+                                                        "amount": 1,
+                                                        "projectedStart": "2021-11-10",
+                                                        "projectedEnd": "2021-11-10",
+                                                        "actualStart": "2021-11-10",
+                                                        "actualEnd": "2021-11-10",
+                                                        "researchProgress": "Ongoing",
+                                                        "nonFacultyResearchers": "Test",
+                                                        "proof": null,
+                                                        "status": "Pending",
+                                                        "approverRemarks": null,
+                                                        "createdAt": "2021-11-10T09:00:24.000Z",
+                                                        "updatedAt": "2021-12-09T02:53:35.000Z"
                                                   }
+                                                }
                                               ]
                                           },
-                                          "forApprovalCount": 3
+                                          "forApprovalCount": 4
                                       }
                                   ]
                               }
@@ -4352,6 +4245,9 @@ definitions:
 
   addFacultyPublicationInfoSource:
     properties:
+        facultyId:
+          type: string
+          example: "61"
         title:
           type: string
           example: "Publication"
@@ -4367,6 +4263,12 @@ definitions:
         nonFacultyAuthors:
           type: string
           example: "Author 1, Author 2, Author 3"
+        proof:
+          type: file
+          example: ""
+        dpsmAuthors:
+          type: array
+          example: ["61", "52", "49"]
 
   editFacultyPublicationInfoSource:
     properties:
@@ -4388,6 +4290,15 @@ definitions:
         nonFacultyAuthors:
           type: string
           example: "Author 1, Author 2, Author 3"
+        proof:
+          type: file
+          example: ""
+        status:
+          type: string
+          example: "Verified"
+        approverRemarks:
+          type: string
+          example: ""
 
   addFacultyTSInfoSource:
     type: object
@@ -4530,6 +4441,12 @@ definitions:
         nonFacultyResearchers:
           type: string
           example: "Author 1, Author 2, Author 3"
+        proof:
+          type: file
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+        dpsmResearchers:
+          type: array
+          example: ["61", "52", "49"]
         
   editFacultyResearchGrantInfoSource:
     properties:
@@ -4563,6 +4480,15 @@ definitions:
         nonFacultyResearchers:
           type: string
           example: "Author 1, Author 2, Author 3"
+        proof:
+          type: file
+          example: "1G71O9UG2E2H6L1GLO25ULQ84C06YXM9G38.jpeg"
+        status:
+          type: string
+          example: "Rejected"
+        approverRemarks:
+          type: string
+          example: "Date provided does not match date in proof //only required if status=Rejected"
   
   addFacultyLoadSource:
     type: object

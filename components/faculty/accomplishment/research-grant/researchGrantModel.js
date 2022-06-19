@@ -56,6 +56,16 @@ const ResearchGrant = sequelize.define('faculty_research_grant', {
     },
     nonFacultyResearchers: {
         type: DataTypes.STRING(100)
+    },
+    proof: {
+        type: DataTypes.STRING
+    },
+    status: {
+        type: DataTypes.STRING(20),
+        isIn: [['Pending', 'Verified', 'Approved', 'Rejected']]
+    },
+    approverRemarks: {
+        type: DataTypes.STRING(100)
     }
   });
 

@@ -10,6 +10,7 @@ const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel')
 const FacultyUnit = require('../faculty/basic-info/unit/facultyUnitModel');
 const EmploymentInfo = require('../faculty/basic-info/employment/employmentInfoModel');
 const EmploymentPosition = require('../faculty/basic-info/employment/employmentPositionModel');
+const Unit = require('../faculty/basic-info/unit/unitModel');
 
 // const logger = log4js.getLogger('controllers - accessToken');
 // logger.level = config.logLevel;
@@ -69,10 +70,16 @@ login.login = async (req, res) => {
 
                         const unit = await FacultyUnit.findOne({
                             where: { facultyId: faculty.facultyId },
-                            attributes: ['unitId']
+                            attributes: ['unitId'],
+                            include: {
+                                model: Unit,
+                                attributes: ['unit']
+                            }
                         })
+                        
                         if(unit != null) {
                             userDetails.unitId = unit.unitId
+                            userDetails.unit = unit.unit.unit
                         }
 
                         const employment = await EmploymentInfo.findOne({

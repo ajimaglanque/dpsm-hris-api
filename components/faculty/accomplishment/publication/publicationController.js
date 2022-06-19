@@ -25,7 +25,30 @@ faculty.addPublication = async (req, res) => {
 
     let jsonRes;
     
-    try {
+    try { 
+        let user = res.locals.user
+        let status
+        switch(user.role) {
+            case 1: status = 'Pending'; break;
+            case 2: status = 'Verified'; break;
+            case 3: status = 'Approved'; break;
+        }
+
+        let filename
+
+        if(req.files?.proof) {
+            let proof = req.files.proof
+            let name = proof.name
+            let fileExtension = mime.extension(proof.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            proof.mv(path);
+        } 
+
+        
         let [pblctn, created] = await Publication.findOrCreate({
             where: { title: req.body.title },
             defaults: {
@@ -33,18 +56,84 @@ faculty.addPublication = async (req, res) => {
                 citation: req.body.citation,
                 url: req.body.url,
                 publicationDate: req.body.publicationDate,
-                nonFacultyAuthors: req.body.nonFacultyAuthors
+                nonFacultyAuthors: req.body.nonFacultyAuthors,
+                proof: filename,
+                status: status
             }
         }) 
 
-        if(!created) {
-            jsonRes = {
-                statusCode: 400,
-                success: false,
-                message: 'Faculty already has existing publication information'
-            };
-        } else {
-            FacultyUpdate.upsert({
+        if(!created) { 
+            if((user.role == 2 && (pblctn.status == 'Pending')) || (user.role == 3 && (pblctn.status == 'Pending' || pblctn.status == 'Verified'))) {
+                await Publication.update(
+                    { 
+                        citation: req.body.citation,
+                        url: req.body.url,
+                        publicationDate: req.body.publicationDate,
+                        nonFacultyAuthors: req.body.nonFacultyAuthors,
+                        proof: filename,
+                        status: status 
+                    }, 
+                    {
+                        where: { publicationId: pblctn.publicationId }
+                    }
+                );
+            }
+            await FacultyUpdate.upsert({
+                facultyId: req.body.facultyId
+            })
+            let existing = await Publisher.findAll({
+                where: { facultyId: req.body.facultyId },
+                attributes: ['publicationId'],
+                include: {
+                    model: Publication,
+                    where: { title: req.body.title },
+                    required: true,
+                    attributes: ['publicationId']
+                }
+            })
+            
+            if(existing.length > 0) { 
+                jsonRes = {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Faculty already has existing publication information'
+                };
+            } else { 
+                let dpsmAuthors
+                if(req.body.dpsmAuthors) { 
+                    dpsmAuthors = JSON.parse(req.body.dpsmAuthors)
+                    dpsmAuthors.forEach(async (e) => { 
+                        let [pub, created] = await Publisher.findOrCreate({
+                            where: { facultyId: e, publicationId: pblctn.publicationId },
+                            defaults: {
+                                facultyId: e,
+                                publicationId: pblctn.publicationId
+                            }
+                        }) 
+                    })
+                }
+                jsonRes = {
+                    statusCode: 200,
+                    success: true,
+                    message: 'Faculty publication information added successfully',
+                    result: {
+                        publicationId: pblctn.publicationId
+                    }
+                }; 
+            }
+        } else { 
+            let dpsmAuthors
+            if(req.body.dpsmAuthors) {
+                dpsmAuthors = JSON.parse(req.body.dpsmAuthors)
+                
+                dpsmAuthors.forEach(async (e) => { 
+                    let created = await Publisher.create({
+                        facultyId: e,
+                        publicationId: pblctn.publicationId
+                    }) 
+                })
+            }
+            await FacultyUpdate.upsert({
                 facultyId: req.body.facultyId
             })
             jsonRes = {
@@ -128,17 +217,13 @@ faculty.addPublisher = async (req, res) => {
 };
 
 faculty.getPublication = async (req, res) => {
-    // logger.info('inside getPublication()...');
 
     let jsonRes;
     let facultyList
     
     try {
-        let where = { facultyId: req.params.facultyId }
-        if(req.query.status) where.status = req.query.status
-        
         facultyList = await Publisher.findAll({
-            where: where,
+            where: { facultyId: req.params.facultyId },
             attributes: ['publicationId']
         });   
 
@@ -155,15 +240,18 @@ faculty.getPublication = async (req, res) => {
                 publication.push(list.publicationId)
             })
 
+            let where = {publicationId: publication}
+            if(req.query.status) where.status = req.query.status
+
             let publications = await Publication.findAll({
-                where: { publicationId: publication },
+                where: where,
                 attributes: {
                     exclude: ['createdAt', 'updatedAt']
                 },
                 include: 
                 {
                     model: Publisher,
-                    attributes: ['facultyId', 'proof', 'status', 'approverRemarks'],
+                    attributes: ['facultyId'],
                     include: 
                         {
                             model: PersonalInfo,
@@ -201,7 +289,6 @@ faculty.editPublicationInfo = async (req, res) => {
     let jsonRes;
 
     try { 
-        let updatedPublisher = true
         let filename
         if(req.files && req.files.proof) {
             let proof = req.files.proof
@@ -223,111 +310,27 @@ faculty.editPublicationInfo = async (req, res) => {
             if(status != 'Rejected') approverRemarks = null
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
-
-        let updated = await Publisher.update(
+        
+        let updated = await Publication.update(
             { 
+                title: req.body.title,
+                citation: req.body.citation,
+                url: req.body.url,
+                publicationDate: req.body.publicationDate,
+                nonFacultyAuthors: req.body.nonFacultyAuthors,
                 proof: filename,
                 status: status,
                 approverRemarks: approverRemarks
             }, {
-                where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
+                where: { publicationId: req.body.publicationId }
             }
         ) 
-        
-        if(updated == 0) {
-            jsonRes = { 
+
+        if(updated == 0) { 
+            jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Faculty publisher information cannot be updated'
-            };
-            updatedPublisher = false
-        } else {
-            if(updatedPublisher) {
-                let updatedPublication = await Publication.update(
-                    { 
-                        title: req.body.title,
-                        citation: req.body.citation,
-                        url: req.body.url,
-                        publicationDate: req.body.publicationDate,
-                        nonFacultyAuthors: req.body.nonFacultyAuthors
-                    }, {
-                        where: { publicationId: req.body.publicationId }
-                    }
-                ) 
-        
-                if(updatedPublication == 0) { console.log('b');
-                    jsonRes = {
-                        statusCode: 400,
-                        success: false,
-                        message: 'Faculty publication information cannot be updated'
-                    };
-                } else {
-                    FacultyUpdate.upsert({
-                        facultyId: req.params.facultyId
-                    })
-                    jsonRes = {
-                        statusCode: 200,
-                        success: true,
-                        message: 'Faculty publication information updated successfully'
-                    }; 
-                }
-            }
-        }
-        
-    } catch(error) {
-        jsonRes = {
-            statusCode: 500,
-            success: false,
-            error: error,
-        };
-    } finally {
-        util.sendResponse(res, jsonRes);    
-    }
-};
-
-faculty.editPublisherInfo = async (req, res) => {
-    // logger.info('inside editPublisherInfo()...');
-
-    let jsonRes;
-
-    try { 
-        let filename
-        if(req.files && req.files.proof) {
-            let proof = req.files.proof
-            let name = proof.name
-            let fileExtension = mime.extension(proof.mimetype);
-    
-            filename = util.createRandomString(name.length)
-            filename += '.' + fileExtension
-            
-            let path = 'uploads/' + filename
-            proof.mv(path);
-
-        } 
-
-        let status = 'Pending'
-        let approverRemarks = req.body.approverRemarks
-        if(req.body.status) {
-            status = req.body.status
-            if(status != 'Rejected') approverRemarks = null
-        } else if(res.locals.user.role == 2) status = 'Verified'
-        else if(res.locals.user.role == 3) status = 'Approved';
-
-        let updated = await Publisher.update(
-            { 
-                proof: filename,
-                status: status,
-                approverRemarks: approverRemarks
-            }, {
-                where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
-            }
-        ) 
-        
-        if(updated == 0) {
-            jsonRes = { 
-                statusCode: 400,
-                success: false,
-                message: 'Faculty publisher information cannot be updated'
+                message: 'Faculty publication information cannot be updated'
             };
         } else {
             FacultyUpdate.upsert({
@@ -336,9 +339,10 @@ faculty.editPublisherInfo = async (req, res) => {
             jsonRes = {
                 statusCode: 200,
                 success: true,
-                message: 'Faculty publisher information updated successfully'
+                message: 'Faculty publication information updated successfully'
             }; 
-        }        
+        }
+        
     } catch(error) {
         jsonRes = {
             statusCode: 500,

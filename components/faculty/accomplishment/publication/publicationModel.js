@@ -32,6 +32,16 @@ const PublicationInfo = sequelize.define('faculty_publication', {
     },
     nonFacultyAuthors: {
         type: DataTypes.TEXT
+    },
+    proof: {
+        type: DataTypes.STRING
+    },
+    status: {
+        type: DataTypes.STRING(20),
+        isIn: [['Pending', 'Verified', 'Approved', 'Rejected']]
+    },
+    approverRemarks: {
+        type: DataTypes.STRING(100)
     }
   });
 

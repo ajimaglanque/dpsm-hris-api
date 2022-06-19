@@ -41,14 +41,12 @@ router.post('/add/publication', publicationController.addPublication);
 router.post('/add/publisher', publicationController.addPublisher);
 router.get('/:facultyId/publication', publicationController.getPublication);
 router.put('/:facultyId/publication', publicationController.editPublicationInfo);
-router.put('/:facultyId/publisher', publicationController.editPublisherInfo);
 router.delete('/:facultyId/publisher', publicationController.deletePublisher);
 
 router.post('/add/research-grant', researchGrantController.addResearchGrant);
 router.post('/add/researcher', researchGrantController.addResearcher);
 router.get('/:facultyId/research-grant', researchGrantController.getResearchGrant);
 router.put('/:facultyId/research-grant', researchGrantController.editResearchGrant);
-router.put('/:facultyId/researcher', researchGrantController.editResearcherInfo);
 router.delete('/:facultyId/researcher', researchGrantController.deleteResearcher);
 
 module.exports = router;

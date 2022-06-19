@@ -14,16 +14,6 @@ const PublisherInfo = sequelize.define('faculty_publisher', {
     publicationId: {
         type: DataTypes.INTEGER(8),
         allowNull: false
-    },
-    proof: {
-        type: DataTypes.STRING
-    },
-    status: {
-        type: DataTypes.STRING(20),
-        isIn: [['Pending', 'Verified', 'Approved', 'Rejected']]
-    },
-    approverRemarks: {
-        type: DataTypes.STRING(100)
     }
   });
 

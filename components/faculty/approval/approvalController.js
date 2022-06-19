@@ -9,7 +9,9 @@ const User = require('../../user-enrollment/userEnrollmentModel')
 const EducationInfo = require('../basic-info/education/educationInfoModel')
 const PublicService = require('../accomplishment/public-service/publicServiceModel')
 const Publisher = require('../accomplishment/publication/publisherModel')
+const Publication = require('../accomplishment/publication/publicationModel')
 const Researcher = require('../accomplishment/research-grant/researcherModel')
+const Research = require('../accomplishment/research-grant/researchGrantModel')
 const TrainingSeminar = require('../accomplishment/training-seminar/trainingSeminarModel')
 const LicensureExam = require('../accomplishment/licensure-exam/licensureExamModel')
 const FacultyUnit = require('../basic-info/unit/facultyUnitModel');
@@ -87,8 +89,22 @@ approval.getFacultyList = async (req, res) => {
                                     { model: PublicService, where: status, required: false },
                                     { model: LicensureExam, where: status, required: false },
                                     { model: TrainingSeminar, where: status, required: false },
-                                    { model: Publisher, where: status, required: false },
-                                    { model: Researcher, where: status, required: false },
+                                    {
+                                        model: Publisher,
+                                        include: {
+                                            model: Publication,
+                                            where: status
+                                        },
+                                        required: false
+                                    },
+                                    {
+                                        model: Researcher,
+                                        include: {
+                                            model: Research,
+                                            where: status
+                                        },
+                                        required: false
+                                    }
                                 ]
                             },
                         },

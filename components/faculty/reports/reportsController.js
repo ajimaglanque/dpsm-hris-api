@@ -41,10 +41,10 @@ reports.getAccomplishments = async (req, res) => {
         let facultyList 
         let unitIdWhere = {}
         let psaDateWhere = { status: 'Approved' }
-        let pubDateWhere = {}
+        let pubDateWhere = { status: 'Approved' }
         let tsDateWhere = { status: 'Approved' }
         let licExamDateWhere = { status: 'Approved' }
-        let rgDateWhere = {}
+        let rgDateWhere = { status: 'Approved' }
 
         if(req.query.unitId) {
             unitIdWhere = {
@@ -94,12 +94,11 @@ reports.getAccomplishments = async (req, res) => {
                 },
                 {
                     model: Publisher,
-                    attributes: ['publicationId', 'status'], 
+                    attributes: ['publicationId'], 
                     required: false,
-                    where: {status: 'Approved'},
                     include: {
                         model: Publication,
-                        attributes: ['title', 'publicationDate'],
+                        attributes: ['title', 'publicationDate', 'status'],
                         where: pubDateWhere
                     }
                 }, 
@@ -117,12 +116,11 @@ reports.getAccomplishments = async (req, res) => {
                 },
                 {
                     model: Researcher,
-                    attributes: ['researchId', 'status'],
+                    attributes: ['researchId'],
                     required: false,
-                    where: {status: 'Approved'},
                     include: {
                         model: Research,
-                        attributes: ['researchName', 'actualStart', 'actualEnd'],
+                        attributes: ['researchName', 'actualStart', 'actualEnd', 'status'],
                         where: rgDateWhere
                     }
                 },
@@ -399,10 +397,10 @@ reports.downloadAccomplishments = async (req, res) => {
                         model: Publisher,
                         attributes: ['status'],
                         required: true,
-                        where: { status: 'Approved' },
                         include: {
                             model: Publication,
                             attributes: { exclude: ['publicationId', 'createdAt', 'updatedAt'] },
+                            where: { status: 'Approved' },
                             required: true
                         },
                         order: [
@@ -492,10 +490,10 @@ reports.downloadAccomplishments = async (req, res) => {
                         model: Researcher,
                         attributes: ['status'],
                         required: true,
-                        where: { status: 'Approved' },
                         include: {
                             model: Research,
                             attributes: { exclude: ['researchId', 'createdAt', 'updatedAt'] },
+                            where: { status: 'Approved' },
                             required: true
                         },
                         order: [
