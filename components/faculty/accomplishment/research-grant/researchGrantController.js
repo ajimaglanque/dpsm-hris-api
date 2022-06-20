@@ -170,9 +170,8 @@ faculty.addResearcher = async (req, res) => {
     let jsonRes;
     
     try {
-        let filename
 
-        let [, created] = await Researcher.findOrCreate({
+        let [researcher, created] = await Researcher.findOrCreate({
             where: { facultyId: req.body.facultyId, researchId: req.body.researchId },
             defaults: {
                 facultyId: req.body.facultyId,
@@ -180,11 +179,11 @@ faculty.addResearcher = async (req, res) => {
             }
         })
 
-        if(!created) {
+        if(!researcher) {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Could not create faculty researcher information'
+                message: 'Faculty researcher information already exists'
             };
         } else {
             FacultyUpdate.upsert({

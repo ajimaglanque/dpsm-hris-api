@@ -162,32 +162,12 @@ faculty.addPublisher = async (req, res) => {
     let jsonRes;
     
     try {
-        let filename
-
-        if(req.files && req.files.proof) {
-            let proof = req.files.proof
-            let name = proof.name
-            let fileExtension = mime.extension(proof.mimetype);
-    
-            filename = util.createRandomString(name.length)
-            filename += '.' + fileExtension
-            
-            let path = 'uploads/' + filename
-            proof.mv(path);
-
-        } 
-
-        let status = 'Pending'
-        if(res.locals.user.role == 2) status = 'Verified'
-        else if(res.locals.user.role == 3) status = 'Approved';
 
         let [publisher, created] = await Publisher.findOrCreate({
             where: { facultyId: req.body.facultyId, publicationId: req.body.publicationId },
             defaults: {
                 facultyId: req.body.facultyId,
-                publicationId: req.body.publicationId,
-                proof: filename,
-                status: status
+                publicationId: req.body.publicationId
             }
         }) 
 
@@ -195,7 +175,7 @@ faculty.addPublisher = async (req, res) => {
             jsonRes = {
                 statusCode: 400,
                 success: false,
-                message: 'Could not find or create faculty publisher information'
+                message: 'Faculty publisher information already exists'
             };
         } else {
             
