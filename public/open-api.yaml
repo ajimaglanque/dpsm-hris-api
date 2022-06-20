@@ -3314,7 +3314,7 @@ paths:
           application/json:
             schema:
               type: array
-              example: ['publicService', 'publication', 'trainingSeminar', 'researchGrant', 'licensureExam']
+              example: ['publicService', 'publication', 'trainingSeminar', 'researchGrant', 'licensureExam', 'education']
       responses:
         "500":
           description: Error

@@ -333,6 +333,7 @@ reports.downloadAccomplishments = async (req, res) => {
     let tsContent = []
     let rgContent = []
     let leContent = []
+    let educContent = []
 
     let where = req.query.unitId ? { unitId: req.query.unitId } : {}
 
@@ -356,8 +357,10 @@ reports.downloadAccomplishments = async (req, res) => {
                         where: { status: 'Approved' }
                     },
                     order: [
-                        ['type', 'ASC']
-                        ['startDate', 'DESC'],
+                        [Unit, 'unit', 'ASC']
+                        [Unit, PersonalInfo, 'lastName', 'ASC'],
+                        [Unit, PersonalInfo, PSAInfo, 'type', 'ASC']
+                        [Unit, PersonalInfo, PSAInfo, 'startDate', 'DESC']
                     ]
                 }
             ]
@@ -403,8 +406,10 @@ reports.downloadAccomplishments = async (req, res) => {
                             required: true
                         },
                         order: [
-                            ['publicationDate', 'DESC'],
-                            ['title', 'ASC']
+                            [Unit, 'unit', 'ASC']
+                            [Unit, PersonalInfo, 'lastName', 'ASC'],
+                            [Unit, PersonalInfo, Publication, 'publicationDate', 'DESC']
+                            [Unit, PersonalInfo, Publication, 'title', 'ASC']
                         ]
                     }
                 }
@@ -449,7 +454,10 @@ reports.downloadAccomplishments = async (req, res) => {
                         where: { status: 'Approved' }
                     },
                     order: [
-                        ['dateFrom', 'DESC']
+                        [Unit, 'unit', 'ASC']
+                        [Unit, PersonalInfo, 'lastName', 'ASC'],
+                        [Unit, PersonalInfo, Training, 'dateFrom', 'DESC'],
+                        [Unit, PersonalInfo, Training, 'title', 'ASC'],
                     ]
                 }
             ]
@@ -495,8 +503,10 @@ reports.downloadAccomplishments = async (req, res) => {
                             required: true
                         },
                         order: [
-                            ['projectedStart', 'DESC'],
-                            ['researchName', 'ASC']
+                            [Unit, 'unit', 'ASC']
+                            [Unit, PersonalInfo, 'lastName', 'ASC'],
+                            [Unit, PersonalInfo, Research, 'projectedStart', 'DESC'],
+                            [Unit, PersonalInfo, Research, 'researchName', 'ASC'],
                         ]
                     }
                 }
@@ -544,7 +554,10 @@ reports.downloadAccomplishments = async (req, res) => {
                         where: { status: 'Approved' }
                     },
                     order: [
-                        ['examDate', 'DESC']
+                        [Unit, 'unit', 'ASC']
+                        [Unit, PersonalInfo, 'lastName', 'ASC'],
+                        [Unit, PersonalInfo, Licensure, 'examDate', 'DESC'],
+                        [Unit, PersonalInfo, Licensure, 'examName', 'ASC']
                     ]
                 }
             ]
@@ -560,6 +573,52 @@ reports.downloadAccomplishments = async (req, res) => {
                         "Exam Date": j.examDate,
                         "License Number": j.licenseNumber,
                         "rank": j.rank
+                    })
+                })
+            })
+        }
+    }
+
+    if(body.includes('education')) {
+        let facultyList = await FacultyUnit.findAll({
+            where: where,
+            attributes: ['facultyId'],
+            include: [
+                {
+                    model: Unit,
+                    attributes: ['unit']
+                },
+                {
+                    model: PersonalInfo,
+                    attributes: ['lastName', 'firstName'],
+                    required: true,
+                    include: {
+                        model: Education,
+                        attributes: { exclude: ['educInfoId', 'facultyId', 'proof', 'status', 'approverRemarks', 'createdAt', 'updatedAt'] },
+                        required: true,
+                        where: { status: 'Approved' }
+                    },
+                    order: [
+                        [Unit, 'unit', 'ASC']
+                        [Unit, PersonalInfo, 'lastName', 'ASC'],
+                        [Unit, PersonalInfo, Education, 'startDate', 'DESC'],
+                        [Unit, PersonalInfo, Education, 'institutionSchool', 'ASC']
+                    ]
+                }
+            ]
+        })
+        if(facultyList.length > 0) {
+            await facultyList.forEach( async (i) => { 
+                i.faculty_personal_info.faculty_education_infos.forEach((j) => {
+                    educContent.push({
+                        "Unit": i.unit.unit,
+                        "Name": `${i.faculty_personal_info.lastName}, ${i.faculty_personal_info.firstName}`,
+                        "Institution/School": j.institutionSchool,
+                        "Degree Type": j.degreeType,
+                        "Degree Cert": j.degreeCert,
+                        "Major/Specialization": j.majorSpecialization,
+                        "Start Date": j.startDate,
+                        "End Date": j.endDate
                     })
                 })
             })
@@ -592,6 +651,12 @@ reports.downloadAccomplishments = async (req, res) => {
         const worksheet = XLSX.utils.json_to_sheet(leContent)
         XLSX.utils.book_append_sheet(workbook, worksheet, "Licensure Exams")
     }
+
+    if (educContent.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(educContent)
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Education")
+    }
+
     if(workbook.SheetNames.length > 0) {
         XLSX.write(workbook, {bookType: 'xlsx', type: 'buffer'})
         XLSX.write(workbook, {bookType: 'xlsx', type: 'binary'})
