@@ -27,3 +27,6 @@ Derryck Ramos
 
 Project Adviser:
 Ma. Sheila A. Magboo
+
+Project Specification: 
+Marie Josephine De Luna
