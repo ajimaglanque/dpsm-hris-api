@@ -36,7 +36,7 @@ faculty.addPublication = async (req, res) => {
 
         let filename
 
-        if(req.files?.proof) {
+        if(req.files && req.files.proof) {
             let proof = req.files.proof
             let name = proof.name
             let fileExtension = mime.extension(proof.mimetype);
