@@ -89,6 +89,9 @@ app.enable('trust proxy');
  */
 app.use(express.static('uploads'))
 
+//Base directory
+global.__basedir = __dirname;
+
 /**
  * Allow file upload
  */

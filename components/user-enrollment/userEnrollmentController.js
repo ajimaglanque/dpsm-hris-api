@@ -4,8 +4,11 @@ const util = require('../../helpers/util');
 const nodemailer = require("nodemailer");
 const {google} = require('googleapis')
 const jwt = require('jsonwebtoken')
+const mime = require('mime-types')
+const fs = require("fs");
 
 const User = require('./userEnrollmentModel')
+const UserImage = require('./userImageModel.js')
 const Admin = require('./adminModel')
 const PersonalInfo = require('../faculty/basic-info/personal/personalInfoModel')
 const FacultyUnit = require('../faculty/basic-info/unit/facultyUnitModel');
@@ -19,6 +22,116 @@ const EmploymentInfo = require('../faculty/basic-info/employment/employmentInfoM
  * Controller object
  */
 const userEnrollment = {};
+
+userEnrollment.getUserImage = async (req, res) => {
+    let jsonRes;
+    
+    try { 
+        const getUser = await UserImage.findOne({
+            where: { 
+                userId: req.params.userId 
+            }
+        })
+        
+        if(getUser) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: getUser.dataValues
+            }; 
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: false
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+
+}
+
+userEnrollment.addUserImage = async (req, res) => {
+
+    let jsonRes;
+    
+    try {
+        let filename
+
+        if(req.files && req.files.image) {
+            let image = req.files.image
+            let name = image.name
+            let fileExtension = mime.extension(image.mimetype);
+    
+            filename = util.createRandomString(name.length)
+            filename += '.' + fileExtension
+            
+            let path = 'uploads/' + filename
+            image.mv(path);
+
+        } 
+        
+        [row, created] = await UserImage.findOrCreate({
+            where: { 
+                userId: req.body.userId
+            },
+            defaults: {
+                userId: req.body.userId,
+                image: filename
+            }
+        }) 
+        
+        if(!created) {
+            const [instance, created] = await UserImage.upsert({
+                imageId : row.dataValues.imageId,
+                image: filename
+            })
+            if(!created) {
+                const currentImage = row.dataValues.image
+                const directoryPath = __basedir + "\\uploads\\"; 
+
+                let response =  fs.unlink(directoryPath + currentImage, (err) => {
+                    return err;
+                });  
+                if (response) {
+                    jsonRes = {
+                        statusCode: 500,
+                        success: true,
+                        message: "Could not delete the file. " + err
+                    }; 
+                }else{
+                    jsonRes = {
+                        statusCode: 200,
+                        success: true,
+                        message: 'Profile picture updated successfully'
+                    }; 
+                }
+                         
+            }
+            
+        }else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                message: 'Profile picture added successfully'
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+
 
 userEnrollment.userEnroll = async (req, res) => {
     // logger.info('inside userEnroll()...');
