@@ -30,4 +30,7 @@ router.get('/admin', userEnrollmentController.getAdminUser);
 router.delete('/admin/:userId', userEnrollmentController.deleteAdminUser);
 router.post('/validate-password', userEnrollmentController.comparePassword);
 
+router.get('/image/:userId', userEnrollmentController.getUserImage);
+router.post('/add/image', userEnrollmentController.addUserImage);
+
 module.exports = router;
