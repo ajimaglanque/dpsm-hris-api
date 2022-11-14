@@ -85,6 +85,7 @@ userEnrollment.addUserImage = async (req, res) => {
 
     if (!created) {
       const [instance, created] = await UserImage.upsert({
+        userId: row.dataValues.userId,
         imageId: row.dataValues.imageId,
         image: filename,
       });
