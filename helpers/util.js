@@ -83,11 +83,13 @@ util.checkIfNull = (paramName) => {
 util.deleteFile = (previousFileName) => {
   const directoryPath = __basedir + "\\uploads\\";
   
-  fs.unlink(directoryPath + previousFileName, (err) => {
+  if(previousFileName){
+    fs.unlink(directoryPath + previousFileName, (err) => {
       if (err) {
         console.log(err)
       } 
   });
+  }
 }
 
 module.exports = util;

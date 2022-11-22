@@ -139,7 +139,7 @@ faculty.editFacultyLoad = async (req, res) => {
                 recordId: req.body.recordId 
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.syllabusFile : null
+        const currentFileName = rowToUpdate ? rowToUpdate.syllabus : null
 
         updated = await FacultyLoad.update(
             { 
@@ -194,7 +194,7 @@ faculty.deleteFacultyLoad = async (req, res) => {
                 recordId: req.body.recordId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.syllabusFile : null
+        const currentFileName = rowToUpdate ? rowToUpdate.syllabus : null
 
         deleted = await FacultyLoad.destroy(
            {

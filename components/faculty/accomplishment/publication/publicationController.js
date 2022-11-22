@@ -408,6 +408,15 @@ faculty.deletePublisher = async (req, res) => {
                             message: 'Faculty publication information deleted successfully'
                         }; 
                     }
+                } else {
+                    FacultyUpdate.upsert({
+                        facultyId: req.params.facultyId
+                    })
+                    jsonRes = {
+                        statusCode: 200,
+                        success: true,
+                        message: 'Faculty publication information deleted successfully'
+                    };
                 }
             })
             
