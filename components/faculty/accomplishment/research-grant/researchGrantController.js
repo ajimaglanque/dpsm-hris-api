@@ -66,7 +66,7 @@ faculty.addResearchGrant = async (req, res) => {
         }) 
 
         if(!created) {
-            if((user.role == 2 && (pblctn.status == 'Pending')) || (user.role == 3 && (pblctn.status == 'Pending' || pblctn.status == 'Verified'))) {
+            if((user.role == 2 && (rsrchgrnt.status == 'Pending')) || (rsrchgrnt.role == 3 && (rsrchgrnt.status == 'Pending' || rsrchgrnt.status == 'Verified'))) {
 
                 await ResearchGrant.update(
                     { 
