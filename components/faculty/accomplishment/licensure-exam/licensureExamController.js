@@ -154,6 +154,14 @@ faculty.editLicensureExamInfo = async (req, res) => {
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
+        const rowToUpdate = await LicensureExam.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                licenseId: req.body.licenseId
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+
         updated = await LicensureExam.update(
             { 
                 examName: req.body.examName,
@@ -178,6 +186,11 @@ faculty.editLicensureExamInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(currentFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -202,7 +215,14 @@ faculty.deleteLicensureExam = async (req, res) => {
     let deleted
 
     try { 
-        
+        const rowToUpdate = await LicensureExam.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                licenseId: req.body.licenseId
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+
         deleted = await LicensureExam.destroy(
             {
                 where: { facultyId: req.params.facultyId, licenseId: req.body.licenseId }
@@ -219,6 +239,11 @@ faculty.deleteLicensureExam = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(currentFileName){
+                util.deleteFile(currentFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,

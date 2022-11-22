@@ -5,7 +5,6 @@ const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const jwt = require("jsonwebtoken");
 const mime = require("mime-types");
-const fs = require("fs");
 
 const User = require("./userEnrollmentModel");
 const UserImage = require("./userImageModel.js");
@@ -90,25 +89,13 @@ userEnrollment.addUserImage = async (req, res) => {
         image: filename,
       });
       if (!created) {
-        const currentImage = row.dataValues.image;
-        const directoryPath = __basedir + "\\uploads\\";
+        util.deleteFile(row.dataValues.image)
 
-        let response = fs.unlink(directoryPath + currentImage, (err) => {
-          return err;
-        });
-        if (response) {
-          jsonRes = {
-            statusCode: 500,
-            success: true,
-            message: "Could not delete the file. " + err,
-          };
-        } else {
-          jsonRes = {
-            statusCode: 200,
-            success: true,
-            message: "Profile picture updated successfully",
-          };
-        }
+        jsonRes = {
+          statusCode: 200,
+          success: true,
+          message: "Profile picture updated successfully",
+        };
       }
     } else {
       jsonRes = {

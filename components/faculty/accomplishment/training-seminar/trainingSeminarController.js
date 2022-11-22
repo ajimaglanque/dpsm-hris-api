@@ -156,6 +156,14 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
+        const rowToUpdate = await TrainingSeminar.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                tsId: req.body.tsId
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+
         updated = await TrainingSeminar.update(
             { 
                 title: req.body.title,
@@ -182,6 +190,11 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(currentFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -206,7 +219,14 @@ faculty.deleteTrainingSeminar = async (req, res) => {
     let deleted
 
     try { 
-        
+        const rowToUpdate = await TrainingSeminar.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                tsId: req.body.tsId
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+
         deleted = await TrainingSeminar.destroy(
             {
                 where: { facultyId: req.params.facultyId, tsId: req.body.tsId }
@@ -223,6 +243,11 @@ faculty.deleteTrainingSeminar = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(currentFileName){
+                util.deleteFile(currentFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,

@@ -128,7 +128,7 @@ faculty.editEducationInfo = async (req, res) => {
     // logger.info('inside editEducationInfo()...');
 
     let jsonRes;
-    let updated
+    let updated;
 
     try { 
         let filename
@@ -142,7 +142,6 @@ faculty.editEducationInfo = async (req, res) => {
             
             let path = 'uploads/' + filename
             proof.mv(path);
-
         } 
 
         let status = 'Pending'
@@ -152,6 +151,15 @@ faculty.editEducationInfo = async (req, res) => {
             if(status != 'Rejected') approverRemarks = null
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
+
+        // Get current file name before update
+        const rowToUpdate = await EducationInfo.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                educInfoId: req.body.educInfoId 
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
 
         updated = await EducationInfo.update(
             { 
@@ -179,12 +187,16 @@ faculty.editEducationInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId,
             })
-
+            
+            if(filename){
+                util.deleteFile(currentFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,
                 message: 'Faculty education information updated successfully'
-            }; 
+            };   
         }
     } catch(error) {
         jsonRes = {
@@ -204,11 +216,18 @@ faculty.deleteEducationInfo = async (req, res) => {
     let deleted
 
     try { 
-        
+        const rowToUpdate = await EducationInfo.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                educInfoId: req.body.educInfoId 
+            }
+        })
+        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+
         deleted = await EducationInfo.destroy(
            {
                 where: { facultyId: req.params.facultyId, educInfoId: req.body.educInfoId }
-            }
+           }
         ) 
 
         if(deleted == 0) {
@@ -221,6 +240,11 @@ faculty.deleteEducationInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(currentFileName){
+                util.deleteFile(currentFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
