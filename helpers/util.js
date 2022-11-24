@@ -80,6 +80,7 @@ util.checkIfNull = (paramName) => {
   return paramValue;
 };
 
+//Delete File in File System
 util.deleteFile = (previousFileName) => {
   const directoryPath = __basedir + "\\uploads\\";
   

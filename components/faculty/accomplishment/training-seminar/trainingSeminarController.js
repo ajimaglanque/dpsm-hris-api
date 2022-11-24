@@ -162,7 +162,8 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
                 tsId: req.body.tsId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         updated = await TrainingSeminar.update(
             { 
@@ -192,7 +193,7 @@ faculty.editTrainingSeminarInfo = async (req, res) => {
             })
 
             if(filename){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {
@@ -225,7 +226,8 @@ faculty.deleteTrainingSeminar = async (req, res) => {
                 tsId: req.body.tsId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         deleted = await TrainingSeminar.destroy(
             {
@@ -244,8 +246,8 @@ faculty.deleteTrainingSeminar = async (req, res) => {
                 facultyId: req.params.facultyId
             })
 
-            if(currentFileName){
-                util.deleteFile(currentFileName)
+            if(previousFileName){
+                util.deleteFile(previousFileName)
             }
             
             jsonRes = {

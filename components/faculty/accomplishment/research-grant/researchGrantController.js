@@ -313,7 +313,8 @@ faculty.editResearchGrant = async (req, res) => {
                 researchId: req.body.researchId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         let updated = await ResearchGrant.update(
             { 
@@ -346,7 +347,7 @@ faculty.editResearchGrant = async (req, res) => {
             })
 
             if(filename){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
             
             jsonRes = {
@@ -395,7 +396,8 @@ faculty.deleteResearcher = async (req, res) => {
                             researchId: req.body.researchId
                         }
                     })
-                    const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+                    //Set previous file name as current file name before update
+                    const previousFileName = rowToUpdate ? rowToUpdate.proof : null
             
                     let deleted = await ResearchGrant.destroy(
                         {
@@ -414,8 +416,8 @@ faculty.deleteResearcher = async (req, res) => {
                             facultyId: req.params.facultyId
                         })
 
-                        if(currentFileName){
-                            util.deleteFile(currentFileName)
+                        if(previousFileName){
+                            util.deleteFile(previousFileName)
                         }
                          
                         jsonRes = {

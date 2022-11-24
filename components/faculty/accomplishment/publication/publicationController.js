@@ -300,7 +300,8 @@ faculty.editPublicationInfo = async (req, res) => {
                 publicationId: req.body.publicationId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
         
         let updated = await Publication.update(
             { 
@@ -329,7 +330,7 @@ faculty.editPublicationInfo = async (req, res) => {
             })
 
             if(filename){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {
@@ -379,7 +380,8 @@ faculty.deletePublisher = async (req, res) => {
                             publicationId: req.body.publicationId
                         }
                     })
-                    const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+                    //Set previous file name as current file name before update
+                    const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
                     let deleted = await Publication.destroy(
                         {
@@ -398,8 +400,8 @@ faculty.deletePublisher = async (req, res) => {
                             facultyId: req.params.facultyId
                         })
 
-                        if(currentFileName){
-                            util.deleteFile(currentFileName)
+                        if(previousFileName){
+                            util.deleteFile(previousFileName)
                         }
 
                         jsonRes = {

@@ -164,7 +164,8 @@ faculty.editPublicServiceInfo = async (req, res) => {
                 publicServiceId: req.body.publicServiceId 
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         updated = await PublicService.update(
             { 
@@ -194,7 +195,7 @@ faculty.editPublicServiceInfo = async (req, res) => {
             })
 
             if(filename){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {
@@ -227,7 +228,8 @@ faculty.deletePublicService = async (req, res) => {
                 publicServiceId: req.body.publicServiceId 
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         deleted = await PublicService.destroy(
             {
@@ -246,8 +248,8 @@ faculty.deletePublicService = async (req, res) => {
                 facultyId: req.params.facultyId
             })
 
-            if(currentFileName){
-                util.deleteFile(currentFileName)
+            if(previousFileName){
+                util.deleteFile(previousFileName)
             }
             
             jsonRes = {

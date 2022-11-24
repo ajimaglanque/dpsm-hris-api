@@ -139,7 +139,8 @@ faculty.editFacultyLoad = async (req, res) => {
                 recordId: req.body.recordId 
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.syllabus : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.syllabus : null
 
         updated = await FacultyLoad.update(
             { 
@@ -161,7 +162,7 @@ faculty.editFacultyLoad = async (req, res) => {
             };
         } else {
             if(syllabusFile){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {
@@ -194,7 +195,8 @@ faculty.deleteFacultyLoad = async (req, res) => {
                 recordId: req.body.recordId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.syllabus : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.syllabus : null
 
         deleted = await FacultyLoad.destroy(
            {
@@ -209,8 +211,8 @@ faculty.deleteFacultyLoad = async (req, res) => {
                 message: 'Faculty load information cannot be deleted'
             };
         } else {
-            if(currentFileName){
-                util.deleteFile(currentFileName)
+            if(previousFileName){
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {

@@ -160,7 +160,8 @@ faculty.editLicensureExamInfo = async (req, res) => {
                 licenseId: req.body.licenseId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         updated = await LicensureExam.update(
             { 
@@ -188,7 +189,7 @@ faculty.editLicensureExamInfo = async (req, res) => {
             })
 
             if(filename){
-                util.deleteFile(currentFileName)
+                util.deleteFile(previousFileName)
             }
 
             jsonRes = {
@@ -221,7 +222,8 @@ faculty.deleteLicensureExam = async (req, res) => {
                 licenseId: req.body.licenseId
             }
         })
-        const currentFileName = rowToUpdate ? rowToUpdate.proof : null
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
 
         deleted = await LicensureExam.destroy(
             {
@@ -239,9 +241,9 @@ faculty.deleteLicensureExam = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
-
-            if(currentFileName){
-                util.deleteFile(currentFileName)
+            
+            if(previousFileName){
+                util.deleteFile(previousFileName)
             }
             
             jsonRes = {
