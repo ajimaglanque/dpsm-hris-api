@@ -24,4 +24,6 @@ router.get('/employment', reportsController.getEmployments);
 router.get('/education', reportsController.getEducations);
 router.post('/accomplishment/download', reportsController.downloadAccomplishments);
 
+router.get('/accomplishments', reportsController.getFacultyAccomplishments);
+
 module.exports = router;
