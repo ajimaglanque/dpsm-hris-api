@@ -157,6 +157,281 @@ reports.getAccomplishments = async (req, res) => {
         util.sendResponse(res, jsonRes);    
     }
 };
+//NEW VERSIONS
+reports.getFacultyAccomplishments = async (req, res) => {
+    let jsonRes;
+    
+    try {
+        let facultyList 
+        facultyList = await PersonalInfo.findAll({
+            attributes: ['facultyId', 'lastName', 'firstName'],
+            include: [
+                {
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    include: {
+                        model: Unit,
+                        attributes: ['unit']
+                    },
+                    where:  req.query.unitId && { unitId: req.query.unitId }
+                },
+                {
+                    model: PSAInfo,
+                    attributes: ['position', 'organization', 'startDate', 'endDate', 'status'],
+                    required: false,
+                    where: {
+                        [Op.and] : [
+                            { 
+                                status: 'Approved' 
+                            },
+                            req.query.startDate && { startDate: { [Op.gte]: new Date(req.query.startDate) } },
+                            req.query.endDate && { endDate: { [Op.lte]: new Date(req.query.endDate) } }
+                        ]
+                    }
+                },
+                {
+                    model: Publisher,
+                    attributes: ['publicationId'], 
+                    required: false,
+                    include: {
+                        model: Publication,
+                        attributes: ['title', 'publicationDate', 'status'],
+                        where: {
+                            [Op.and] : [
+                                { 
+                                    status: 'Approved' 
+                                },
+                                {  
+                                    //  Used lte & gte operation to check condition even with only 1 provided date.
+                                    [Op.and] : [
+                                        req.query.startDate && { publicationDate: { [Op.gte]: new Date(req.query.startDate) } },
+                                        req.query.endDate && { publicationDate: { [Op.lte]: new Date(req.query.endDate) } }
+                                    ]
+                                },
+                            ]
+                        }
+                    }
+                }, 
+                {
+                    model: Training,
+                    attributes: ['role', 'title', 'dateFrom', 'dateTo', 'status'],
+                    required: false,
+                    where: {
+                        [Op.and] : [
+                            { 
+                                status: 'Approved' 
+                            },
+                            req.query.startDate && { dateFrom: { [Op.gte]: new Date(req.query.startDate) } },
+                            req.query.endDate && { dateTo: { [Op.lte]: new Date(req.query.endDate) } }
+                        ]
+                    }
+                },
+                {
+                    model: Licensure,
+                    attributes: ['examName', 'examDate', 'licenseNumber', 'rank', 'status'],
+                    required: false,
+                    where: {
+                        [Op.and] : [
+                            { 
+                                status: 'Approved' 
+                            },
+                            {  
+                                //  Used lte & gte operation to check condition even with only 1 provided date.
+                                [Op.and] : [
+                                    req.query.startDate && { examDate: { [Op.gte]: new Date(req.query.startDate) } },
+                                    req.query.endDate && { examDate: { [Op.lte]: new Date(req.query.endDate) } }
+                                ]
+                            },
+                        ]
+                    }
+                },
+                {
+                    model: Researcher,
+                    attributes: ['researchId'],
+                    required: false,
+                    include: {
+                        model: Research,
+                        attributes: ['researchName', 'actualStart', 'actualEnd', 'status'],
+                        where: {
+                            [Op.and] : [
+                                { 
+                                    status: 'Approved' 
+                                },
+                                req.query.startDate && { actualStart: { [Op.gte]: new Date(req.query.startDate) } },
+                                req.query.endDate && { actualEnd: { [Op.lte]: new Date(req.query.endDate) } }
+                            ]
+                        }
+                    }
+                },
+            ],
+            order: [
+                [FacultyUnit, Unit, 'unit'],
+                ['lastName', 'ASC'],
+                ['firstName','ASC'],
+                ['middleName', 'ASC'],
+            ]
+          });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList,
+               
+            }; 
+            
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+reports.getFacultyEmployments = async (req, res) => {
+    // logger.info('inside getFaculty()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList 
+
+        facultyList = await PersonalInfo.findAll({
+            attributes: ['facultyId', 'lastName', 'firstName'],
+            include: [
+                {
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    include: {
+                        model: Unit,
+                        attributes: ['unit']
+                    },
+                    where: req.query.unitId && { unitId: req.query.unitId }
+                },
+                {
+                    model: Employment,
+                    attributes: ['employmentPositionId', 'status', 'category', 'startDate', 'endDate'],
+                    where: {
+                        [Op.and] : [
+                            req.query.startDate && { startDate: { [Op.gte]: new Date(req.query.startDate) } },
+                            req.query.endDate && { endDate: { [Op.lte]: new Date(req.query.endDate) } }
+                        ]
+                    },
+                    include: {
+                        model: Position,
+                        attributes: ['position']
+                    }
+                },
+            ],
+            order: [
+                [FacultyUnit, Unit, 'unit'],
+                ['lastName', 'ASC'],
+                ['firstName','ASC'],
+                ['middleName', 'ASC'],
+            ]
+          });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+reports.getFacultyEducations = async (req, res) => {
+    // logger.info('inside getFaculty()...');
+
+    let jsonRes;
+    
+    try {
+        let facultyList 
+        
+        facultyList = await PersonalInfo.findAll({
+            attributes: ['facultyId', 'lastName', 'firstName'],
+            include: [
+                {
+                    model: FacultyUnit,
+                    attributes: ['unitId'],
+                    include: {
+                        model: Unit,
+                        attributes: ['unit']
+                    },
+                    where: req.query.unitId && { unitId: req.query.unitId }
+                },
+                {
+                    model: Education,
+                    attributes: ['educInfoId', 'degreeType', 'degreeCert', 'endDate', 'status'],
+                    where: {
+                        [Op.and] : [
+                            { 
+                                status: 'Approved' 
+                            },
+                            req.query.startDate && { startDate: { [Op.gte]: new Date(req.query.startDate) } },
+                            req.query.endDate && { endDate: { [Op.lte]: new Date(req.query.endDate) } }
+                        ]
+                    }
+                },
+            ],
+            order: [
+                [FacultyUnit, Unit, 'unit'],
+                ['lastName', 'ASC'],
+                ['firstName','ASC'],
+                ['middleName', 'ASC'],
+            ]
+          });
+
+        if(facultyList.length === 0) {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: null,
+                message: 'Faculty list empty'
+            };
+        } else {
+            jsonRes = {
+                statusCode: 200,
+                success: true,
+                result: facultyList
+            }; 
+        }
+    } catch(error) {
+        jsonRes = {
+            statusCode: 500,
+            success: false,
+            error: error,
+        };
+    } finally {
+        util.sendResponse(res, jsonRes);    
+    }
+};
+// END
 
 reports.getEmployments = async (req, res) => {
     // logger.info('inside getFaculty()...');
