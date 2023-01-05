@@ -231,7 +231,7 @@ faculty.getPublication = async (req, res) => {
             let publications = await Publication.findAll({
                 where: where,
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt']
+                    exclude: ['createdAt']
                 },
                 include: 
                 {

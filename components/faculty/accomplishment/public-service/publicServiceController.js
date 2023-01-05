@@ -98,7 +98,7 @@ faculty.getPublicService = async (req, res) => {
 
         let facultyList = await PublicService.findAll({
             where: where,
-            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            attributes: { exclude: ['facultyId', 'createdAt'] },
             order: [
                 ['type', 'DESC'],
                 ['startDate', 'DESC']

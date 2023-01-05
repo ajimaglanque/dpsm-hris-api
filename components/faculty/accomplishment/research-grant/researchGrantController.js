@@ -243,7 +243,7 @@ faculty.getResearchGrant = async (req, res) => {
             let researches = await ResearchGrant.findAll({
                 where: where,
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt']
+                    exclude: ['createdAt']
                 },
                 include: 
                 {
