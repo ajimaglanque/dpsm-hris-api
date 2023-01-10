@@ -81,6 +81,11 @@ faculty.addPublication = async (req, res) => {
             await FacultyUpdate.upsert({
                 facultyId: req.body.facultyId
             })
+
+            if(filename){
+                util.deleteFile(pblctn.proof)
+            }
+
             let existing = await Publisher.findAll({
                 where: { facultyId: req.body.facultyId },
                 attributes: ['publicationId'],
@@ -226,7 +231,7 @@ faculty.getPublication = async (req, res) => {
             let publications = await Publication.findAll({
                 where: where,
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt']
+                    exclude: ['createdAt']
                 },
                 include: 
                 {
@@ -280,9 +285,8 @@ faculty.editPublicationInfo = async (req, res) => {
             
             let path = 'uploads/' + filename
             proof.mv(path);
-
         } 
-
+        
         let status = 'Pending'
         let approverRemarks = req.body.approverRemarks
         if(req.body.status) {
@@ -290,6 +294,14 @@ faculty.editPublicationInfo = async (req, res) => {
             if(status != 'Rejected') approverRemarks = null
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
+
+        const rowToUpdate = await Publication.findOne({
+            where: { 
+                publicationId: req.body.publicationId
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
         
         let updated = await Publication.update(
             { 
@@ -316,6 +328,11 @@ faculty.editPublicationInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(previousFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -341,8 +358,6 @@ faculty.deletePublisher = async (req, res) => {
     let deleted
 
     try { 
-        let deletedPublication = true
-
         deleted = await Publisher.destroy(
             {
                 where: { facultyId: req.params.facultyId, publicationId: req.body.publicationId }
@@ -360,6 +375,14 @@ faculty.deletePublisher = async (req, res) => {
                 where: { publicationId: req.body.publicationId } 
             }).then(async (count) => {
                 if(count == 0) {
+                    const rowToUpdate = await Publication.findOne({
+                        where: { 
+                            publicationId: req.body.publicationId
+                        }
+                    })
+                    //Set previous file name as current file name before update
+                    const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
                     let deleted = await Publication.destroy(
                         {
                             where: { publicationId: req.body.publicationId }
@@ -372,12 +395,22 @@ faculty.deletePublisher = async (req, res) => {
                             success: false,
                             message: 'Faculty publication information cannot be deleted'
                         };
+                    } else {
+                        FacultyUpdate.upsert({
+                            facultyId: req.params.facultyId
+                        })
 
-                        deletedPublication = false
-                    } 
-                }
+                        if(previousFileName){
+                            util.deleteFile(previousFileName)
+                        }
 
-                if(deletedPublication) {
+                        jsonRes = {
+                            statusCode: 200,
+                            success: true,
+                            message: 'Faculty publication information deleted successfully'
+                        }; 
+                    }
+                } else {
                     FacultyUpdate.upsert({
                         facultyId: req.params.facultyId
                     })
@@ -385,7 +418,7 @@ faculty.deletePublisher = async (req, res) => {
                         statusCode: 200,
                         success: true,
                         message: 'Faculty publication information deleted successfully'
-                    }; 
+                    };
                 }
             })
             

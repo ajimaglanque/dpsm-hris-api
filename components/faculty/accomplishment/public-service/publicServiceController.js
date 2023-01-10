@@ -98,7 +98,7 @@ faculty.getPublicService = async (req, res) => {
 
         let facultyList = await PublicService.findAll({
             where: where,
-            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            attributes: { exclude: ['facultyId', 'createdAt'] },
             order: [
                 ['type', 'DESC'],
                 ['startDate', 'DESC']
@@ -158,6 +158,15 @@ faculty.editPublicServiceInfo = async (req, res) => {
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
+        const rowToUpdate = await PublicService.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                publicServiceId: req.body.publicServiceId 
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
         updated = await PublicService.update(
             { 
                 type: req.body.type,
@@ -184,6 +193,11 @@ faculty.editPublicServiceInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(previousFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -208,7 +222,15 @@ faculty.deletePublicService = async (req, res) => {
     let deleted
 
     try { 
-        
+        const rowToUpdate = await PublicService.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                publicServiceId: req.body.publicServiceId 
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
         deleted = await PublicService.destroy(
             {
                 where: { facultyId: req.params.facultyId, publicServiceId: req.body.publicServiceId }
@@ -225,6 +247,11 @@ faculty.deletePublicService = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(previousFileName){
+                util.deleteFile(previousFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,

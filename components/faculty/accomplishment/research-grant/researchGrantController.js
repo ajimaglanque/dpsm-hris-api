@@ -66,7 +66,8 @@ faculty.addResearchGrant = async (req, res) => {
         }) 
 
         if(!created) {
-            if((user.role == 2 && (pblctn.status == 'Pending')) || (user.role == 3 && (pblctn.status == 'Pending' || pblctn.status == 'Verified'))) {
+            if((user.role == 2 && (rsrchgrnt.status == 'Pending')) || (rsrchgrnt.role == 3 && (rsrchgrnt.status == 'Pending' || rsrchgrnt.status == 'Verified'))) {
+
                 await ResearchGrant.update(
                     { 
                         granter: req.body.granter,
@@ -88,6 +89,11 @@ faculty.addResearchGrant = async (req, res) => {
             await FacultyUpdate.upsert({
                 facultyId: req.body.facultyId
             })
+
+            if(filename){
+                util.deleteFile(rsrchgrnt.proof)
+            }
+
             let existing = await Researcher.findAll({
                 where: { facultyId: req.body.facultyId },
                 attributes: ['researchId'],
@@ -237,7 +243,7 @@ faculty.getResearchGrant = async (req, res) => {
             let researches = await ResearchGrant.findAll({
                 where: where,
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt']
+                    exclude: ['createdAt']
                 },
                 include: 
                 {
@@ -302,6 +308,14 @@ faculty.editResearchGrant = async (req, res) => {
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
+        const rowToUpdate = await ResearchGrant.findOne({
+            where: { 
+                researchId: req.body.researchId
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
         let updated = await ResearchGrant.update(
             { 
                 researchName: req.body.researchName,
@@ -331,6 +345,11 @@ faculty.editResearchGrant = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(previousFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -372,6 +391,14 @@ faculty.deleteResearcher = async (req, res) => {
                 where: { researchId: req.body.researchId } 
             }).then(async (count) => {
                 if(count == 0) {
+                    const rowToUpdate = await ResearchGrant.findOne({
+                        where: { 
+                            researchId: req.body.researchId
+                        }
+                    })
+                    //Set previous file name as current file name before update
+                    const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+            
                     let deleted = await ResearchGrant.destroy(
                         {
                             where: { researchId: req.body.researchId }
@@ -388,6 +415,11 @@ faculty.deleteResearcher = async (req, res) => {
                         FacultyUpdate.upsert({
                             facultyId: req.params.facultyId
                         })
+
+                        if(previousFileName){
+                            util.deleteFile(previousFileName)
+                        }
+                         
                         jsonRes = {
                             statusCode: 200,
                             success: true,

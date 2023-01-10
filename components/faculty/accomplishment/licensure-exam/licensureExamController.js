@@ -97,7 +97,7 @@ faculty.getLicensureExam = async (req, res) => {
 
         let facultyList = await LicensureExam.findAll({
             where: where,
-            attributes: { exclude: ['facultyId', 'createdAt', 'updatedAt'] },
+            attributes: { exclude: ['facultyId', 'createdAt'] },
             order: [['examDate', 'DESC']]
         });
 
@@ -154,6 +154,15 @@ faculty.editLicensureExamInfo = async (req, res) => {
         } else if(res.locals.user.role == 2) status = 'Verified'
         else if(res.locals.user.role == 3) status = 'Approved';
 
+        const rowToUpdate = await LicensureExam.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                licenseId: req.body.licenseId
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
         updated = await LicensureExam.update(
             { 
                 examName: req.body.examName,
@@ -178,6 +187,11 @@ faculty.editLicensureExamInfo = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+
+            if(filename){
+                util.deleteFile(previousFileName)
+            }
+
             jsonRes = {
                 statusCode: 200,
                 success: true,
@@ -202,7 +216,15 @@ faculty.deleteLicensureExam = async (req, res) => {
     let deleted
 
     try { 
-        
+        const rowToUpdate = await LicensureExam.findOne({
+            where: { 
+                facultyId: req.params.facultyId, 
+                licenseId: req.body.licenseId
+            }
+        })
+        //Set previous file name as current file name before update
+        const previousFileName = rowToUpdate ? rowToUpdate.proof : null
+
         deleted = await LicensureExam.destroy(
             {
                 where: { facultyId: req.params.facultyId, licenseId: req.body.licenseId }
@@ -219,6 +241,11 @@ faculty.deleteLicensureExam = async (req, res) => {
             FacultyUpdate.upsert({
                 facultyId: req.params.facultyId
             })
+            
+            if(previousFileName){
+                util.deleteFile(previousFileName)
+            }
+            
             jsonRes = {
                 statusCode: 200,
                 success: true,

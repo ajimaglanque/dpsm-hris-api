@@ -2,6 +2,7 @@
 // const config = require('config');
 const crypto = require('crypto');
 const _ = require('lodash');
+const fs = require("fs");
 /**
  * Util object
  */
@@ -78,5 +79,18 @@ util.checkIfNull = (paramName) => {
   }
   return paramValue;
 };
+
+//Delete File in File System
+util.deleteFile = (previousFileName) => {
+  const directoryPath = __basedir + "\\uploads\\";
+  
+  if(previousFileName){
+    fs.unlink(directoryPath + previousFileName, (err) => {
+      if (err) {
+        console.log(err)
+      } 
+  });
+  }
+}
 
 module.exports = util;
